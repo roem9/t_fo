@@ -2,7 +2,6 @@
 class Home extends CI_CONTROLLER{
     public function __construct(){
         parent::__construct();
-        $this->load->model('Home_model');
         $this->load->model('Fo_model');
 
         if($this->session->userdata('status') != "login"){
@@ -47,32 +46,32 @@ class Home extends CI_CONTROLLER{
 
         $data['pekerjaan_lainnya'] = COUNT($this->Fo_model->get_pekerjaan_lainnya_by_periode($bulan, $tahun));
         
-        $informasi = $this->Home_model->getInformasi($bulan, $tahun);
+        $informasi = $this->Fo_model->get_informasi_by_periode($bulan, $tahun);
         $data['informasi'] = [];
         foreach ($informasi as $key => $informasi) {
             $data['informasi'][$key] = $informasi;
-            $data['informasi'][$key]['peserta'] = COUNT($this->Home_model->informasi($bulan, $tahun, $informasi['info']));
+            $data['informasi'][$key]['peserta'] = COUNT($this->Fo_model->get_informasi_by_jenis($bulan, $tahun, $informasi['info']));
         }
 
-        $data['informasi_lainnya'] = COUNT($this->Home_model->getinformasiLainnya($bulan, $tahun));
+        $data['informasi_lainnya'] = COUNT($this->Fo_model->get_informasi_lainnya_by_periode($bulan, $tahun));
         
         $program = $this->Fo_model->get_program_by_periode($bulan, $tahun);
         $data['program'] = [];
         foreach ($program as $key => $program) {
             $data['program'][$key] = $program;
-            $data['program'][$key]['peserta'] = COUNT($this->Home_model->pesertaProgram($bulan, $tahun, $program['program']));
+            $data['program'][$key]['peserta'] = COUNT($this->Fo_model->get_peserta_by_periode_by_program($bulan, $tahun, $program['program']));
         }
         
         $data['peserta']['total'] = $data['peserta']['wanita'] + $data['peserta']['pria'];
-        $data['kelas'] = COUNT($this->Home_model->jumlahKelas($bulan, $tahun));
+        $data['kelas'] = COUNT($this->Fo_model->get_kelas_by_periode($bulan, $tahun));
 
-        $data['peserta_reguler'] = COUNT($this->Home_model->pesertaByTipe($bulan, $tahun, "reguler"));
-        $data['peserta_pv_khusus'] = COUNT($this->Home_model->pesertaByTipe($bulan, $tahun, "pv khusus"));
-        $data['peserta_pv_luar'] = COUNT($this->Home_model->pesertaByTipe($bulan, $tahun, "pv luar"));
+        $data['peserta_reguler'] = COUNT($this->Fo_model->get_peserta_by_periode_by_tipe($bulan, $tahun, "reguler"));
+        $data['peserta_pv_khusus'] = COUNT($this->Fo_model->get_peserta_by_periode_by_tipe($bulan, $tahun, "pv khusus"));
+        $data['peserta_pv_luar'] = COUNT($this->Fo_model->get_peserta_by_periode_by_tipe($bulan, $tahun, "pv luar"));
         
-        $data['kelas_pv_khusus'] = COUNT($this->Home_model->kelasByTipe($bulan, $tahun, "pv khusus"));
-        $data['kelas_pv_luar'] = COUNT($this->Home_model->kelasByTipe($bulan, $tahun, "pv luar"));
-        $data['kelas_reguler'] = COUNT($this->Home_model->kelasByTipe($bulan, $tahun, "reguler"));
+        $data['kelas_pv_khusus'] = COUNT($this->Fo_model->get_kelas_by_periode_by_type($bulan, $tahun, "pv khusus"));
+        $data['kelas_pv_luar'] = COUNT($this->Fo_model->get_kelas_by_periode_by_type($bulan, $tahun, "pv luar"));
+        $data['kelas_reguler'] = COUNT($this->Fo_model->get_kelas_by_periode_by_type($bulan, $tahun, "reguler"));
         
         $this->load->view("templates/header", $data);
         $this->load->view("templates/sidebar");
@@ -82,13 +81,17 @@ class Home extends CI_CONTROLLER{
         $this->load->view("templates/footer");
     }
 
-    public function pekerjaanLain(){
-        $pekerjaan = $this->Home_model->pekerjaanLain();
+    public function get_pekerjaan_lain_by_periode(){
+        $bulan = $this->input->post("bulan");
+        $tahun = $this->input->post("tahun");
+        $pekerjaan = $this->Fo_model->get_pekerjaan_lain_by_periode($bulan, $tahun);
         echo json_encode($pekerjaan);
     }
     
-    public function informasiLain(){
-        $pekerjaan = $this->Home_model->informasiLain();
+    public function get_informasi_lain_by_periode(){
+        $bulan = $this->input->post("bulan");
+        $tahun = $this->input->post("tahun");
+        $pekerjaan = $this->Fo_model->get_informasi_lain_by_periode($bulan, $tahun);
         echo json_encode($pekerjaan);
     }
 }

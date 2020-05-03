@@ -69,11 +69,8 @@ class Fo_model extends CI_MODEL{
             return $this->db->get()->result_array();
         }
     
-        public function pekerjaanLain(){
-            $bulan = $_POST['bulan'];
-            $tahun = $_POST['tahun'];
+        public function get_pekerjaan_lain_by_periode($bulan, $tahun){
             $pekerjaan = array("Pelajar", "Mahasiswa", "Swasta", "PNS/BUMN", "TNI/POLRI");
-    
             $this->db->select("pekerjaan, count(a.id_peserta) as peserta");
             $this->db->from("peserta as a");
             $this->db->join("pekerjaan as b", "a.id_peserta = b.id_peserta");
@@ -84,7 +81,7 @@ class Fo_model extends CI_MODEL{
             return $this->db->get()->result_array();
         }
     
-        public function getInformasi($bulan, $tahun){
+        public function get_informasi_by_periode($bulan, $tahun){
             $informasi = array("Teman", "Media Elektronik", "Spanduk", "Civitas Tar-Q", "Brosur", "Peserta", "Event");
     
             $this->db->select("info");
@@ -96,7 +93,7 @@ class Fo_model extends CI_MODEL{
             return $this->db->get()->result_array();
         }
     
-        public function getInformasiLainnya($bulan, $tahun){
+        public function get_informasi_lainnya_by_periode($bulan, $tahun){
             $informasi = array("Teman", "Media Elektronik", "Spanduk", "Civitas Tar-Q", "Brosur", "Peserta", "Event");
     
             $this->db->select("*");
@@ -108,7 +105,7 @@ class Fo_model extends CI_MODEL{
             return $this->db->get()->result_array();
         }
     
-        public function informasi($bulan, $tahun, $informasi){
+        public function get_informasi_by_jenis($bulan, $tahun, $informasi){
             $this->db->select("*");
             $this->db->from("peserta");
             $this->db->where("info", $informasi);
@@ -117,32 +114,26 @@ class Fo_model extends CI_MODEL{
             return $this->db->get()->result_array();
         }
     
-        public function informasiLain(){
-            $bulan = $_POST['bulan'];
-            $tahun = $_POST['tahun'];
+        public function get_informasi_lain_by_periode($bulan, $tahun){
             $informasi = array("Teman", "Media Elektronik", "Spanduk", "Civitas Tar-Q", "Brosur", "Peserta", "Event");
     
             $this->db->select("nama_kpq, count(a.id_peserta) as peserta");
-            // $this->db->select("*");
             $this->db->from("peserta as a");
             $this->db->join("kpq as b", "a.info = b.nip");
             $this->db->where("MONTH(a.tgl_masuk)", $bulan);
             $this->db->where("YEAR(a.tgl_masuk)", $tahun);
-            // $this->db->where_not_in("info", $informasi);
             $this->db->group_by("nip");
             return $this->db->get()->result_array();
         }
     
-        public function jumlahKelas($bulan, $tahun){
-            $this->db->select("*");
+        public function get_kelas_by_periode($bulan, $tahun){
             $this->db->from("kelas");
             $this->db->where("MONTH(tgl_mulai)", $bulan);
             $this->db->where("YEAR(tgl_mulai)", $tahun);
             return $this->db->get()->result_array();
         }
     
-        public function pesertaProgram($bulan, $tahun, $program){
-            $this->db->select("*");
+        public function get_peserta_by_periode_by_program($bulan, $tahun, $program){
             $this->db->from("peserta");
             $this->db->where("MONTH(tgl_masuk)", $bulan);
             $this->db->where("YEAR(tgl_masuk)", $tahun);
@@ -150,7 +141,7 @@ class Fo_model extends CI_MODEL{
             return $this->db->get()->result_array();
         }
         
-        public function pesertaByTipe($bulan, $tahun, $tipe){
+        public function get_peserta_by_periode_by_tipe($bulan, $tahun, $tipe){
             $this->db->from("peserta");
             $this->db->where("MONTH(tgl_masuk)", $bulan);
             $this->db->where("YEAR(tgl_masuk)", $tahun);
@@ -158,7 +149,7 @@ class Fo_model extends CI_MODEL{
             return $this->db->get()->result_array();
         }
         
-        public function kelasByTipe($bulan, $tahun, $tipe){
+        public function get_kelas_by_periode_by_type($bulan, $tahun, $tipe){
             $this->db->from("kelas");
             $this->db->where("MONTH(tgl_mulai)", $bulan);
             $this->db->where("YEAR(tgl_mulai)", $tahun);

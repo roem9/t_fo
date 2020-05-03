@@ -196,7 +196,7 @@
         const tahun = data[1]
 
         $.ajax({
-            url : "<?=base_url()?>home/pekerjaanlain",
+            url : "<?=base_url()?>home/get_pekerjaan_lain_by_periode",
             method : "POST",
             data : {bulan : bulan, tahun : tahun},
             async : true,
@@ -220,7 +220,7 @@
         const tahun = data[1]
 
         $.ajax({
-            url : "<?=base_url()?>home/informasilain",
+            url : "<?=base_url()?>home/get_informasi_lain_by_periode",
             method : "POST",
             data : {bulan : bulan, tahun : tahun},
             async : true,
