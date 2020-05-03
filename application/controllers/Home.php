@@ -1,0 +1,94 @@
+<?php
+class Home extends CI_CONTROLLER{
+    public function __construct(){
+        parent::__construct();
+        $this->load->model('Home_model');
+        $this->load->model('Fo_model');
+
+        if($this->session->userdata('status') != "login"){
+            $this->session->set_flashdata('login', 'Maaf, Anda harus login terlebih dahulu');
+			redirect(base_url("login"));
+		}
+    }
+
+    public function index(){
+        if($_POST){
+            $bulan = $_POST['bulan'];
+            $tahun = $_POST['tahun'];
+        } else {
+            $bulan = date('n');
+            $tahun = date('Y');
+        }
+
+        $data['header'] = 'Home';
+        $data['title'] = 'Home';
+        $data['bulan'] = [ 
+            ["id" => "1","bulan" => "Januari"], ["id" => "2","bulan" => "Februari"], ["id" => "3","bulan" => "Maret"], ["id" => "4","bulan" => "April"], ["id" => "5","bulan" => "Mei"], ["id" => "6","bulan" => "Juni"], ["id" => "7","bulan" => "Juli"], ["id" => "8","bulan" => "Agustus"], ["id" => "9","bulan" => "September"], ["id" => "10","bulan" => "Oktober"], ["id" => "11","bulan" => "November"], ["id" => "12","bulan" => "Desember"]
+        ];
+        $data['month'] = $bulan;
+        $data['year'] = $tahun;
+        
+        $data['peserta']['wanita'] = COUNT($this->Fo_model->get_peserta_by_periode_by_jk($bulan, $tahun, "Wanita"));
+        $data['peserta']['pria'] = COUNT($this->Fo_model->get_peserta_by_periode_by_jk($bulan, $tahun, "Pria"));
+        
+        $pendidikan = $this->Fo_model->get_pendidikan_by_periode($bulan, $tahun);
+        $data['pendidikan'] = [];
+        foreach ($pendidikan as $key => $pendidikan) {
+            $data['pendidikan'][$key] = $pendidikan;
+            $data['pendidikan'][$key]['peserta'] = COUNT($this->Fo_model->get_peserta_by_periode_by_pendidikan($bulan, $tahun, $pendidikan['pendidikan']));
+        }
+        
+        $pekerjaan = $this->Fo_model->get_pekerjaan_by_periode($bulan, $tahun);
+        $data['pekerjaan'] = [];
+        foreach ($pekerjaan as $key => $pekerjaan) {
+            $data['pekerjaan'][$key] = $pekerjaan;
+            $data['pekerjaan'][$key]['peserta'] = COUNT($this->Fo_model->get_peserta_by_periode_by_pekerjaan($bulan, $tahun, $pekerjaan['pekerjaan']));
+        }
+
+        $data['pekerjaan_lainnya'] = COUNT($this->Fo_model->get_pekerjaan_lainnya_by_periode($bulan, $tahun));
+        
+        $informasi = $this->Home_model->getInformasi($bulan, $tahun);
+        $data['informasi'] = [];
+        foreach ($informasi as $key => $informasi) {
+            $data['informasi'][$key] = $informasi;
+            $data['informasi'][$key]['peserta'] = COUNT($this->Home_model->informasi($bulan, $tahun, $informasi['info']));
+        }
+
+        $data['informasi_lainnya'] = COUNT($this->Home_model->getinformasiLainnya($bulan, $tahun));
+        
+        $program = $this->Fo_model->get_program_by_periode($bulan, $tahun);
+        $data['program'] = [];
+        foreach ($program as $key => $program) {
+            $data['program'][$key] = $program;
+            $data['program'][$key]['peserta'] = COUNT($this->Home_model->pesertaProgram($bulan, $tahun, $program['program']));
+        }
+        
+        $data['peserta']['total'] = $data['peserta']['wanita'] + $data['peserta']['pria'];
+        $data['kelas'] = COUNT($this->Home_model->jumlahKelas($bulan, $tahun));
+
+        $data['peserta_reguler'] = COUNT($this->Home_model->pesertaByTipe($bulan, $tahun, "reguler"));
+        $data['peserta_pv_khusus'] = COUNT($this->Home_model->pesertaByTipe($bulan, $tahun, "pv khusus"));
+        $data['peserta_pv_luar'] = COUNT($this->Home_model->pesertaByTipe($bulan, $tahun, "pv luar"));
+        
+        $data['kelas_pv_khusus'] = COUNT($this->Home_model->kelasByTipe($bulan, $tahun, "pv khusus"));
+        $data['kelas_pv_luar'] = COUNT($this->Home_model->kelasByTipe($bulan, $tahun, "pv luar"));
+        $data['kelas_reguler'] = COUNT($this->Home_model->kelasByTipe($bulan, $tahun, "reguler"));
+        
+        $this->load->view("templates/header", $data);
+        $this->load->view("templates/sidebar");
+        $this->load->view("modal/modal_lainnya_pekerjaan");
+        $this->load->view("modal/modal_lainnya_informasi");
+        $this->load->view("home/index", $data);
+        $this->load->view("templates/footer");
+    }
+
+    public function pekerjaanLain(){
+        $pekerjaan = $this->Home_model->pekerjaanLain();
+        echo json_encode($pekerjaan);
+    }
+    
+    public function informasiLain(){
+        $pekerjaan = $this->Home_model->informasiLain();
+        echo json_encode($pekerjaan);
+    }
+}

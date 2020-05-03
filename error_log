@@ -1,0 +1,15 @@
+[06-Mar-2020 08:16:54 Asia/Jakarta] PHP Parse error:  syntax error, unexpected '>' in /home/tarqqcom/fo.tar-q.com/application/controllers/KartuPiutang.php on line 69
+[06-Mar-2020 08:18:02 Asia/Jakarta] PHP Parse error:  syntax error, unexpected '>' in /home/tarqqcom/fo.tar-q.com/application/controllers/KartuPiutang.php on line 69
+[06-Mar-2020 08:19:01 Asia/Jakarta] PHP Parse error:  syntax error, unexpected '>' in /home/tarqqcom/fo.tar-q.com/application/controllers/KartuPiutang.php on line 137
+[06-Mar-2020 08:19:44 Asia/Jakarta] PHP Parse error:  syntax error, unexpected '>' in /home/tarqqcom/fo.tar-q.com/application/controllers/Kartupiutang.php on line 69
+[06-Mar-2020 08:19:50 Asia/Jakarta] PHP Parse error:  syntax error, unexpected '>' in /home/tarqqcom/fo.tar-q.com/application/controllers/Kartupiutang.php on line 69
+[06-Mar-2020 08:19:53 Asia/Jakarta] PHP Parse error:  syntax error, unexpected '>' in /home/tarqqcom/fo.tar-q.com/application/controllers/Kartupiutang.php on line 69
+[06-Mar-2020 08:24:11 Asia/Jakarta] PHP Parse error:  syntax error, unexpected '>' in /home/tarqqcom/fo.tar-q.com/application/controllers/Kartupiutang.php on line 133
+[06-Mar-2020 08:25:26 Asia/Jakarta] PHP Parse error:  syntax error, unexpected '>' in /home/tarqqcom/fo.tar-q.com/application/controllers/Kartupiutang.php on line 197
+[06-Mar-2020 08:30:02 Asia/Jakarta] PHP Fatal error:  session_start(): Failed to initialize storage module: user (path: /var/cpanel/php/sessions/ea-php70) in /home/tarqqcom/fo.tar-q.com/system/libraries/Session/Session.php on line 143
+[06-Mar-2020 08:31:21 Asia/Jakarta] PHP Fatal error:  session_start(): Failed to initialize storage module: user (path: /var/cpanel/php/sessions/ea-php70) in /home/tarqqcom/fo.tar-q.com/system/libraries/Session/Session.php on line 143
+[06-Mar-2020 08:31:55 Asia/Jakarta] PHP Fatal error:  session_start(): Failed to initialize storage module: user (path: /var/cpanel/php/sessions/ea-php70) in /home/tarqqcom/fo.tar-q.com/system/libraries/Session/Session.php on line 143
+[06-Mar-2020 08:32:07 Asia/Jakarta] PHP Fatal error:  session_start(): Failed to initialize storage module: user (path: /var/cpanel/php/sessions/ea-php70) in /home/tarqqcom/fo.tar-q.com/system/libraries/Session/Session.php on line 143
+[06-Mar-2020 08:32:28 Asia/Jakarta] PHP Fatal error:  session_start(): Failed to initialize storage module: user (path: /var/cpanel/php/sessions/ea-php70) in /home/tarqqcom/fo.tar-q.com/system/libraries/Session/Session.php on line 143
+[06-Mar-2020 08:33:12 Asia/Jakarta] PHP Fatal error:  session_start(): Failed to initialize storage module: user (path: /var/cpanel/php/sessions/ea-php70) in /home/tarqqcom/fo.tar-q.com/system/libraries/Session/Session.php on line 143
+[06-Mar-2020 08:33:24 Asia/Jakarta] PHP Fatal error:  session_start(): Failed to initialize storage module: user (path: /var/cpanel/php/sessions/ea-php70) in /home/tarqqcom/fo.tar-q.com/system/libraries/Session/Session.php on line 143
