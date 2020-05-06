@@ -74,11 +74,20 @@
                             <!-- id dari kelas, peserta atau kpq -->
                             <input type="hidden" name="id" id="id_tagihan">
                             <div class="form-group">
-                                <label for="nama_tagihan">Nama Invoice</label>
+                                <label for="nama_tagihan">Nama Lengkap</label>
                                 <input type="text" name="nama" id="nama_tagihan" class="form-control form-control-sm" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="tgl">Tgl Invoice</label>
+                                <label for="piutang">Jenis Piutang</label>
+                                <select name="ket" id="ket" class="form-control form-control-sm" required>
+                                    <option value="">Pilih Jenis Piutang</option>
+                                    <option value="Buku">Piutang Buku</option>
+                                    <option value="Bulanan">Piutang Bulanan</option>
+                                    <option value="Lainnya">Piutang Lainnya</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="tgl">Tgl Piutang</label>
                                 <input type="date" name="tgl" id="tgl" class="form-control form-control-sm" required>
                             </div>
                             <div class="form-group">

@@ -3,15 +3,10 @@
         <div class="container-fluid">
             <div class="row mt-3">
                 <div class="col-lg-6">
-                <?php if( $this->session->flashdata('peserta') ) : ?>
+                <?php if( $this->session->flashdata('pesan') ) : ?>
                     <div class="row">
-                        <div class="col-12">
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                Data pendaftar <strong>berhasil</strong> <?= $this->session->flashdata('peserta');?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
+                        <div class="col-12 mt-3">
+                            <?= $this->session->flashdata('pesan');?>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -41,7 +36,7 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="tgl_daftar">Tgl Pendaftaran</label>
-                                        <input type="date" name="tgl_daftar" id="tgl_daftar" class="form-control form-control-sm">
+                                        <input type="date" name="tgl_daftar" id="tgl_daftar" class="form-control form-control-sm" value="<?= date('Y-m-d')?>">
                                     </div>
                                     <div class="form-group">
                                         <label for="program">Program <span class="text-danger">*</span></label>

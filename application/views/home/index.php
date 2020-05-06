@@ -12,7 +12,7 @@
             <h1 class="h3 mb-0 text-gray-800 mt-3"><?= $header?></h1>
         </div>
 
-        <form action="<?=base_url()?>" method="post">
+        <form method="get">
             <div class="form-row mb-3">
                 <div class="col-2">
                     <select name="bulan" id="bulan" class="form-control form-control-sm">

@@ -55,7 +55,7 @@
 </div>
 
 <script>
-    $("#transaksi-lain").addClass("active")
+    $("#piutang").addClass("active")
     
     $(".modalEditTagihan").click(function(){
         $("#modal-edit").html("Edit Tagihan");

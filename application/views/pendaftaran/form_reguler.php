@@ -1,50 +1,26 @@
 <div id="content-wrapper" class="d-flex flex-column">
     <div id="content">
         <div class="container-fluid">
-            <div class="row mt-3">
+            <div class="row">
                 <div class="col-lg-6">
-                <?php if( $this->session->flashdata('peserta') ) : ?>
+                <?php if( $this->session->flashdata('pesan') ) : ?>
                     <div class="row">
-                        <div class="col-12">
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                Data pendaftar <strong>berhasil</strong> <?= $this->session->flashdata('peserta');?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
+                        <div class="col-12 mt-3">
+                            <?= $this->session->flashdata('pesan');?>
                         </div>
                     </div>
                 <?php endif; ?>
                 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800 mt-3"><?= $header?></h1>
+                    <h1 class="h3 mb-0 text-gray-800 mt-3"><?= $title?></h1>
                 </div>
                 <div class="card">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs">
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($tabs == 'reguler') echo 'active'?>" href="<?= base_url()?>pendaftaran/reguler">Reguler</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($tabs == 'pvkhusus') echo 'active'?>" href="<?= base_url()?>pendaftaran/pvkhusus">Pv Khusus</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($tabs == 'pvluar') echo 'active'?>" href="<?= base_url()?>pendaftaran/pvluar">Pv Luar</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($tabs == 'event') echo 'active'?>" href="<?= base_url()?>pendaftaran/event">Event</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($tabs == 'pvinstansi') echo 'active'?>" href="<?= base_url()?>pendaftaran/pvinstansi">Instansi</a>
-                            </li>
-                        </ul>
-                    </div>
                     <div class="card-body pt-2">
                         <div class="progress mb-2">
                             <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 0%" aria-valuemin="0" aria-valuemax="100" id="progress">0%</div>
                         </div>
-                        <form action="<?= base_url()?>pendaftaran/tambahreguler" method="post">
+                        <form action="<?= base_url()?>pendaftaran/add_reguler" method="post">
                             <div class="card" id="dataAkademik">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary mb-1"><i class="fa fa-book"></i> &nbsp;Data Akademik</h6>
@@ -53,7 +29,7 @@
                                     <input type="hidden" name="tipe_peserta" value="<?= $tipe?>">
                                     <div class="form-group">
                                         <label for="tgl_daftar">Tgl Pendaftaran <span class="text-danger">*</span></label>
-                                        <input type="date" name="tgl_daftar" id="tgl_daftar" class="form-control form-control-sm" required>
+                                        <input type="date" name="tgl_daftar" id="tgl_daftar" class="form-control form-control-sm" value="<?= date('Y-m-d')?>" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="program">Program <span class="text-danger">*</span></label>
@@ -81,38 +57,10 @@
                                         <label for="jam">Jam <span class="text-danger">*</span></label>
                                         <select name="jam" id="jam" class="form-control form-control-sm" required>
                                             <option value="">Pilih Jam</option>
-                                            <option value="05.00-06.30">05.00-06.30</option>
-                                            <option value="05.30-07.00">05.30-07.00</option>
-                                            <option value="06.00-07.30">06.00-07.30</option>
-                                            <option value="06.30-08.00">06.30-08.00</option>
-                                            <option value="07.00-08.30">07.00-08.30</option>
-                                            <option value="07.30-09.00">07.30-09.00</option>
-                                            <option value="08.00-09.30">08.00-09.30</option>
                                             <option value="08.30-10.00">08.30-10.00</option>
-                                            <option value="09.00-10.30">09.00-10.30</option>
-                                            <option value="09.30-11.00">09.30-11.00</option>
                                             <option value="10.00-11.30">10.00-11.30</option>
-                                            <option value="10.30-12.00">10.30-12.00</option>
-                                            <option value="11.00-12.30">11.00-12.30</option>
-                                            <option value="11.30-13.00">11.30-13.00</option>
-                                            <option value="12.00-13.30">12.00-13.30</option>
-                                            <option value="12.30-14.00">12.30-14.00</option>
                                             <option value="13.00-14.30">13.00-14.30</option>
-                                            <option value="13.30-15.00">13.30-15.00</option>
-                                            <option value="14.00-15.30">14.00-15.30</option>
-                                            <option value="14.30-16.00">14.30-16.00</option>
-                                            <option value="15.00-16.30">15.00-16.30</option>
                                             <option value="15.30-17.00">15.30-17.00</option>
-                                            <option value="16.00-17.30">16.00-17.30</option>
-                                            <option value="16.30-18.00">16.30-18.00</option>
-                                            <option value="17.00-18.30">17.00-18.30</option>
-                                            <option value="17.30-19.00">17.30-19.00</option>
-                                            <option value="18.00-19.30">18.00-19.30</option>
-                                            <option value="18.30-20.00">18.30-20.00</option>
-                                            <option value="19.00-20.30">19.00-20.30</option>
-                                            <option value="19.30-21.00">19.30-21.00</option>
-                                            <option value="20.00-21.30">20.00-21.30</option>
-                                            <option value="20.30-22.00">20.30-22.00</option>
                                         </select>
                                     </div>
                                     <div class="form-group">

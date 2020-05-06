@@ -196,7 +196,8 @@ class KartuPiutang_model extends CI_MODEL{
             "nama_tagihan" => $this->input->post("nama", TRUE),
             "uraian" => $this->input->post("uraian", TRUE),
             "nominal" => $nominal,
-            "status" => "piutang"
+            "status" => "piutang",
+            "ket" => $this->input->post("ket", TRUE)
         ];
 
         $this->db->insert("tagihan", $data["tagihan"]);

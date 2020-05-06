@@ -44,22 +44,6 @@
           <?php endif; ?>
 
             <div class="card shadow mb-4">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link <?php if($tabs == 'reguler') echo 'active'?>" href="<?= base_url()?>piutang/reguler">Reguler</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?php if($tabs == 'pvkhusus') echo 'active'?>" href="<?= base_url()?>piutang/pvkhusus">Pv Khusus</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?php if($tabs == 'pvluar') echo 'active'?>" href="<?= base_url()?>piutang/pvluar">Pv Luar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?php if($tabs == 'kpq') echo 'active'?>" href="<?= base_url()?>piutang/kpq">KPQ</a>
-                        </li>
-                    </ul>
-                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-hover table-sm cus-font" id="dataTable" cellspacing="0">

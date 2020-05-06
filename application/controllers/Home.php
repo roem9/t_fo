@@ -10,10 +10,10 @@ class Home extends CI_CONTROLLER{
 		}
     }
 
-    public function index(){
-        if($_POST){
-            $bulan = $_POST['bulan'];
-            $tahun = $_POST['tahun'];
+    public function index($periode = 0){
+        if($_GET){
+            $bulan = $_GET['bulan'];
+            $tahun = $_GET['tahun'];
         } else {
             $bulan = date('n');
             $tahun = date('Y');

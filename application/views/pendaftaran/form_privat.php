@@ -1,51 +1,26 @@
 <div id="content-wrapper" class="d-flex flex-column">
     <div id="content">
         <div class="container-fluid">
-            <div class="row mt-3">
+            <div class="row">
                 <div class="col-lg-6">
-                <?php if( $this->session->flashdata('peserta') ) : ?>
+                <?php if( $this->session->flashdata('pesan') ) : ?>
                     <div class="row">
-                        <div class="col-12">
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                Data pendaftar <strong>berhasil</strong> <?= $this->session->flashdata('peserta');?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
+                        <div class="col-12 mt-3">
+                            <?= $this->session->flashdata('pesan');?>
                         </div>
                     </div>
                 <?php endif; ?>
                 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800 mt-3"><?= $header?></h1>
+                    <h1 class="h3 mb-0 text-gray-800 mt-3"><?= $title?></h1>
                 </div>
                 <div class="card">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs">
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($tabs == 'reguler') echo 'active'?>" href="<?= base_url()?>pendaftaran/reguler">Reguler</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($tabs == 'pvkhusus') echo 'active'?>" href="<?= base_url()?>pendaftaran/pvkhusus">Pv Khusus</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($tabs == 'pvluar') echo 'active'?>" href="<?= base_url()?>pendaftaran/pvluar">Pv Luar</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($tabs == 'event') echo 'active'?>" href="<?= base_url()?>pendaftaran/event">Event</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($tabs == 'pvinstansi') echo 'active'?>" href="<?= base_url()?>pendaftaran/pvinstansi">Instansi</a>
-                            </li>
-                        </ul>
-                    </div>
                     <div class="card-body pt-2">
                         <div class="progress mb-2">
                             <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 0%" aria-valuemin="0" aria-valuemax="100" id="progress">0%</div>
                         </div>
-                        <form action="<?= base_url()?>pendaftaran/tambahprivat" method="post">
-                            <input type="hidden" name="tabs" value="<?=$tabs?>">
+                        <form action="<?= base_url()?>pendaftaran/add_privat" method="post">
                             <div class="card" id="dataAkademik">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary mb-1"><i class="fa fa-book"></i> &nbsp;Data Akademik</h6>
@@ -55,7 +30,7 @@
                                     <input type="hidden" name="ket" value="<?= $ket?>">
                                     <div class="form-group">
                                         <label for="tgl_daftar">Tgl Pendaftaran <span class="text-danger">*</span></label>
-                                        <input type="date" name="tgl_daftar" id="tgl_daftar" class="form-control form-control-sm" required>
+                                        <input type="date" name="tgl_daftar" id="tgl_daftar" class="form-control form-control-sm" value="<?= date('Y-m-d')?>" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="program">Program <span class="text-danger">*</span></label>
