@@ -3,6 +3,7 @@ class Kartupiutang extends CI_CONTROLLER{
     public function __construct(){
         parent::__construct();
         $this->load->model('KartuPiutang_model');
+        $this->load->model('Fo_model');
         
         if($this->session->userdata('status') != "login"){
             $this->session->set_flashdata('flash', 'Maaf, Anda harus login terlebih dahulu');
@@ -68,12 +69,17 @@ class Kartupiutang extends CI_CONTROLLER{
 
         $data['id'] = $id_kelas;
         $data['kbm'] = $this->KartuPiutang_model->get_data_kbm($id_kelas);
-        // var_dump($data['kbm']);
+        
+        // data modal
+            $kelas = $this->Fo_model->get_data_kelas_by_id($id_kelas);
+            $kpq = $this->Fo_model->get_kpq_by_id($kelas['nip']);
+            $data['kpq'] = $kpq['nama_kpq'];
+            $data['tipe'] = "kelas";
+            $data['id'] = $id_kelas;
+        // data modal
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
-        $this->load->view('modal/modal_tambah_invoice');
-        $this->load->view('modal/modal_edit_invoice');
         $this->load->view('modal/modal_transaksi', $data);
         $this->load->view('modal/modal_edit_status_tagihan');
         $this->load->view('modal/modal_edit_tagihan');

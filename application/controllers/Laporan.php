@@ -29,7 +29,7 @@ class Laporan extends CI_CONTROLLER{
         
                 $name = date("d/m/y", strtotime($tgl_awal)) ." - ". date("d/m/y", strtotime($tgl_akhir));
                 header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                header('Content-Disposition: attachment;filename="Transaksi '.$name.'.xls"');
+                header('Content-Disposition: attachment;filename="Transaksi '.$name.'.xlsx"');
                 $tgl = $this->Fo_model->get_tanggal_between($tgl_awal, $tgl_akhir);
         
                 $data['data'] = [];
@@ -43,7 +43,7 @@ class Laporan extends CI_CONTROLLER{
                 $data['title'] = "Laporan Piutang Peserta Reguler";
                 $name = "Piutang Reguler";
                 header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                header('Content-Disposition: attachment;filename="'.$name.'.xls"');
+                header('Content-Disposition: attachment;filename="'.$name.'.xlsx"');
 
                 $data['data'] = $this->Fo_model->get_all_tagihan_reguler();
 
@@ -53,7 +53,7 @@ class Laporan extends CI_CONTROLLER{
                 $data['title'] = "Laporan Piutang Peserta PV Khusus";
                 $name = "Piutang Pv Khusus";
                 header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                header('Content-Disposition: attachment;filename="'.$name.'.xls"');
+                header('Content-Disposition: attachment;filename="'.$name.'.xlsx"');
     
                 $data['data'] = $this->Fo_model->get_all_tagihan_pv_khusus();
     
@@ -66,7 +66,7 @@ class Laporan extends CI_CONTROLLER{
         
                 $name = date("d/m/y", strtotime($tgl_awal)) ." - ". date("d/m/y", strtotime($tgl_akhir));
                 header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                header('Content-Disposition: attachment;filename="Peserta '.$name.'.xls"');
+                header('Content-Disposition: attachment;filename="Peserta '.$name.'.xlsx"');
                 $tgl = $this->Fo_model->get_peserta_between($tgl_awal, $tgl_akhir);
         
                 $data['data'] = [];
@@ -91,7 +91,7 @@ class Laporan extends CI_CONTROLLER{
         
                 $name = date("d/m/y", strtotime($tgl_awal)) ." - ". date("d/m/y", strtotime($tgl_akhir));
                 header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                header('Content-Disposition: attachment;filename="Buku '.$name.'.xls"');
+                header('Content-Disposition: attachment;filename="Buku '.$name.'.xlsx"');
                 
                 $tgl = $this->Fo_model->get_buku_between($tgl_awal, $tgl_akhir);
 

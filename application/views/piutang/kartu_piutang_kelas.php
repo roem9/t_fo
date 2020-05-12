@@ -22,16 +22,16 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
                             <li class="nav-item">
-                            <a href="#" class='nav-link' id="detailKelas" data-id=""><i class="fas fa-book"></i></a>
+                            <a href="#" class='nav-link' id="detailKelas"><i class="fas fa-book"></i></a>
                             </li>
                             <li class="nav-item">
-                            <a href="#" class='nav-link' id="detailPeserta" data-id=""><i class="fas fa-user"></i></a>
+                            <a href="#" class='nav-link' id="detailPeserta"><i class="fas fa-user"></i></a>
                             </li>
                             <li class="nav-item">
-                            <a href="#" class='nav-link' id="detailJadwal" data-id=""><i class="fas fa-clock"></i></a>
+                            <a href="#" class='nav-link' id="detailJadwal"><i class="fas fa-clock"></i></a>
                             </li>
                             <li class="nav-item">
-                            <a href="#" class='nav-link' id="detailKbm" data-id="">KBM</a>
+                            <a href="#" class='nav-link' id="detailKbm">KBM</a>
                             </li>
                         </ul>
                     </div>
@@ -127,7 +127,7 @@
                                                 <tr>
                                                     <td><center><?= ++$no?></center></td>
                                                     <td><?=$jadwal['tempat'] . " (" . $jadwal['hari'] . " " . $jadwal['jam'] . ")"?></td>
-                                                    <td><center><?= $jadwal['ot']?></center></td>
+                                                    <td><center><?= $jadwal['ot'] * 30?></center></td>
                                                 </tr>
                                         <?php endforeach;?>
                                     </tbody>
@@ -136,7 +136,6 @@
                         </div>
 
                         <div id="dataKbm">
-                            
                             <div class="table-responsive">
                                 <table class="table-sm w-100" border=1>
                                     <thead>
@@ -169,17 +168,11 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
                             <li class="nav-item">
-                                <a href="#" class='nav-link active' id="btn-1">Kartu Piutang</a>
+                                <a class='nav-link active' id="btn-1">Kartu Piutang</a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a href="#" class='nav-link' id="btn-2">Invoice</a>
-                            </li> -->
                             <li class="nav-item">
-                                <a href="#" class='nav-link bg-success text-light modalTransaksi' id="detailKelas" data-toggle="modal" data-target="#modalTransaksi" data-id="<?= $id?>">Transaksi</a>
+                                <a href="" class='nav-link bg-success text-light modalTransaksi' id="detailKelas" data-toggle="modal" data-target="#modalTransaksi" data-id="<?= $id?>">Transaksi</a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a href="#" class='nav-link bg-danger text-light modalTambahInvoice' id="detailKelas" data-toggle="modal" data-target="#modal_tambah_invoice" data-id="<?= $id?>">Invoice</a>
-                            </li> -->
                         </ul>
                     </div>
                     <div class="card-body">
@@ -188,7 +181,6 @@
                             <table class="table table-sm cus-font">
                                 <thead>
                                     <th><center>No</center></th>
-                                    <!-- <th>Tagihan</th> -->
                                     <th>Tgl</th>
                                     <th>Keterangan</th>
                                     <th>Debit</th>
@@ -226,7 +218,7 @@
                                                     <td><center><?=$detail['metode']?></center></td>
                                                     <td>-</td>
                                                     <td><a href="#" class="badge badge-success modalEditDeposit" data-toggle="modal" data-target="#modal_edit" data-id="<?= $detail['id_deposit']?>">edit</a></td>
-                                                    <td>-</td>                                                
+                                                    <td>-</td>
 
                                                 <?php elseif($detail['status'] == 'cash') :?>
                                                     
@@ -255,33 +247,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div id="data-btn-2">
-                            <table class="table table-sm cus-font w-75">
-                                <thead>
-                                    <td>No</td>
-                                    <td>Tgl Tagihan</td>
-                                    <td>No Tagihan</td>
-                                    <td>Edit</td>
-                                    <td>Print</td>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                        $no = 0;
-                                        foreach ($invoice as $invoice) :?>
-                                        <tr>
-                                            <td><?= ++$no?></td>
-                                            <td><?= date("d-m-Y", strtotime($invoice['tgl_invoice']))?></td>
-                                            <td><?= substr($invoice['id_invoice'],0, 3)?>/Tag-Im/<?= date('n', strtotime($invoice['tgl_invoice']))?>/<?= date('Y', strtotime($invoice['tgl_invoice']))?></a></td>
-                                            
-                                            <td><a href="#" data-target="#modal_edit_invoice" data-id="<?=$invoice['id_invoice']?>" data-toggle="modal" class="badge badge-success modalEditInvoice">edit</a></td>
-                                            
-                                            <td><center><a target="_blank" href="<?= base_url()?>kartupiutang/invoice/<?=$invoice['id_invoice']?>"><i class="fa fa-print"></i></a></center></td>
-                                        </tr>
-
-                                    <?php endforeach;?>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -295,13 +260,14 @@
 
 <script>
     $("#piutang").addClass("active")
-    $("#detailKelas").addClass('active');
+    $("#detailKelas").removeClass('active');
     $("#detailPeserta").removeClass('active');
     $("#detailJadwal").removeClass('active');
-    $("#dataKelas").show();
+    $("#detailKbm").addClass('active');
+    $("#dataKelas").hide();
     $("#dataPeserta").hide();
     $("#dataJadwal").hide();
-    $("#dataKbm").hide();
+    $("#dataKbm").show();
 
     $("#detailKelas").click(function(){
         const id = $(this).data('id');
@@ -537,9 +503,6 @@
     })
 
     $(".modalTransaksi").click(function(){
-      $("#tipe_tagihan").val("kelas");
-      $("#tipe_kwitansi").val("kelas");
-      $("#tipe_deposit").val("kelas");
       const id = $(this).data('id');
       $.ajax({
             url : "<?=base_url()?>kartupiutang/getdatakelas",
@@ -549,8 +512,6 @@
             dataType : 'json',
             success : function(data){
                 $(".nama-title").html(data.nama_peserta);
-                $("#pengajar_deposit").val(data.nama_kpq);
-                $("#pengajar_kwitansi").val(data.nama_kpq);
                 $("#id_kwitansi").val(data.id_kelas);
                 $("#id_tagihan").val(data.id_kelas);
                 $("#id_deposit").val(data.id_kelas);

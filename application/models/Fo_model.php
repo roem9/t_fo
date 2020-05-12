@@ -330,6 +330,18 @@ class Fo_model extends CI_MODEL{
 
             return $data;
         }
+
+        public function get_data_kelas_by_id($id_kelas){
+            $this->db->from("kelas");
+            $this->db->where("id_kelas", $id_kelas);
+            return $this->db->get()->row_array();
+        }
+
+        public function get_kpq_by_id($nip){
+            $this->db->from("kpq");
+            $this->db->where("nip", $nip);
+            return $this->db->get()->row_array();
+        }
     // get by
 
     // get last id

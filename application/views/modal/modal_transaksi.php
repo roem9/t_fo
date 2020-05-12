@@ -25,9 +25,9 @@
                     <div class="card-body">
 
                         <form action="<?= base_url()?>piutang/pembayaran" method="POST" enctype="multipart/form-data" id="form-1">
-                            <input type="hidden" name="tipe" id="tipe_kwitansi">
-                            <input type="hidden" name="id" id="id_kwitansi">
-                            <input type="hidden" name="pengajar" id="pengajar_kwitansi">
+                            <input type="text" name="tipe" value="<?= $tipe?>">
+                            <input type="text" name="id" value="<?= $id?>">
+                            <input type="text" name="pengajar" value="<?= $kpq?>">
                             <div class="form-group">
                                 <label for="nama_kwitansi">Nama Kwitansi</label>
                                 <input type="text" name="nama" id="nama_kwitansi" class="form-control form-control-sm" readonly>
@@ -70,9 +70,8 @@
                         </form>
 
                         <form action="<?= base_url()?>kartupiutang/tambah_piutang" method="POST" enctype="multipart/form-data" id="form-2">
-                            <input type="hidden" name="tipe" id="tipe_tagihan">
-                            <!-- id dari kelas, peserta atau kpq -->
-                            <input type="hidden" name="id" id="id_tagihan">
+                            <input type="text" name="tipe" value="<?= $tipe?>">
+                            <input type="text" name="id" value="<?= $id?>">
                             <div class="form-group">
                                 <label for="nama_tagihan">Nama Lengkap</label>
                                 <input type="text" name="nama" id="nama_tagihan" class="form-control form-control-sm" readonly>
@@ -104,9 +103,9 @@
                         </form>
 
                         <form action="<?=base_url()?>kartupiutang/add_pembayaran" method="post" enctype="multipart/form-data" id="form-3">
-                            <input type="hidden" name="tipe" id="tipe_deposit">
-                            <input type="hidden" name="id" id="id_deposit">
-                            <input type="hidden" name="pengajar" id="pengajar_deposit">
+                            <input type="text" name="tipe" value="<?= $tipe?>">
+                            <input type="text" name="id" value="<?= $id?>">
+                            <input type="text" name="pengajar" value="<?= $kpq?>">
                             <div class="form-group">
                                 <label for="nama_deposit">Nama</label>
                                 <input type="text" name="nama" id="nama_deposit" class="form-control form-control-sm" readonly>
