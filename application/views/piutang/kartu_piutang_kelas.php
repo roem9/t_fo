@@ -17,6 +17,101 @@
         </div>
 
         <div class="row">
+            <?php if( $this->session->flashdata('pesan') ) : ?>
+                <div class="col-12">
+                    <?= $this->session->flashdata('pesan');?>
+                </div>
+            <?php endif; ?>
+            
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <a class='nav-link active' id="btn-1">Kartu Piutang</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class='nav-link bg-success text-light modalTransaksi' data-toggle="modal" data-target="#modalTransaksi" data-id="<?= $id?>">Transaksi</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div id="data-btn-1">
+                            <h5>Saldo : <?= rupiah($total)?></h5>
+                            <table class="table table-sm cus-font">
+                                <thead>
+                                    <th><center>No</center></th>
+                                    <th>Tgl</th>
+                                    <th>Keterangan</th>
+                                    <th>Debit</th>
+                                    <th>Kredit</th>
+                                    <th>Metode</th>
+                                    <th>Status</th>
+                                    <th>Edit</th>
+                                    <th>Print</th>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                        $no = 0;
+                                        foreach ($detail as $detail) :?>
+                                        <tr>
+                                            <td><?= ++$no?></td>
+                                            <td><?= date("d-M-Y", strtotime($detail['tgl']))?></td>
+                                                <?php if($detail['status'] == 'tagihan'):?>
+                                                    
+                                                    <td><?= $detail['uraian']?></td>
+                                                    <td><?= rupiah($detail['nominal'])?></td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                    <?php
+                                                        $color = $detail['ket'] == "piutang" ? $color = "danger" : $color = "success";
+                                                    ?>
+                                                    <td><a href="#modal_edit_status_tagihan" data-id="<?= $detail['id_tagihan']?>|<?=$detail['ket']?>" data-toggle="modal" class="badge badge-<?= $color?> modal_edit_status_tagihan"><?= $detail['ket']?></a></td>
+                                                    <td><a href="#" class="badge badge-success modalEditTagihan" data-toggle="modal" data-target="#modal_edit" data-id="<?= $detail['id_tagihan']?>">edit</a></td>
+                                                    <td>-</td>
+
+                                                <?php elseif($detail['status'] == 'deposit') : ?>
+
+                                                    <td><?= $detail['uraian']?></td>
+                                                    <td><?= rupiah($detail['nominal'])?></td>
+                                                    <td>-</td>
+                                                    <td><center><?=$detail['metode']?></center></td>
+                                                    <td>-</td>
+                                                    <td><a href="#" class="badge badge-success modalEditDeposit" data-toggle="modal" data-target="#modal_edit" data-id="<?= $detail['id_deposit']?>">edit</a></td>
+                                                    <td>-</td>
+
+                                                <?php elseif($detail['status'] == 'cash') :?>
+                                                    
+                                                    <td><?= $detail['uraian']?></td>
+                                                    <td>-</td>
+                                                    <td><?= rupiah($detail['nominal'])?></td>
+                                                    <td><center><?=$detail['metode']?></center></td>
+                                                    <td>-</td>
+                                                    <td><a href="#" class="badge badge-success modalEditCash" data-toggle="modal" data-target="#modal_edit" data-id="<?= $detail['id_pembayaran']?>">edit</a></td>
+                                                    <td><a href="<?=base_url()?>kartupiutang/kwitansi/<?= $detail['id_pembayaran']?>" target=_blank><center><i class="fa fa-print"></i></center></a></td>
+
+                                                <?php elseif($detail['status'] == 'transfer') :?>
+                                                    
+                                                    <td><?= $detail['uraian']?></td>
+                                                    <td>-</td>
+                                                    <td><?= rupiah($detail['nominal'])?></td>
+                                                    <td><center><?=$detail['metode']?></center></td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                    <!-- <td><a href="#" class="badge badge-success modalEditTransfer" data-toggle="modal" data-target="#modal_edit" data-id="<?= $detail['id_transfer']?>">edit</a></td> -->
+                                                    <!-- <td><a href="<?=base_url()?>kartupiutang/kwitansi_transfer/<?= $detail['id_transfer']?>" target=_blank><center><i class="fa fa-print"></i></center></a></td> -->
+                                                    <td><center>-</center></td>
+
+                                                <?php endif;?>
+                                        </tr>
+                                    <?php endforeach;?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="col-4">
                 <div class="card">
                     <div class="card-header">
@@ -163,93 +258,6 @@
                 </div>
             </div>
 
-            <div class="col">
-                <div class="card">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs">
-                            <li class="nav-item">
-                                <a class='nav-link active' id="btn-1">Kartu Piutang</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="" class='nav-link bg-success text-light modalTransaksi' id="detailKelas" data-toggle="modal" data-target="#modalTransaksi" data-id="<?= $id?>">Transaksi</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div id="data-btn-1">
-                            <h5>Saldo : <?= rupiah($total)?></h5>
-                            <table class="table table-sm cus-font">
-                                <thead>
-                                    <th><center>No</center></th>
-                                    <th>Tgl</th>
-                                    <th>Keterangan</th>
-                                    <th>Debit</th>
-                                    <th>Kredit</th>
-                                    <th>Metode</th>
-                                    <th>Status</th>
-                                    <th>Edit</th>
-                                    <th>Print</th>
-                                </thead>
-                                <tbody>
-                                    <?php 
-                                        $no = 0;
-                                        foreach ($detail as $detail) :?>
-                                        <tr>
-                                            <td><?= ++$no?></td>
-                                            <td><?= date("d-M-Y", strtotime($detail['tgl']))?></td>
-                                                <?php if($detail['status'] == 'tagihan'):?>
-                                                    
-                                                    <td><?= $detail['uraian']?></td>
-                                                    <td><?= rupiah($detail['nominal'])?></td>
-                                                    <td>-</td>
-                                                    <td>-</td>
-                                                    <?php
-                                                        $color = $detail['ket'] == "piutang" ? $color = "danger" : $color = "success";
-                                                    ?>
-                                                    <td><a href="#modal_edit_status_tagihan" data-id="<?= $detail['id_tagihan']?>|<?=$detail['ket']?>" data-toggle="modal" class="badge badge-<?= $color?> modal_edit_status_tagihan"><?= $detail['ket']?></a></td>
-                                                    <td><a href="#" class="badge badge-success modalEditTagihan" data-toggle="modal" data-target="#modal_edit" data-id="<?= $detail['id_tagihan']?>">edit</a></td>
-                                                    <td>-</td>
-
-                                                <?php elseif($detail['status'] == 'deposit') : ?>
-
-                                                    <td><?= $detail['uraian']?></td>
-                                                    <td><?= rupiah($detail['nominal'])?></td>
-                                                    <td>-</td>
-                                                    <td><center><?=$detail['metode']?></center></td>
-                                                    <td>-</td>
-                                                    <td><a href="#" class="badge badge-success modalEditDeposit" data-toggle="modal" data-target="#modal_edit" data-id="<?= $detail['id_deposit']?>">edit</a></td>
-                                                    <td>-</td>
-
-                                                <?php elseif($detail['status'] == 'cash') :?>
-                                                    
-                                                    <td><?= $detail['uraian']?></td>
-                                                    <td>-</td>
-                                                    <td><?= rupiah($detail['nominal'])?></td>
-                                                    <td><center><?=$detail['metode']?></center></td>
-                                                    <td>-</td>
-                                                    <td><a href="#" class="badge badge-success modalEditCash" data-toggle="modal" data-target="#modal_edit" data-id="<?= $detail['id_pembayaran']?>">edit</a></td>
-                                                    <td><a href="<?=base_url()?>kartupiutang/kwitansi/<?= $detail['id_pembayaran']?>" target=_blank><center><i class="fa fa-print"></i></center></a></td>
-
-                                                <?php elseif($detail['status'] == 'transfer') :?>
-                                                    
-                                                    <td><?= $detail['uraian']?></td>
-                                                    <td>-</td>
-                                                    <td><?= rupiah($detail['nominal'])?></td>
-                                                    <td><center><?=$detail['metode']?></center></td>
-                                                    <td>-</td>
-                                                    <td>-</td>
-                                                    <!-- <td><a href="#" class="badge badge-success modalEditTransfer" data-toggle="modal" data-target="#modal_edit" data-id="<?= $detail['id_transfer']?>">edit</a></td> -->
-                                                    <td><a href="<?=base_url()?>kartupiutang/kwitansi_transfer/<?= $detail['id_transfer']?>" target=_blank><center><i class="fa fa-print"></i></center></a></td>
-
-                                                <?php endif;?>
-                                        </tr>
-                                    <?php endforeach;?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <!-- /.container-fluid -->
@@ -270,23 +278,6 @@
     $("#dataKbm").show();
 
     $("#detailKelas").click(function(){
-        const id = $(this).data('id');
-        // console.log(id)
-        $.ajax({
-            url : "<?=base_url()?>kelas/datakelasbyid",
-            method : "POST",
-            data : {id_kelas : id},
-            async : true,
-            dataType : 'json',
-            success : function(data){
-                $("#status").html(data.status);
-                $("#program").html(data.program);
-                $("#koordinator").html(data.nama_peserta);
-                $("#kpq").html(data.nama_kpq);
-                $("#pengajar").html(data.pengajar);
-            }
-        })
-
         $("#detailKelas").addClass('active');
         $("#detailPeserta").removeClass('active');
         $("#detailJadwal").removeClass('active');
@@ -298,26 +289,6 @@
     })
     
     $("#detailPeserta").click(function(){
-        const id = $(this).data('id');
-        // console.log(id)
-        $.ajax({
-            url : "<?=base_url()?>kelas/datapesertabyid",
-            method : "POST",
-            data : {id_kelas : id},
-            async : true,
-            dataType : 'json',
-            success : function(data){
-                // console.log(data)
-                $('#totalPeserta').html(data.length);
-                var html = '';
-                var i;
-                for(i=0; i<data.length; i++){
-                    html += '<li class="list-group-item">'+data[i].nama_peserta+'</li>';
-                }
-                $('#list-peserta').html(html);
-            }
-        })
-
         $("#detailKelas").removeClass('active');
         $("#detailPeserta").addClass('active');
         $("#detailJadwal").removeClass('active');
@@ -329,25 +300,6 @@
     })
 
     $("#detailJadwal").click(function(){
-        const id = $(this).data('id');
-        // console.log(id)
-        $.ajax({
-            url : "<?=base_url()?>kelas/datajadwalbyid",
-            method : "POST",
-            data : {id_kelas : id},
-            async : true,
-            dataType : 'json',
-            success : function(data){
-                // console.log(data)
-                var html = '';
-                var i;
-                for(i=0; i<data.length; i++){
-                    html += '<li class="list-group-item">'+data[i].tempat+' ('+data[i].hari+' '+data[i].jam+')</li>';
-                }
-                $('#list-jadwal').html(html);
-            }
-        })
-
         $("#detailKelas").removeClass('active');
         $("#detailPeserta").removeClass('active');
         $("#detailJadwal").addClass('active');
@@ -359,7 +311,6 @@
     })
     
     $("#detailKbm").click(function(){
-
         $("#detailKelas").removeClass('active');
         $("#detailPeserta").removeClass('active');
         $("#detailJadwal").removeClass('active');
@@ -475,31 +426,6 @@
         $("#modal-invoice").html("Tambah Invoice");
         $("#id_invoice").val($(this).data("id"));
         $("#tipe_invoice").val("kelas");
-    })
-    
-    var x = 0;
-    var urut = 1;
-    $("#tambah_uraian").click(function(e){
-        e.preventDefault();
-        x++;
-        urut++;
-        $("#uraian").append(
-            '<div class="form-group" id="u'+x+'">'+
-                '<label for="uraian_invoice['+x+']">Uraian '+ urut +'</label>'+
-                '<textarea name="uraian['+x+']" id="uraian_invoice['+x+']" rows="2" class="form-control form-control-sm"></textarea>'+
-            '</div>'+
-            '<div class="form-group" id="n'+x+'">'+
-                '<label for="nominal_invoice['+x+']">Nominal '+ urut +'</label>'+
-                '<input type="text" name="nominal['+x+']" id="nominal_invoice['+x+']" class="form-control form-control-sm">'+
-            '</div>');
-    })
-
-    $("#hapus_uraian").click(function(e){
-        e.preventDefault();
-        $("#u"+x).remove();
-        $("#n"+x).remove();
-        x--;
-        urut--;
     })
 
     $(".modalTransaksi").click(function(){

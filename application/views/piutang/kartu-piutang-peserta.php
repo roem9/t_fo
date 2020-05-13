@@ -13,68 +13,12 @@
         </div>
 
         <div class="row">
-            <div class="col-4">
-                <div class="card">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs">
-                            <li class="nav-item">
-                            <a href="#" class='nav-link' id="detailKelas" data-id=""><i class="fas fa-book"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body cus-font">
-                        <ul class="list-group" id="dataKelas">
-                            <li class="list-group-item list-group-item-info">Data Akademik</li>
-                            <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-6">
-                                Status
-                                </div>
-                                <div class="col-6" id="status"> 
-                                    <?= $peserta['status']?>
-                                </div>
-                            </div>
-                            </li>
-                            <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-6">
-                                Tipe Kelas
-                                </div>
-                                <div class="col-6" id="status"> 
-                                    <?= $peserta['tipe_peserta']?>
-                                </div>
-                            </div>
-                            </li>
-                            <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-6">
-                                Program
-                                </div>
-                                <div class="col-6" id="program"> 
-                                    <?= $peserta['program']?>
-                                </div>
-                            </div>
-                            </li>
-                            <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-6">
-                                Pengajar
-                                </div>
-                                <div class="col-6" id="kpq"> 
-                                    <span id="n_kpq"><?= $peserta['nama_kpq']?></span>
-                                </div>
-                            </div>
-                            </li>
-                            <li class="list-group-item">
-                                <?=$peserta['tempat'] . " (" . $peserta['hari'] . " " . $peserta['jam'] . ")"?>
-                            </li>
-                        </ul>
-                        
-                    </div>
+            <?php if( $this->session->flashdata('pesan') ) : ?>
+                <div class="col-12">
+                    <?= $this->session->flashdata('pesan');?>
                 </div>
-            </div>
-
-            <div class="col">
+            <?php endif; ?>
+            <div class="col-8">
                 <div class="card">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
@@ -85,7 +29,7 @@
                                 <a href="#" class='nav-link' id="btn-2">Invoice</a>
                             </li> -->
                             <li class="nav-item">
-                                <a href="#" class='nav-link bg-success text-light modalTransaksi' id="detailKelas" data-toggle="modal" data-target="#modalTransaksi" data-id="<?= $id?>">Transaksi</a>
+                                <a href="#" class='nav-link bg-success text-light modalTransaksi' data-toggle="modal" data-target="#modalTransaksi" data-id="<?= $id?>">Transaksi</a>
                             </li>
                             <!-- <li class="nav-item">
                                 <a href="#" class='nav-link bg-danger text-light modalTambahInvoice' id="detailKelas" data-toggle="modal" data-target="#modal_tambah_invoice" data-id="<?= $id?>">Invoice</a>
@@ -195,6 +139,67 @@
                     </div>
                 </div>
             </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                            <a href="#" class='nav-link' id="detailKelas" data-id=""><i class="fas fa-book"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body cus-font">
+                        <ul class="list-group" id="dataKelas">
+                            <li class="list-group-item list-group-item-info">Data Akademik</li>
+                            <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-6">
+                                Status
+                                </div>
+                                <div class="col-6" id="status"> 
+                                    <?= $peserta['status']?>
+                                </div>
+                            </div>
+                            </li>
+                            <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-6">
+                                Tipe Kelas
+                                </div>
+                                <div class="col-6" id="status"> 
+                                    <?= $peserta['tipe_peserta']?>
+                                </div>
+                            </div>
+                            </li>
+                            <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-6">
+                                Program
+                                </div>
+                                <div class="col-6" id="program"> 
+                                    <?= $peserta['program']?>
+                                </div>
+                            </div>
+                            </li>
+                            <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-6">
+                                Pengajar
+                                </div>
+                                <div class="col-6" id="kpq"> 
+                                    <span id="n_kpq"><?= $peserta['nama_kpq']?></span>
+                                </div>
+                            </div>
+                            </li>
+                            <li class="list-group-item">
+                                <?=$peserta['tempat'] . " (" . $peserta['hari'] . " " . $peserta['jam'] . ")"?>
+                            </li>
+                        </ul>
+                        
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     <!-- /.container-fluid -->

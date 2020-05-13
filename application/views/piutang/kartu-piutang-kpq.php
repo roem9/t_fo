@@ -6,6 +6,11 @@
             </div>
 
             <div class="row">
+            <?php if( $this->session->flashdata('pesan') ) : ?>
+                <div class="col-12">
+                    <?= $this->session->flashdata('pesan');?>
+                </div>
+            <?php endif; ?>
             <div class="col-8">
                 <div class="card">
                     <div class="card-header">

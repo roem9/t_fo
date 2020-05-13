@@ -10,12 +10,12 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs">
+                        <ul class="nav nav-tabs card-header-tabs sticky-top">
                             <li class="nav-item">
                                 <a href="#" class='nav-link' id="btn-form-1" data-id="">Transaksi Langsung</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class='nav-link' id="btn-form-2" data-id="">Tagihan</a>
+                                <a href="#" class='nav-link' id="btn-form-2" data-id="">Piutang</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class='nav-link' id="btn-form-3" data-id="">Pembayaran</a>
@@ -24,13 +24,14 @@
                     </div>
                     <div class="card-body">
 
-                        <form action="<?= base_url()?>piutang/pembayaran" method="POST" enctype="multipart/form-data" id="form-1">
-                            <input type="text" name="tipe" value="<?= $tipe?>">
-                            <input type="text" name="id" value="<?= $id?>">
-                            <input type="text" name="pengajar" value="<?= $kpq?>">
+                        <form action="<?= base_url()?>kartupiutang/add_transaksi_langsung" method="POST" enctype="multipart/form-data" id="form-1">
+                            <div class="alert alert-info"><i class="fa fa-info-circle text-info mr-1"></i>menu ini untuk menginputkan transaksi langsung</div>
+                            <input type="hidden" name="tipe" value="<?= $tipe?>">
+                            <input type="hidden" name="id" value="<?= $id?>">
+                            <input type="hidden" name="pengajar" value="<?= $kpq?>">
                             <div class="form-group">
-                                <label for="nama_kwitansi">Nama Kwitansi</label>
-                                <input type="text" name="nama" id="nama_kwitansi" class="form-control form-control-sm" readonly>
+                                <label for="nama_kwitansi">Nama</label>
+                                <input type="text" name="nama" id="nama_kwitansi" class="form-control form-control-sm">
                             </div>
                             <div class="form-group">
                                 <label for="">Pembayaran Untuk?</label>
@@ -44,7 +45,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="tgl">Tgl Kwitansi</label>
+                                <label for="tgl">Tgl Pembayaran</label>
                                 <input type="date" name="tgl" id="tgl" class="form-control form-control-sm" required>
                             </div>
                             <div class="form-group">
@@ -69,12 +70,13 @@
                             </div>
                         </form>
 
-                        <form action="<?= base_url()?>kartupiutang/tambah_piutang" method="POST" enctype="multipart/form-data" id="form-2">
-                            <input type="text" name="tipe" value="<?= $tipe?>">
-                            <input type="text" name="id" value="<?= $id?>">
+                        <form action="<?= base_url()?>kartupiutang/add_piutang" method="POST" enctype="multipart/form-data" id="form-2">
+                            <div class="alert alert-info"><i class="fa fa-info-circle text-info mr-1"></i>menu ini untuk menginputkan piutang</div>
+                            <input type="hidden" name="tipe" value="<?= $tipe?>">
+                            <input type="hidden" name="id" value="<?= $id?>">
                             <div class="form-group">
-                                <label for="nama_tagihan">Nama Lengkap</label>
-                                <input type="text" name="nama" id="nama_tagihan" class="form-control form-control-sm" readonly>
+                                <label for="nama_tagihan">Nama</label>
+                                <input type="text" name="nama" id="nama_tagihan" class="form-control form-control-sm">
                             </div>
                             <div class="form-group">
                                 <label for="piutang">Jenis Piutang</label>
@@ -103,12 +105,13 @@
                         </form>
 
                         <form action="<?=base_url()?>kartupiutang/add_pembayaran" method="post" enctype="multipart/form-data" id="form-3">
-                            <input type="text" name="tipe" value="<?= $tipe?>">
-                            <input type="text" name="id" value="<?= $id?>">
-                            <input type="text" name="pengajar" value="<?= $kpq?>">
+                            <div class="alert alert-info"><i class="fa fa-info-circle text-info mr-1"></i>menu ini untuk menginputkan pembayaran piutang, pembayaran tagihan, dan menginputkan deposit</div>
+                            <input type="hidden" name="tipe" value="<?= $tipe?>">
+                            <input type="hidden" name="id" value="<?= $id?>">
+                            <input type="hidden" name="pengajar" value="<?= $kpq?>">
                             <div class="form-group">
                                 <label for="nama_deposit">Nama</label>
-                                <input type="text" name="nama" id="nama_deposit" class="form-control form-control-sm" readonly>
+                                <input type="text" name="nama" id="nama_deposit" class="form-control form-control-sm">
                             </div>
                             <div class="form-group">
                                 <label for="">Pembayaran Untuk?</label>
@@ -155,9 +158,6 @@
                         </form>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
