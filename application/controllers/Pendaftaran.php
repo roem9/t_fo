@@ -138,7 +138,7 @@ class Pendaftaran extends CI_CONTROLLER{
 
             $id_peserta = $this->id_peserta($no_urut, $tipe, $tgl_daftar);
 
-            $data['peserta'] = [
+            $data = [
                 "id_peserta" => $id_peserta,
                 "nama_peserta" => $this->input->post('nama_peserta', true),
                 "tipe_peserta" => $this->input->post('tipe_peserta', true),
@@ -157,8 +157,9 @@ class Pendaftaran extends CI_CONTROLLER{
                 "tempat" => $this->input->post('tempat', true),
                 "tgl_masuk" => $tgl_daftar
             ];
+            $this->Fo_model->add_data("peserta", $data);
 
-            $data['alamat'] = [
+            $data= [
                 "alamat" => $this->input->post('alamat', true),
                 "kab_kota" => $this->input->post('kab_kota', true),
                 "provinsi" => $this->input->post('provinsi', true),
@@ -169,8 +170,9 @@ class Pendaftaran extends CI_CONTROLLER{
                 "kd_pos" => $this->input->post('kd_pos', true),
                 "id_peserta" => $id_peserta
             ];
+            $this->Fo_model->add_data("alamat", $data);
 
-            $data['ortu'] = [
+            $data = [
                 "nama_ayah" => $this->input->post('nama_ayah', true),
                 "t4_lahir_ayah" => $this->input->post('t4_lahir_ayah', true),
                 "tgl_lahir_ayah" => $this->input->post('tgl_lahir_ayah', true),
@@ -179,16 +181,18 @@ class Pendaftaran extends CI_CONTROLLER{
                 "tgl_lahir_ibu" => $this->input->post('tgl_lahir_ibu', true),
                 "id_peserta" => $id_peserta
             ];
+            $this->Fo_model->add_data("ortu", $data);
             
-            $data['pekerjaan'] = [
+            $data = [
                 "pekerjaan" => $pekerjaan,
                 "nama_perusahaan" => $this->input->post('nama_perusahaan', true),
                 "no_telp_perusahaan" => $this->input->post('no_telp_perusahaan', true),
                 "alamat_perusahaan" => $this->input->post('alamat_perusahaan', true),
                 "id_peserta" => $id_peserta
             ];
+            $this->Fo_model->add_data("pekerjaan", $data);
 
-            $this->Fo_model->add_peserta($data, $id_peserta);
+            // $this->Fo_model->add_peserta($data, $id_peserta);
 
             $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mendaftarkan peserta reguler baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             redirect('pendaftaran/reguler');
@@ -238,6 +242,7 @@ class Pendaftaran extends CI_CONTROLLER{
                 "tempat" => $this->input->post('tempat', true),
                 "tgl_masuk" => $tgl_daftar
             ];
+            $this->Fo_model->add_data("peserta", $data['peserta']);
 
             $data['alamat'] = [
                 "alamat" => $this->input->post('alamat', true),
@@ -250,6 +255,7 @@ class Pendaftaran extends CI_CONTROLLER{
                 "kd_pos" => $this->input->post('kd_pos', true),
                 "id_peserta" => $id_peserta
             ];
+            $this->Fo_model->add_data("alamat", $data['alamat']);
 
             $data['ortu'] = [
                 "nama_ayah" => $this->input->post('nama_ayah', true),
@@ -260,6 +266,7 @@ class Pendaftaran extends CI_CONTROLLER{
                 "tgl_lahir_ibu" => $this->input->post('tgl_lahir_ibu', true),
                 "id_peserta" => $id_peserta
             ];
+            $this->Fo_model->add_data("ortu", $data['ortu']);
             
             $data['pekerjaan'] = [
                 "pekerjaan" => $pekerjaan,
@@ -268,8 +275,9 @@ class Pendaftaran extends CI_CONTROLLER{
                 "alamat_perusahaan" => $this->input->post('alamat_perusahaan', true),
                 "id_peserta" => $id_peserta
             ];
+            $this->Fo_model->add_data("pekerjaan", $data['pekerjaan']);
 
-            $this->Fo_model->add_peserta($data, $id_peserta);
+            // $this->Fo_model->add_peserta($data, $id_peserta);
 
             $id = $this->Fo_model->get_last_id_kelas();
             $id_kelas = $id['id_kelas'] + 1;
@@ -285,16 +293,20 @@ class Pendaftaran extends CI_CONTROLLER{
                 "pengajar" => $this->input->post('pengajar', true),
                 "tempat" => $this->input->post('tempat', true)
             ];
+            $this->Fo_model->add_data("kelas", $data['kelas']);
 
-            $this->Fo_model->add_kelas($data['kelas']);
+            // $this->Fo_model->add_kelas($data['kelas']);
 
             $data['koor'] = [
                 "id_kelas" => $id_kelas,
                 "id_peserta" => $id_peserta
             ];
+            $this->Fo_model->add_data("kelas_koor", $data['koor']);
+
+            $this->Fo_model->edit_data("peserta", ["id_peserta" => $id_peserta], ["id_kelas" => $id_kelas]);
 
             // $this->Fo_model->add_koor_kelas($id_kelas, $id_peserta);
-            $this->Fo_model->add_koor_kelas($data['koor'], $id_kelas, $id_peserta);
+            // $this->Fo_model->add_koor_kelas($data['koor'], $id_kelas, $id_peserta);
     
             $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mendaftarkan peserta reguler baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             redirect($_SERVER['HTTP_REFERER']);

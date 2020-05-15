@@ -701,18 +701,6 @@ class Kartupiutang extends CI_CONTROLLER{
         $mpdf->WriteHTML($data);
 		$mpdf->Output();
     }
-
-    // public function add_pembayaran(){
-    //     $metode = $this->input->post("metode", TRUE);
-    //     if($metode == "Cash"){
-    //         $this->KartuPiutang_model->add_pembayaran();
-    //     } else {
-    //         $this->KartuPiutang_model->add_pembayaran_by_transfer();
-    //     }
-
-    //     $this->session->set_flashdata('piutang', 'ditambahkan');
-    //     redirect($_SERVER['HTTP_REFERER']);
-    // }
     
     // get data for ajax
 

@@ -27,14 +27,19 @@ class Home extends CI_CONTROLLER{
         $data['month'] = $bulan;
         $data['year'] = $tahun;
         
-        $data['peserta']['wanita'] = COUNT($this->Fo_model->get_peserta_by_periode_by_jk($bulan, $tahun, "Wanita"));
-        $data['peserta']['pria'] = COUNT($this->Fo_model->get_peserta_by_periode_by_jk($bulan, $tahun, "Pria"));
+        $where = ["MONTH(tgl_masuk)" => $bulan, "YEAR(tgl_masuk)" => $tahun, "jk" => "Wanita"];
+        $data['peserta']['wanita'] = COUNT($this->Fo_model->get_all("peserta", $where));
+
+        $where = ["MONTH(tgl_masuk)" => $bulan, "YEAR(tgl_masuk)" => $tahun, "jk" => "Pria"];
+        $data['peserta']['pria'] = COUNT($this->Fo_model->get_all("peserta", $where));
         
-        $pendidikan = $this->Fo_model->get_pendidikan_by_periode($bulan, $tahun);
+        $where = ["MONTH(tgl_masuk)" => $bulan, "YEAR(tgl_masuk)"];
+        $pendidikan = $this->Fo_model->get_all_group_by("peserta", $where, "pendidikan");
         $data['pendidikan'] = [];
         foreach ($pendidikan as $key => $pendidikan) {
             $data['pendidikan'][$key] = $pendidikan;
-            $data['pendidikan'][$key]['peserta'] = COUNT($this->Fo_model->get_peserta_by_periode_by_pendidikan($bulan, $tahun, $pendidikan['pendidikan']));
+            $where = ["MONTH(tgl_masuk)" => $bulan, "YEAR(tgl_masuk)" => $tahun, "pendidikan" => $pendidikan['pendidikan']];
+            $data['pendidikan'][$key]['peserta'] = COUNT($this->Fo_model->get_all("peserta", $where));
         }
         
         $pekerjaan = $this->Fo_model->get_pekerjaan_by_periode($bulan, $tahun);

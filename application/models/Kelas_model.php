@@ -49,7 +49,7 @@ class Kelas_model extends CI_MODEL{
         $this->db->select($query);
         $this->db->from("peserta");
         $this->db->where("id_kelas", $id_kelas);
-        $this->db->where("status", "aktif");
+        // $this->db->where("status", "aktif");
         return $this->db->get()->result_array();
     }
 

@@ -1,5 +1,46 @@
 <?php
 class Fo_model extends CI_MODEL{
+    // tes 
+        public function add_data($table, $data){
+            $this->db->insert($table, $data);
+            return $this->db->insert_id();
+        }
+
+        public function get_all($table, $where = "", $order = ""){
+            $this->db->from($table);
+            if($where)
+                $this->db->where($where);
+            if($order)
+                $this->db->order_by($order, "ASC");
+            return $this->db->get()->result_array();
+        }
+
+        public function get_all_group_by($table, $where = "", $group = ""){
+            $this->db->from($table);
+            if($where)
+                $this->db->where($where);
+            if($group)
+                $this->db->group_by($group);
+            return $this->db->get()->result_array();
+        }
+
+        public function get_all_group_by_where_in($table, $where = "", $where_in = "", $group = ""){
+            $this->db->from($table);
+            if($where)
+                $this->db->where($where);
+            if($where_in)
+                $this->db->where_in($where_in);
+            if($group)
+                $this->db->group_by($group);
+            return $this->db->get()->result_array();
+        }
+
+        public function edit_data($table, $where, $data){
+            $this->db->where($where);
+            $this->db->update($table, $data);
+        }
+    // tes 
+
     // get all
         public function get_all_program(){
             $this->db->from("program");
