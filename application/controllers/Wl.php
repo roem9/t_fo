@@ -4,28 +4,29 @@ class Wl extends CI_CONTROLLER{
     public function __construct(){
         parent::__construct();
         $this->load->model('Wl_model');
+        $this->load->model('Fo_model');
         if($this->session->userdata('status') != "login"){
             $this->session->set_flashdata('login', 'Maaf, Anda harus login terlebih dahulu');
 			redirect(base_url("login"));
 		}
     }
     
-    public function peserta(){
-        $data['header'] = 'Waiting List';
-        $data['title'] = 'Peserta Wl';
+    public function reguler(){
+        $data['header'] = 'Waiting List Reguler';
+        $data['title'] = 'Waiting List Reguler';
         $data['tabs'] = 'peserta';
-        $data['peserta'] = $this->Wl_model->getPesertaWl();
+        $data['peserta'] = $this->Fo_model->get_all("peserta", ["tipe_peserta" => "reguler", "status" => 'wl'], "nama_peserta");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('modal/modal_detail_peserta', $data);
-        $this->load->view('peserta/peserta', $data);
+        $this->load->view('peserta/peserta_wl', $data);
         $this->load->view('templates/footer');
     }
 
-    public function kelas(){
-        $data['header'] = 'Waiting List';
-        $data['title'] = 'Kelas Wl';
+    public function privat(){
+        $data['header'] = 'Waiting List Privat';
+        $data['title'] = 'Waiting List Privat';
         $data['tabs'] = 'kelas';
         $data['wl'] = $this->Wl_model->getKelasWl();
 

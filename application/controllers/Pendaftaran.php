@@ -3,19 +3,21 @@
 class Pendaftaran extends CI_CONTROLLER{
     public function __construct(){
         parent::__construct();
-        $this->load->model('Pendaftaran_model');
         $this->load->model('Fo_model');
         if($this->session->userdata('status') != "login"){
             $this->session->set_flashdata('login', 'Maaf, Anda harus login terlebih dahulu');
 			redirect(base_url("login"));
-		}
+        }
     }
 
     public function reguler(){
         $data['title'] = 'Tambah Peserta Reguler';
         $data['tipe'] = 'reguler';
-        $data['program'] = $this->Pendaftaran_model->getAllProgram();
-        $data['pengajar'] = $this->Pendaftaran_model->getAllPengajar();
+
+        // get all (table, where, order)
+        $data['program'] = $this->Fo_model->get_all("program", "", "id_program");
+        // get all (table, where, order)
+        $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
@@ -27,8 +29,11 @@ class Pendaftaran extends CI_CONTROLLER{
         $data['title'] = 'Tambah WL PV Khusus';
         $data['tipe'] = 'pv khusus';
         $data['ket'] = 'pv khusus';
-        $data['program'] = $this->Fo_model->get_all_program();
-        $data['pengajar'] = $this->Fo_model->get_all_pengajar();
+
+        // get all (table, where, order)
+        $data['program'] = $this->Fo_model->get_all("program", "", "id_program");
+        // get all (table, where, order)
+        $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
@@ -40,8 +45,11 @@ class Pendaftaran extends CI_CONTROLLER{
         $data['title'] = 'Tambah WL PV Luar';
         $data['tipe'] = 'pv luar';
         $data['ket'] = 'pv luar';
-        $data['program'] = $this->Fo_model->get_all_program();
-        $data['pengajar'] = $this->Fo_model->get_all_pengajar();
+
+        // get all (table, where, order)
+        $data['program'] = $this->Fo_model->get_all("program", "", "id_program");
+        // get all (table, where, order)
+        $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
@@ -53,8 +61,11 @@ class Pendaftaran extends CI_CONTROLLER{
         $data['title'] = 'Tambah WL Pv Instansi';
         $data['tipe'] = 'pv luar';
         $data['ket'] = 'pv instansi';
-        $data['program'] = $this->Fo_model->get_all_program();
-        $data['pengajar'] = $this->Fo_model->get_all_pengajar();
+
+        // get all (table, where, order)
+        $data['program'] = $this->Fo_model->get_all("program", "", "id_program");
+        // get all (table, where, order)
+        $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
@@ -66,8 +77,11 @@ class Pendaftaran extends CI_CONTROLLER{
         $data['title'] = 'Tambah WL Event';
         $data['tipe'] = 'pv luar';
         $data['ket'] = 'event';
-        $data['program'] = $this->Fo_model->get_all_program();
-        $data['pengajar'] = $this->Fo_model->get_all_pengajar();
+
+        // get all (table, where, order)
+        $data['program'] = $this->Fo_model->get_all("program", "", "id_program");
+        // get all (table, where, order)
+        $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
@@ -76,7 +90,9 @@ class Pendaftaran extends CI_CONTROLLER{
     }
 
     public function pesertaBaru($id_kelas){
-        $koor = $this->Pendaftaran_model->getKoor($id_kelas);
+        $kelas_koor = $this->Fo_model->get_one("kelas_koor", ["id_kelas" => $id_kelas]);
+        $koor = $this->Fo_model->get_one("peserta", ["id_peserta" => $kelas_koor['id_peserta']]);
+        
         $data['koor'] = $koor['nama_peserta'];
         $data['tipe_peserta'] = $koor['tipe_peserta'];
         $data['id_kelas'] = $koor['id_kelas'];
@@ -84,8 +100,11 @@ class Pendaftaran extends CI_CONTROLLER{
         $data['tempat'] = $koor['tempat'];
         $data['title'] = 'Tambah Peserta Baru';
         $data['header'] = 'Tambah Peserta Baru';
-        $data['program'] = $this->Pendaftaran_model->getAllProgram();
-        $data['pengajar'] = $this->Pendaftaran_model->getAllPengajar();
+
+        // get all (table, where, order)
+        $data['program'] = $this->Fo_model->get_all("program", "", "id_program");
+        // get all (table, where, order)
+        $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
     
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
@@ -94,8 +113,7 @@ class Pendaftaran extends CI_CONTROLLER{
     }
     
     public function pesertaBaruReguler($id_kelas){
-        $koor = $this->Pendaftaran_model->get_data_kelas($id_kelas);
-        // $koor = $this
+        $koor = $this->Fo_model->get_one("kelas", ["id_kelas" => $id_kelas]);
         $data['koor'] = "LKP TAR-Q";
         $data['tipe_peserta'] = 'reguler';
         $data['id_kelas'] = $id_kelas;
@@ -103,8 +121,11 @@ class Pendaftaran extends CI_CONTROLLER{
         $data['tempat'] = $koor['tempat'];
         $data['title'] = 'Tambah Peserta Baru';
         $data['header'] = 'Tambah Peserta Baru';
-        $data['program'] = $this->Pendaftaran_model->getAllProgram();
-        $data['pengajar'] = $this->Pendaftaran_model->getAllPengajar();
+
+        // get all (table, where, order)
+        $data['program'] = $this->Fo_model->get_all("program", "", "id_program");
+        // get all (table, where, order)
+        $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
     
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
@@ -311,103 +332,95 @@ class Pendaftaran extends CI_CONTROLLER{
             $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mendaftarkan peserta reguler baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             redirect($_SERVER['HTTP_REFERER']);
         }
-    // add
 
-
-    public function tambahPesertaBaru(){
-        $tipe = $this->input->post('tipe_peserta');
-        $tgl_daftar = $this->input->post("tgl_daftar");
-        
-        $info = $this->input->post("info", true);
-        if($info == 'Lainnya') {
-            $info = $this->input->post("civitas", true);
-        }
-
-        $pekerjaan = $this->input->post("pekerjaan", true);
-        if($pekerjaan == 'Lainnya') {
-            $pekerjaan = $this->input->post("pekerjaan_lainnya", true);
-        }
-
-        $id = $this->Fo_model->get_last_id_peserta_by_type($tipe);
-        $id_peserta = $id['id_peserta'];
-
-        if ($id_peserta != null){
-            $no_urut = $id_peserta + 1;
-        } else {
-            $no_urut = 1;
-        }
-
-        $id_peserta = $this->id_peserta($no_urut, $tipe, $tgl_daftar);
-
-        $data['peserta'] = [
-            "id_peserta" => $id_peserta,
-            "nama_peserta" => $this->input->post('nama_peserta', true),
-            "tipe_peserta" => $this->input->post('tipe_peserta', true),
-            "t4_lahir" => $this->input->post('t4_lahir', true),
-            "tgl_lahir" => $this->input->post('tgl_lahir', true),
-            "jk" => $this->input->post('jk', true),
-            "pendidikan" => $this->input->post('pendidikan', true),
-            "status_nikah" => $this->input->post('status_nikah', true),
-            "no_hp" => $this->input->post('no_hp', true),
-            "info" => $info,
-            "status" => "aktif",
-            "umur" => $this->input->post('umur', true),
-            "program" => $this->input->post('program', true),
-            "hari" => $this->input->post('hari', true),
-            "jam" => $this->input->post('jam', true),
-            "tempat" => $this->input->post('tempat', true),
-            "tgl_masuk" => $tgl_daftar
-        ];
-
-        $data['alamat'] = [
-            "alamat" => $this->input->post('alamat', true),
-            "kab_kota" => $this->input->post('kab_kota', true),
-            "provinsi" => $this->input->post('provinsi', true),
-            "email" => $this->input->post('email', true),
-            "kec" => $this->input->post('kec', true),
-            "kel" => $this->input->post('kel', true),
-            "no_telp" => $this->input->post('no_telp', true),
-            "kd_pos" => $this->input->post('kd_pos', true),
-            "id_peserta" => $id_peserta
-        ];
-
-        $data['ortu'] = [
-            "nama_ayah" => $this->input->post('nama_ayah', true),
-            "t4_lahir_ayah" => $this->input->post('t4_lahir_ayah', true),
-            "tgl_lahir_ayah" => $this->input->post('tgl_lahir_ayah', true),
-            "nama_ibu" => $this->input->post('nama_ibu', true),
-            "t4_lahir_ibu" => $this->input->post('t4_lahir_ibu', true),
-            "tgl_lahir_ibu" => $this->input->post('tgl_lahir_ibu', true),
-            "id_peserta" => $id_peserta
-        ];
-        
-        $data['pekerjaan'] = [
-            "pekerjaan" => $pekerjaan,
-            "nama_perusahaan" => $this->input->post('nama_perusahaan', true),
-            "no_telp_perusahaan" => $this->input->post('no_telp_perusahaan', true),
-            "alamat_perusahaan" => $this->input->post('alamat_perusahaan', true),
-            "id_peserta" => $id_peserta
-        ];
-
-        $data['kelas'] = [
-            "id_kelas" => $this->input->post("id_kelas")
-        ];
-
-        $this->Fo_model->add_peserta($data, $id_peserta);
-
-        $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mendaftarkan peserta baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-        redirect($_SERVER['HTTP_REFERER']);
-    }
-    
-    public function backProgram(){
-        $kelas = $this->Pendaftaran_model->getAllIdKelas();
-        foreach ($kelas as $kelas) {
-            $peserta = $this->Pendaftaran_model->pesertaKelas($kelas['id_kelas']);
-            foreach ($peserta as $peserta) {
-                $this->Pendaftaran_model->changeProgram($peserta['id_peserta'], $kelas['program']);
+        public function tambahPesertaBaru(){
+            $tipe = $this->input->post('tipe_peserta');
+            $tgl_daftar = $this->input->post("tgl_daftar");
+            
+            $info = $this->input->post("info", true);
+            if($info == 'Lainnya') {
+                $info = $this->input->post("civitas", true);
             }
+    
+            $pekerjaan = $this->input->post("pekerjaan", true);
+            if($pekerjaan == 'Lainnya') {
+                $pekerjaan = $this->input->post("pekerjaan_lainnya", true);
+            }
+    
+            $id = $this->Fo_model->get_last_id_peserta_by_type($tipe);
+            $id_peserta = $id['id_peserta'];
+    
+            if ($id_peserta != null){
+                $no_urut = $id_peserta + 1;
+            } else {
+                $no_urut = 1;
+            }
+    
+            $id_peserta = $this->id_peserta($no_urut, $tipe, $tgl_daftar);
+    
+            $data['peserta'] = [
+                "id_peserta" => $id_peserta,
+                "nama_peserta" => $this->input->post('nama_peserta', true),
+                "tipe_peserta" => $this->input->post('tipe_peserta', true),
+                "t4_lahir" => $this->input->post('t4_lahir', true),
+                "tgl_lahir" => $this->input->post('tgl_lahir', true),
+                "jk" => $this->input->post('jk', true),
+                "pendidikan" => $this->input->post('pendidikan', true),
+                "status_nikah" => $this->input->post('status_nikah', true),
+                "no_hp" => $this->input->post('no_hp', true),
+                "info" => $info,
+                "status" => "aktif",
+                "umur" => $this->input->post('umur', true),
+                "program" => $this->input->post('program', true),
+                "hari" => $this->input->post('hari', true),
+                "jam" => $this->input->post('jam', true),
+                "tempat" => $this->input->post('tempat', true),
+                "tgl_masuk" => $tgl_daftar
+            ];
+            $this->Fo_model->add_data("peserta", $data['peserta']);
+
+            $data['alamat'] = [
+                "alamat" => $this->input->post('alamat', true),
+                "kab_kota" => $this->input->post('kab_kota', true),
+                "provinsi" => $this->input->post('provinsi', true),
+                "email" => $this->input->post('email', true),
+                "kec" => $this->input->post('kec', true),
+                "kel" => $this->input->post('kel', true),
+                "no_telp" => $this->input->post('no_telp', true),
+                "kd_pos" => $this->input->post('kd_pos', true),
+                "id_peserta" => $id_peserta
+            ];
+            $this->Fo_model->add_data("alamat", $data['alamat']);
+    
+            $data['ortu'] = [
+                "nama_ayah" => $this->input->post('nama_ayah', true),
+                "t4_lahir_ayah" => $this->input->post('t4_lahir_ayah', true),
+                "tgl_lahir_ayah" => $this->input->post('tgl_lahir_ayah', true),
+                "nama_ibu" => $this->input->post('nama_ibu', true),
+                "t4_lahir_ibu" => $this->input->post('t4_lahir_ibu', true),
+                "tgl_lahir_ibu" => $this->input->post('tgl_lahir_ibu', true),
+                "id_peserta" => $id_peserta
+            ];
+            $this->Fo_model->add_data("ortu", $data['ortu']);
+            
+            $data['pekerjaan'] = [
+                "pekerjaan" => $pekerjaan,
+                "nama_perusahaan" => $this->input->post('nama_perusahaan', true),
+                "no_telp_perusahaan" => $this->input->post('no_telp_perusahaan', true),
+                "alamat_perusahaan" => $this->input->post('alamat_perusahaan', true),
+                "id_peserta" => $id_peserta
+            ];
+            $this->Fo_model->add_data("pekerjaan", $data['pekerjaan']);
+    
+            $data['kelas'] = [
+                "id_kelas" => $this->input->post("id_kelas")
+            ];
+            $this->Fo_model->edit_data("peserta", ["id_peserta" => $id_peserta], $data['kelas']);
+    
+            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mendaftarkan peserta baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            redirect($_SERVER['HTTP_REFERER']);
         }
-    }
+    // add
 
     // other function
         public function id_peserta($no_urut, $tipe, $tgl){
@@ -420,7 +433,6 @@ class Pendaftaran extends CI_CONTROLLER{
             } else if ($tipe == 'pv luar'){
                 $tipe = 'PL';
             }
-
             if ($no_urut < 10){
                 $id_peserta = $tipe.$bulan.$tahun.'.000'.$no_urut;
             } else if($no_urut >= 10 && $no_urut < 100){
@@ -430,7 +442,7 @@ class Pendaftaran extends CI_CONTROLLER{
             } else {
                 $id_peserta = $tipe.$bulan.$tahun.'.'.$no_urut;
             }
-
             return $id_peserta;
         }
+    // other function
 }

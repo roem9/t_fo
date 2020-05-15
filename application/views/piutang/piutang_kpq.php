@@ -25,14 +25,16 @@
     <?php endif; ?>
 
     <!-- DataTales Example -->
-    <div class="card shadow mb-4" style="max-width: 650px">
+    <div class="card shadow mb-4" style="max-width: 700px">
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-hover table-sm cus-font" id="dataTable" cellspacing="0">
             <thead>
               <tr>
                 <th style="max-width: 20px">No</th>
-                <th>Nama KPQ</th>
+                <th>Status</th>
+                <th>Nama Civitas</th>
+                <th>Tipe</th>
                 <th>Piutang</th>
               </tr>
             </thead>
@@ -41,7 +43,13 @@
               foreach ($kpq as $kpq) :?>
                   <tr>
                       <td><center><?=++$no?></center></td>
+                      <td><center><?= $kpq['status']?></center></td>
                       <td><?=$kpq['nama_kpq']?></td>
+                      <?php if(substr($kpq['nip'], 0, 3) == "012"):?>
+                        <td><center>KPQ</center></td>
+                      <?php else:?>
+                        <td><center>Karyawan</center></td>
+                      <?php endif;?>
                       <?php if(($kpq['bayar'] - $kpq['piutang']) == 0):?>
                           <td class="bg-warning text-white"><a class="text-light" href="<?=base_url()?>kartupiutang/kpq/<?=$kpq['nip']?>"><?= rupiah(($kpq['bayar'] - $kpq['piutang']))?></a></td>
                       <?php elseif(($kpq['bayar'] - $kpq['piutang']) < 0):?>

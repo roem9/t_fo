@@ -41,7 +41,6 @@ class Peserta_model extends CI_Model{
         $this->db->join('ortu as d', 'a.id_peserta = d.id_peserta');
         $this->db->where('a.id_peserta', $id_peserta);
         return $this->db->get()->row_array();
-
     }
 
     public function editDataPeserta($id_peserta){

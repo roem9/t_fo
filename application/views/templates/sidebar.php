@@ -21,13 +21,7 @@
           <i class="fas fa-fw fa-home"></i>
           <span>home</span></a>
       </li>
-      
-      <!-- <li class="nav-item" id="tambahPeserta">
-        <a class="nav-link" href="<?= base_url()?>pendaftaran/reguler">
-          <i class="fas fa-fw fa-user-plus"></i>
-          <span>tambah pendaftar</span></a>
-      </li> -->
-      
+    
       <li class="nav-item" id="tambahPeserta">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dropone" aria-expanded="true" aria-controls="dropone">
           <i class="fas fa-fw fa-user-plus"></i>
@@ -55,47 +49,60 @@
             <a class="collapse-item text-light" href="<?= base_url()?>piutang/reguler">Piutang Reguler</a>
             <a class="collapse-item text-light" href="<?= base_url()?>piutang/pvkhusus">Piutang PV Khusus</a>
             <a class="collapse-item text-light" href="<?= base_url()?>piutang/pvluar">Piutang PV Luar</a>
-            <a class="collapse-item text-light" href="<?= base_url()?>piutang/kpq">Piutang KPQ</a>
+            <a class="collapse-item text-light" href="<?= base_url()?>piutang/civitas">Piutang Civitas</a>
             <a class="collapse-item text-light" href="<?= base_url()?>transaksi/lainnya">Transaksi Lainnya</a>
           </div>
         </div>
       </li>
 
       <li class="nav-item" id="waitingList">
-        <a class="nav-link" href="<?= base_url()?>wl/peserta">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dropfour" aria-expanded="true" aria-controls="dropfour">
           <i class="fas fa-fw fa-clock"></i>
-          <span>waiting list</span></a>
+          <span>Waiting List</span>
+        </a>
+        <div id="dropfour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-primary py-2 collapse-inner rounded">
+            <h6 class="collapse-header text-light">Waiting List</h6>
+            <a class="collapse-item text-light" href="<?=base_url()?>wl/reguler">Reguler</a>
+            <a class="collapse-item text-light" href="<?=base_url()?>wl/privat">Privat</a>
+          </div>
+        </div>
       </li>
-      
+
       <li class="nav-item" id="peserta">
-        <a class="nav-link" href="<?= base_url()?>peserta/reguler">
-          <i class="fas fa-fw fa-user"></i>
-          <span>peserta</span></a>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dropthree" aria-expanded="true" aria-controls="dropthree">
+          <i class="fas fa-fw fa-users"></i>
+          <span>Peserta</span>
+        </a>
+        <div id="dropthree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-primary py-2 collapse-inner rounded">
+            <h6 class="collapse-header text-light">Peserta</h6>
+            <a class="collapse-item text-light" href="<?=base_url()?>peserta/reguler">Reguler</a>
+            <a class="collapse-item text-light" href="<?=base_url()?>peserta/pvkhusus">PV Khusus</a>
+            <a class="collapse-item text-light" href="<?=base_url()?>peserta/pvluar">PV Luar</a>
+          </div>
+        </div>
       </li>
       
-      <li class="nav-item" id="kelas">
+      <!-- <li class="nav-item" id="kelas">
         <a class="nav-link" href="<?= base_url()?>kelas/reguler">
           <i class="fas fa-fw fa-building"></i>
           <span>kelas</span></a>
-      </li>
-
-      <!-- <li class="nav-item" id="rekapKelas">
-        <a class="nav-link" href="<?= base_url()?>rekap/pvkhusus">
+      </li> -->
+      <li class="nav-item" id="kelas">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dropfive" aria-expanded="true" aria-controls="dropfive">
           <i class="fas fa-fw fa-building"></i>
-          <span>rekap kelas</span></a>
-      </li> -->
-
-      <!-- <li class="nav-item" id="piutang">
-        <a class="nav-link" href="<?= base_url()?>piutang/pvkhusus">
-          <i class="fas fa-fw fa-money-check-alt"></i>
-          <span>piutang</span></a>
-      </li> -->
-      
-      <!-- <li class="nav-item" id="transaksi-lain">
-        <a class="nav-link" href="<?= base_url()?>transaksi/lainnya">
-          <i class="fas fa-fw fa-money-check-alt"></i>
-          <span>transaksi lain</span></a>
-      </li> -->
+          <span>Kelas</span>
+        </a>
+        <div id="dropfive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-primary py-2 collapse-inner rounded">
+            <h6 class="collapse-header text-light">Waiting List</h6>
+            <a class="collapse-item text-light" href="<?=base_url()?>kelas/reguler">Reguler</a>
+            <a class="collapse-item text-light" href="<?=base_url()?>kelas/pvkhusus">PV Khusus</a>
+            <a class="collapse-item text-light" href="<?=base_url()?>kelas/pvluar">PV Luar</a>
+          </div>
+        </div>
+      </li>
       
       <li class="nav-item" id="laporan">
         <a class="nav-link" href="<?= base_url('laporan')?>">

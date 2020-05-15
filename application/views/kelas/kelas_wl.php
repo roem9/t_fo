@@ -24,21 +24,11 @@
       </div>
   <?php endif; ?>
     <!-- DataTales Example -->
-    <div class="card shadow mb-4" style="width: 700px">
-      <div class="card-header">
-          <ul class="nav nav-tabs card-header-tabs">
-              <li class="nav-item">
-                  <a class="nav-link <?php if($tabs == 'peserta') echo 'active'?>" href="<?= base_url()?>wl/peserta">Peserta</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link <?php if($tabs == 'kelas') echo 'active'?>" href="<?= base_url()?>wl/kelas">Kelas</a>
-              </li>
-          </ul>
-      </div>
+    <div class="card shadow mb-4" style="width: 900px">
       <div class="card-body">
         <form action="controllers/konfirmasiwl.php" method="POST">
           <div class="table-responsive">
-            <table class="table table-hover table-sm cus-font text-dark" id="dataTable" cellspacing="0">
+            <table class="table table-hover table-sm cus-font" id="dataTable" cellspacing="0">
               <thead>
                 <th>No</th>
                 <th>Status</th>
@@ -47,22 +37,12 @@
                 <th>Koor</th>
                 <th>Detail</th>
               </thead>
-              <tfoot>
-                <tr>
-                  <th>No</th>
-                  <th>Status</th>
-                  <th>Program</th>
-                  <th>Tipe</th>
-                  <th>Koor</th>
-                  <th>Detail</th>
-                </tr>
-              </tfoot>
               <tbody>
                   <?php 
                   $no = 0;
                   foreach ($wl as $wl) :?>
                       <tr>
-                          <td><?= ++$no?></td>
+                          <td><center><?= ++$no?></center></td>
                           <td><?= $wl['status']?></td>
                           <td><?= $wl['program']?></td>
                           <td><?= $wl['tipe_kelas']?></td>

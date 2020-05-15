@@ -4,7 +4,7 @@ class Peserta extends CI_CONTROLLER{
     
     public function __construct(){
         parent::__construct();
-        $this->load->model('Peserta_model');
+        $this->load->model('Fo_model');
         if($this->session->userdata('status') != "login"){
             $this->session->set_flashdata('login', 'Maaf, Anda harus login terlebih dahulu');
 			redirect(base_url("login"));
@@ -14,53 +14,55 @@ class Peserta extends CI_CONTROLLER{
     public function reguler(){
         $data['header'] = 'Peserta Reguler';
         $data['title'] = 'Peserta Reguler';
-        $data['tabs'] = 'reguler';
-        $data['peserta'] = $this->Peserta_model->getAllPesertaByTipe('reguler');
+        $data['peserta'] = $this->Fo_model->get_all("peserta_reguler", "", "nama_peserta");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('modal/modal_detail_peserta');
-        $this->load->view('peserta/peserta', $data);
+        $this->load->view('peserta/peserta_reguler', $data);
         $this->load->view('templates/footer');
     }
     
     public function pvkhusus(){
         $data['header'] = 'Peserta Pv Khusus';
         $data['title'] = 'Peserta Pv Khusus';
-        $data['tabs'] = 'pv khusus';
-        $data['peserta'] = $this->Peserta_model->getAllPesertaByTipe('pv khusus');
+        $data['peserta'] = $this->Fo_model->get_all("peserta_pv_khusus", "", "nama_peserta");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('modal/modal_detail_peserta');
-        $this->load->view('peserta/peserta', $data);
+        $this->load->view('peserta/peserta_pv', $data);
         $this->load->view('templates/footer');
     }
     
     public function pvluar(){
         $data['header'] = 'Peserta Pv Luar';
         $data['title'] = 'Peserta Pv Luar';
-        $data['tabs'] = 'pv luar';
-        $data['peserta'] = $this->Peserta_model->getAllPesertaByTipe('pv luar');
+        $data['peserta'] = $this->Fo_model->get_all("peserta_pv_luar", "", "nama_peserta");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('modal/modal_detail_peserta');
-        $this->load->view('peserta/peserta', $data);
+        $this->load->view('peserta/peserta_pv', $data);
         $this->load->view('templates/footer');
     }
 
     public function detail(){
         $id_peserta = $_POST['id_peserta'];
-        $peserta = $this->Peserta_model->getPesertaById($id_peserta);
+        $peserta = $this->Fo_model->getPesertaById($id_peserta);
         echo json_encode($peserta);
     }
 
     public function edit(){
         $id_peserta = $_POST['id_peserta'];
-        $this->Peserta_model->editDataPeserta($id_peserta);
-        
-        $this->session->set_flashdata('peserta', 'diedit');
+        $data['alamat'] = [
+            "alamat" => $this->input->post('alamat_peserta', true)
+        ];
+        $result = $this->Fo_model->edit_data("alamat", ["id_peserta" => $id_peserta], $data['alamat']);
+        if($result)
+            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil <b>merubah</b> data peserta<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        else
+            $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Gagal <b>merubah</b> data peserta<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         redirect($_SERVER['HTTP_REFERER']);
     }
 

@@ -14,11 +14,10 @@
         public function reguler(){
             $data['header'] = 'Piutang Peserta Reguler';
             $data['title'] = 'Piutang Peserta Reguler';
-            $data['tabs'] = 'reguler';
             
             $data["peserta"] = [];
 
-            $peserta = $this->Piutang_model->get_peserta_reguler();
+            $peserta = $this->Fo_model->get_all("peserta_reguler", "", "nama_peserta");
             foreach ($peserta as $key => $peserta) {
                 $data['peserta'][$key] = $peserta;
 
@@ -33,8 +32,6 @@
 
                 $data['peserta'][$key]['piutang'] =  $tagihan['total'] + $deposit['total'];
                 $data['peserta'][$key]['bayar'] = $transfer['total'] + $cash['total'];
-                
-                $data['peserta'][$key]['tagihan'] = $this->Piutang_model->get_tagihan_peserta($peserta['id_peserta']);
             }
 
             $this->load->view('templates/header', $data);
@@ -46,11 +43,10 @@
         public function pvKhusus(){
             $data['header'] = 'Piutang Kelas Pv Khusus';
             $data['title'] = 'Piutang Kelas Pv Khusus';
-            $data['tabs'] = 'pvkhusus';
 
             $data['kelas'] = [];
 
-            $kelas = $this->Piutang_model->get_kelas_pv_khusus();
+            $kelas = $this->Fo_model->get_all("kelas_pv_khusus", "", "nama_peserta");
             foreach ($kelas as $key => $kelas) {
                 $data['kelas'][$key] = $kelas;
                 
@@ -64,9 +60,7 @@
                 $transfer = $this->Piutang_model->get_total_transfer_kelas($kelas['id_kelas']);
 
                 $data['kelas'][$key]['piutang'] =  $tagihan['total'] + $deposit['total'];
-
                 $data['kelas'][$key]['bayar'] = $transfer['total'] + $cash['total'];
-                $data['kelas'][$key]['tagihan'] = $this->Piutang_model->get_tagihan_kelas($kelas['id_kelas']);
             }
 
             $this->load->view('templates/header', $data);
@@ -82,7 +76,7 @@
 
             $data['kelas'] = [];
 
-            $kelas = $this->Piutang_model->get_kelas_pv_luar();
+            $kelas = $this->Fo_model->get_all("kelas_pv_luar", "", "nama_peserta");
             foreach ($kelas as $key => $kelas) {
                 $data['kelas'][$key] = $kelas;
                 // tagihan
@@ -96,8 +90,6 @@
 
                 $data['kelas'][$key]['piutang'] =  $tagihan['total'] + $deposit['total'];
                 $data['kelas'][$key]['bayar'] = $transfer['total'] + $cash['total'];
-                
-                $data['kelas'][$key]['tagihan'] = $this->Piutang_model->get_tagihan_kelas($kelas['id_kelas']);
             }
 
             $this->load->view('templates/header', $data);
@@ -106,13 +98,12 @@
             $this->load->view('templates/footer');
         }
         
-        public function kpq(){
-            $data['header'] = 'Piutang KPQ';
-            $data['title'] = 'Piutang KPQ';
-            $data['tabs'] = 'kpq';
+        public function civitas(){
+            $data['header'] = 'Piutang Civitas';
+            $data['title'] = 'Piutang Civitas';
             
             $data['kpq'] = [];
-            $kpq = $this->Piutang_model->getDataKpq();
+            $kpq = $this->Fo_model->get_all("kpq", ["status !=" => "hapus"], "nama_kpq");
             foreach ($kpq as $key => $kpq) {
                 $data['kpq'][$key] = $kpq;
                 
@@ -131,73 +122,22 @@
                 $data['kpq'][$key]['tagihan'] = $this->Piutang_model->get_tagihan_kpq($kpq['nip']);
             }
 
-            // var_dump($data['kpq']);
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar');
             $this->load->view('piutang/piutang_kpq', $data);
             $this->load->view('templates/footer');
         }
 
-        public function bayar(){
-            $uang = str_replace("Rp.", "", $_POST['nominal']);
-            $uang = str_replace(".", "", $uang);
-            // var_dump($uang);
-            // ganti status tagihan
-            foreach ($_POST['id_tagihan'] as $id) {
-                // ganti status piutang menjadi lunas
-                $this->Piutang_model->bayar_piutang($id);
-
-                $data = $this->Piutang_model->data_pembayaran($id);
-                $this->Piutang_model->input_pembayaran($data);
-                $uang -= $data['nominal'];
-            }
-
-            // if($uang < 0 ){
-            //     $uang = $uang * (-1);
-            //     $this->Piutang_model->input_sisa_piutang($data, $uang);
-            // }
-            // else {
-            //     $this->Piutang_model->input_deposit($data, $uang);
-            // }
-            
-            $this->session->set_flashdata('piutang', 'ditambahkan');
-            redirect($_SERVER['HTTP_REFERER']);
-        }
-
-        public function pembayaran(){
-            $tipe = $_POST['tipe'];
-            $metode = $_POST['metode'];
-            $id = $this->input->post("id", TRUE);
-            $nama = $_POST['nama'];
-
-            if($metode == "Deposit"){
-                $this->Piutang_model->add_pembayaran_by_deposit();
-            } else if($metode == "Transfer"){
-                $id_tagihan = $this->Piutang_model->getIdTagihan();
-    
-                $id_tagihan = $id_tagihan['id_tagihan']+1;
-    
-                $this->Piutang_model->add_pembayaran_by_transfer($id_tagihan, $nama, $tipe, $id);
-                
-            } else {
-                $id_tagihan = $this->Piutang_model->getIdTagihan();
-    
-                $id_tagihan = $id_tagihan['id_tagihan']+1;
-    
-                $this->Piutang_model->add_pembayaran($id_tagihan, $nama, $tipe, $id);
-            }
-            
-            $this->session->set_flashdata('piutang', 'ditambahkan');
-            redirect($_SERVER['HTTP_REFERER']);
-        }
-
         // edit
             public function edit_pj_by_id(){
                 $id = $this->input->post("id");
-                $this->Fo_model->edit_pj_by_id($id);
+                $data = [
+                    "pj" => $this->input->post("pj")
+                ];
+                $this->Fo_model->edit_data("kelas", ["id_kelas" => $id], $data);
                 $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil <strong>mengubah</strong> PJ Kelas<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
                 redirect($_SERVER['HTTP_REFERER']);
             }
-            
+        // edit
     }
 ?>

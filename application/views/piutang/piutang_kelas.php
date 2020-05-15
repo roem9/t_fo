@@ -53,7 +53,7 @@
                                 <th>Koor</th>
                                 <th>PJ</th>
                                 <th style="max-width: 65px">No HP</th>
-                                <th style="max-width: 50px">Tgl Mulai</th>
+                                <th style="max-width: 65px">Tgl Mulai</th>
                                 <th>Pengajar</th>
                                 <th>Piutang</th>
                             </thead>
@@ -76,7 +76,7 @@
                                                     if($kelas['tgl_mulai'] == "0000-00-00") {
                                                         echo "-";
                                                     } else {
-                                                        echo date("d-M-Y", strtotime($kelas['tgl_mulai']));
+                                                        echo date("d-m-Y", strtotime($kelas['tgl_mulai']));
                                                     }
                                                 ?>
                                             <!-- </center> -->

@@ -6,6 +6,12 @@ class Fo_model extends CI_MODEL{
             return $this->db->insert_id();
         }
 
+        public function get_one($table, $where){
+            $this->db->from($table);
+            $this->db->where($where);
+            return $this->db->get()->row_array();
+        }
+
         public function get_all($table, $where = "", $order = ""){
             $this->db->from($table);
             if($where)
@@ -24,22 +30,24 @@ class Fo_model extends CI_MODEL{
             return $this->db->get()->result_array();
         }
 
-        public function get_all_group_by_where_in($table, $where = "", $where_in = "", $group = ""){
-            $this->db->from($table);
-            if($where)
-                $this->db->where($where);
-            if($where_in)
-                $this->db->where_in($where_in);
-            if($group)
-                $this->db->group_by($group);
-            return $this->db->get()->result_array();
-        }
-
         public function edit_data($table, $where, $data){
             $this->db->where($where);
             $this->db->update($table, $data);
+            return $this->db->affected_rows();
         }
     // tes 
+
+    // other
+        public function getPesertaById($id_peserta){
+            $this->db->select('*');
+            $this->db->from('peserta as a');
+            $this->db->join('alamat as b', 'a.id_peserta = b.id_peserta');
+            $this->db->join('pekerjaan as c', 'a.id_peserta = c.id_peserta');
+            $this->db->join('ortu as d', 'a.id_peserta = d.id_peserta');
+            $this->db->where('a.id_peserta', $id_peserta);
+            return $this->db->get()->row_array();
+        }
+    // other
 
     // get all
         public function get_all_program(){

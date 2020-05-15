@@ -11,43 +11,16 @@
             <h1 class="h3 mb-0 text-gray-800 mt-3"><?= $header?></h1>
         </div>
 
-        <?php if( $this->session->flashdata('peserta') ) : ?>
+        <?php if( $this->session->flashdata('pesan') ) : ?>
             <div class="row">
                 <div class="col-6">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        Data peserta <strong>berhasil</strong> <?= $this->session->flashdata('peserta');?>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                        <?= $this->session->flashdata('pesan');?>
                 </div>
             </div>
         <?php endif; ?>
 
         <!-- DataTales Example -->
-        <div class="card shadow mb-4" style="max-width: 700px;">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <?php if($header == 'Waiting List') : ?>
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($tabs == 'peserta') echo 'active'?>" href="<?= base_url()?>wl/peserta">Peserta</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($tabs == 'kelas') echo 'active'?>" href="<?= base_url()?>wl/kelas">Kelas</a>
-                    </li>
-                <?php else : ?>
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($tabs == 'reguler') echo 'active'?>" href="<?= base_url()?>peserta/reguler">Reguler</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($tabs == 'pv khusus') echo 'active'?>" href="<?= base_url()?>peserta/pvkhusus">Pv Khusus</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($tabs == 'pv luar') echo 'active'?>" href="<?= base_url()?>peserta/pvluar">Pv Luar</a>
-                    </li>
-                <?php endif;?>
-            </ul>
-        </div>
+        <div class="card shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
                 <table id="dataTable" class="table table-sm cus-font">
@@ -56,8 +29,12 @@
                             <th>No</th>
                             <th>Status</th>
                             <th>Nama Peserta</th>
-                            <th>Gender</th>
                             <th>No Hp</th>
+                            <th>Program</th>
+                            <th>Tempat</th>
+                            <th>Hari</th>
+                            <th>Jam</th>
+                            <th>Pengajar</th>
                             <th>Detail</th>
                         </tr>
                     </thead>
@@ -67,10 +44,22 @@
                         foreach ($peserta as $peserta) :?>
                             <tr>
                                 <td><center><?= ++$i?></center></td>
-                                <td><?= $peserta['status']?></td>
+                                <td><?= $peserta['status']?> 
                                 <td><?= $peserta['nama_peserta']?></td>
-                                <td><?= $peserta['jk']?></td>
                                 <td><?= $peserta['no_hp']?></td>
+                                <?php if($peserta['status'] == "wl" || $peserta['status'] == "nonaktif"):?>
+                                    <td><?= $peserta['program_peserta']?></td>
+                                    <td><center>-</center></td>
+                                    <td><?= $peserta['hari_peserta']?></td>
+                                    <td><?= $peserta['jam_peserta']?></td>
+                                    <td><center>-</center></td>
+                                <?php else :?>
+                                    <td><?= $peserta['program']?></td>
+                                    <td><?= $peserta['tempat']?></td>
+                                    <td><?= $peserta['hari']?></td>
+                                    <td><?= $peserta['jam']?></td>
+                                    <td><?= $peserta['nama_kpq']?></td>
+                                <?php endif;?>
                                 <td><a href="#" data-toggle="modal" data-target="#exampleModalScrollable" data-id="<?= $peserta['id_peserta']?>" class="detailPeserta">
                                 <span class="badge badge-warning">detail</span></a></td>
                             </tr>
@@ -90,11 +79,7 @@
 
 
 <script>
-    <?php if ($header == 'Waiting List'):?>
-        $("#waitingList").addClass("active");
-    <?php else : ?>
-        $("#peserta").addClass("active");
-    <?php endif;?>
+    $("#peserta").addClass("active");
     
     $("#btn-form-1").addClass("active");
 
