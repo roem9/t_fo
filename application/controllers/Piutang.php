@@ -116,10 +116,10 @@
                 // bayar transfer
                 $transfer = $this->Piutang_model->get_total_transfer_kpq($kpq['nip']);
 
-                $data['kpq'][$key]['piutang'] =  $tagihan['total'] + $deposit['total'];
+                $data['kpq'][$key]['piutang'] = $tagihan['total'] + $deposit['total'];
                 $data['kpq'][$key]['bayar'] = $transfer['total'] + $cash['total'];
                 
-                $data['kpq'][$key]['tagihan'] = $this->Piutang_model->get_tagihan_kpq($kpq['nip']);
+                $data['kpq'][$key]['tagihan'] = $this->Piutang_model->get_total_tagihan_kpq($kpq['nip']);
             }
 
             $this->load->view('templates/header', $data);

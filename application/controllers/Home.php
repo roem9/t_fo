@@ -3,7 +3,7 @@ class Home extends CI_CONTROLLER{
     public function __construct(){
         parent::__construct();
         $this->load->model('Fo_model');
-
+        $this->load->model('Home_model');
         if($this->session->userdata('status') != "login"){
             $this->session->set_flashdata('login', 'Maaf, Anda harus login terlebih dahulu');
 			redirect(base_url("login"));
@@ -42,41 +42,39 @@ class Home extends CI_CONTROLLER{
             $data['pendidikan'][$key]['peserta'] = COUNT($this->Fo_model->get_all("peserta", $where));
         }
         
-        $pekerjaan = $this->Fo_model->get_pekerjaan_by_periode($bulan, $tahun);
+        $pekerjaan = $this->Home_model->get_pekerjaan_by_periode($bulan, $tahun);
         $data['pekerjaan'] = [];
         foreach ($pekerjaan as $key => $pekerjaan) {
             $data['pekerjaan'][$key] = $pekerjaan;
-            $data['pekerjaan'][$key]['peserta'] = COUNT($this->Fo_model->get_peserta_by_periode_by_pekerjaan($bulan, $tahun, $pekerjaan['pekerjaan']));
+            $data['pekerjaan'][$key]['peserta'] = COUNT($this->Home_model->get_peserta_by_periode_by_pekerjaan($bulan, $tahun, $pekerjaan['pekerjaan']));
         }
 
-        $data['pekerjaan_lainnya'] = COUNT($this->Fo_model->get_pekerjaan_lainnya_by_periode($bulan, $tahun));
+        $data['pekerjaan_lainnya'] = COUNT($this->Home_model->get_pekerjaan_lainnya_by_periode($bulan, $tahun));
         
-        $informasi = $this->Fo_model->get_informasi_by_periode($bulan, $tahun);
+        $informasi = $this->Home_model->get_informasi_by_periode($bulan, $tahun);
         $data['informasi'] = [];
         foreach ($informasi as $key => $informasi) {
             $data['informasi'][$key] = $informasi;
-            $data['informasi'][$key]['peserta'] = COUNT($this->Fo_model->get_informasi_by_jenis($bulan, $tahun, $informasi['info']));
+            $data['informasi'][$key]['peserta'] = COUNT($this->Home_model->get_informasi_by_jenis($bulan, $tahun, $informasi['info']));
         }
 
-        $data['informasi_lainnya'] = COUNT($this->Fo_model->get_informasi_lainnya_by_periode($bulan, $tahun));
+        $data['informasi_lainnya'] = COUNT($this->Home_model->get_informasi_lainnya_by_periode($bulan, $tahun));
         
-        $program = $this->Fo_model->get_program_by_periode($bulan, $tahun);
+        $program = $this->Home_model->get_program_by_periode($bulan, $tahun);
         $data['program'] = [];
         foreach ($program as $key => $program) {
             $data['program'][$key] = $program;
-            $data['program'][$key]['peserta'] = COUNT($this->Fo_model->get_peserta_by_periode_by_program($bulan, $tahun, $program['program']));
+            $data['program'][$key]['peserta'] = COUNT($this->Home_model->get_peserta_by_periode_by_program($bulan, $tahun, $program['program']));
         }
         
         $data['peserta']['total'] = $data['peserta']['wanita'] + $data['peserta']['pria'];
-        $data['kelas'] = COUNT($this->Fo_model->get_kelas_by_periode($bulan, $tahun));
-
-        $data['peserta_reguler'] = COUNT($this->Fo_model->get_peserta_by_periode_by_tipe($bulan, $tahun, "reguler"));
-        $data['peserta_pv_khusus'] = COUNT($this->Fo_model->get_peserta_by_periode_by_tipe($bulan, $tahun, "pv khusus"));
-        $data['peserta_pv_luar'] = COUNT($this->Fo_model->get_peserta_by_periode_by_tipe($bulan, $tahun, "pv luar"));
-        
-        $data['kelas_pv_khusus'] = COUNT($this->Fo_model->get_kelas_by_periode_by_type($bulan, $tahun, "pv khusus"));
-        $data['kelas_pv_luar'] = COUNT($this->Fo_model->get_kelas_by_periode_by_type($bulan, $tahun, "pv luar"));
-        $data['kelas_reguler'] = COUNT($this->Fo_model->get_kelas_by_periode_by_type($bulan, $tahun, "reguler"));
+        $data['kelas'] = COUNT($this->Fo_model->get_all("kelas", ["MONTH(tgl_mulai)" => $bulan, "YEAR(tgl_mulai)" => $tahun]));
+        $data['peserta_reguler'] = COUNT($this->Fo_model->get_all("peserta", ["MONTH(tgl_masuk)" => $bulan, "YEAR(tgl_masuk)" => $tahun, "tipe_peserta" => "reguler"]));
+        $data['peserta_pv_khusus'] = COUNT($this->Fo_model->get_all("peserta", ["MONTH(tgl_masuk)" => $bulan, "YEAR(tgl_masuk)" => $tahun, "tipe_peserta" => "pv khusus"]));
+        $data['peserta_pv_luar'] = COUNT($this->Fo_model->get_all("peserta", ["MONTH(tgl_masuk)" => $bulan, "YEAR(tgl_masuk)" => $tahun, "tipe_peserta" => "pv luar"]));
+        $data['kelas_pv_khusus'] = COUNT($this->Fo_model->get_all("kelas", ["MONTH(tgl_mulai)" => $bulan, "YEAR(tgl_mulai)" => $tahun, "tipe_kelas" => "pv khusus"]));
+        $data['kelas_pv_luar'] = COUNT($this->Fo_model->get_all("kelas", ["MONTH(tgl_mulai)" => $bulan, "YEAR(tgl_mulai)" => $tahun, "tipe_kelas" => "pv luar"]));
+        $data['kelas_reguler'] = COUNT($this->Fo_model->get_all("kelas", ["MONTH(tgl_mulai)" => $bulan, "YEAR(tgl_mulai)" => $tahun, "tipe_kelas" => "reguler"]));
         
         $this->load->view("templates/header", $data);
         $this->load->view("templates/sidebar");
@@ -89,14 +87,14 @@ class Home extends CI_CONTROLLER{
     public function get_pekerjaan_lain_by_periode(){
         $bulan = $this->input->post("bulan");
         $tahun = $this->input->post("tahun");
-        $pekerjaan = $this->Fo_model->get_pekerjaan_lain_by_periode($bulan, $tahun);
+        $pekerjaan = $this->Home_model->get_pekerjaan_lain_by_periode($bulan, $tahun);
         echo json_encode($pekerjaan);
     }
     
     public function get_informasi_lain_by_periode(){
         $bulan = $this->input->post("bulan");
         $tahun = $this->input->post("tahun");
-        $pekerjaan = $this->Fo_model->get_informasi_lain_by_periode($bulan, $tahun);
+        $pekerjaan = $this->Home_model->get_informasi_lain_by_periode($bulan, $tahun);
         echo json_encode($pekerjaan);
     }
 }

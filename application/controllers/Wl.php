@@ -20,7 +20,7 @@ class Wl extends CI_CONTROLLER{
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('modal/modal_detail_peserta', $data);
-        $this->load->view('peserta/peserta_wl', $data);
+        $this->load->view('wl/peserta_wl', $data);
         $this->load->view('templates/footer');
     }
 
@@ -32,9 +32,37 @@ class Wl extends CI_CONTROLLER{
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
-        $this->load->view('modal/modal_kelas_wl');
-        $this->load->view('kelas/kelas_wl', $data);
+        $this->load->view('wl/kelas_wl', $data);
         $this->load->view('templates/footer');
     }
 
+    // edit data
+        public function editWl(){
+            $id_kelas = $_POST['id_kelas'];
+            $data = [
+                "status" => $this->input->post('status'),
+                "program" => $this->input->post('program'),
+                "pengajar" => $this->input->post('pengajar'),
+                "tempat" => $this->input->post('tempat', TRUE),
+                "catatan" => $this->input->post('catatan', TRUE)
+            ];
+            $this->Fo_model->edit_data("kelas", ["id_kelas" => $id_kelas], $data);
+            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil merubah data waiting list<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+    // edit data
+
+    // get data
+        public function dataKelasWlById(){
+            $id_kelas = $_POST['id_kelas'];
+            $kelas = $this->Wl_model->dataKelasWlById($id_kelas);
+            echo json_encode($kelas);
+        }
+
+        public function dataPesertaById(){
+            $id_kelas = $_POST['id_kelas'];
+            $kelas = $this->Fo_model->get_all("peserta", ["id_kelas" => $id_kelas]);
+            echo json_encode($kelas);
+        }
+    // get data
 }

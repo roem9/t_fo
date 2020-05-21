@@ -32,7 +32,7 @@
                     <option value="">Pilih Laporan</option>
                     <option value="Buku">Laporan Buku</option>
                     <option value="Peserta">Laporan Peserta</option>
-                    <option value="Transaksi">Laporan Transaksi</option>
+                    <option value="Transaksi">Laporan Transaksi Cash</option>
                     <option value="Piutang PV Khusus">Laporan Piutang PV Khusus</option>
                     <option value="Piutang Reguler">Laporan Piutang Reguler</option>
                 </select>

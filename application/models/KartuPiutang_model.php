@@ -512,11 +512,11 @@ class KartuPiutang_model extends CI_MODEL{
         return $this->db->get()->row_array();
     }
 
-    public function get_data_pembayaran($id){
-        $this->db->from("pembayaran");
-        $this->db->where("id_pembayaran", $id);
-        return $this->db->get()->row_array();
-    }
+    // public function get_data_pembayaran($id){
+    //     $this->db->from("pembayaran");
+    //     $this->db->where("id_pembayaran", $id);
+    //     return $this->db->get()->row_array();
+    // }
     
     public function get_data_pembayaran_deposit($id){
         $this->db->from("tagihan");

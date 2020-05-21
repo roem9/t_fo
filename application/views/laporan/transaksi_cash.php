@@ -47,7 +47,7 @@
         <div class="container-fluid">
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <div class="d-flex justify-content-begin mt-3">
-                    <h1 class="h3 mb-0 text-gray-800 mr-3">Laporan Keuangan</h1>
+                    <h3 class="mb-0 text-gray-800 mr-3"><?= $title?></h3>
                 </div>
             </div>
             <div class="table-responsive">
@@ -120,7 +120,7 @@
                                     <td><?= $tgl['nama_pembayaran']?></td>
                                     <td><?= $tgl['pengajar']?></td>
                                     <td><?= rupiah($tgl['nominal'])?></td>
-                                    <td><?= terbilang($tgl['nominal']) . " rupiah"?></td>
+                                    <td><?= ucfirst(terbilang($tgl['nominal'])) . " rupiah"?></td>
                                     <td><?= $tgl['uraian']?></td>
                                     <?php if ($tgl['keterangan'] == "Piutang") :?>
                                         <?php $subtotal['piutang'] += $tgl['nominal']?>

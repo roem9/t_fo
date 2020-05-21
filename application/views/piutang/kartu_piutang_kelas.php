@@ -64,9 +64,14 @@
                                                     <td>-</td>
                                                     <td>-</td>
                                                     <?php
-                                                        $color = $detail['ket'] == "piutang" ? $color = "danger" : $color = "success";
+                                                        // $color = $detail['ket'] == "piutang" ? $color = "danger" : $color = "success";
                                                     ?>
-                                                    <td><a href="#modal_edit_status_tagihan" data-id="<?= $detail['id_tagihan']?>|<?=$detail['ket']?>" data-toggle="modal" class="badge badge-<?= $color?> modal_edit_status_tagihan"><?= $detail['ket']?></a></td>
+                                                    <?php if($detail['ket'] == "piutang"):?>
+                                                        <td><center><a onclick="return confirm('Yakin akan mengubah staus piutang menjadi lunas?')" href="<?= base_url()?>kartupiutang/edit_status_piutang/<?= md5($detail['id_tagihan'])?>/lunas"><i class="fa fa-times-circle text-danger"></i></a></center></td>
+                                                    <?php elseif($detail['ket'] == "lunas"):?>
+                                                        <td><center><a onclick="return confirm('Yakin akan mengubah staus piutang menjadi piutang?')" href="<?= base_url()?>kartupiutang/edit_status_piutang/<?= md5($detail['id_tagihan'])?>/piutang"><i class="fa fa-check-circle text-success"></i></a></center></td>
+                                                    <?php endif;?>
+                                                    <!-- <td><a href="#modal_edit_status_tagihan" data-id="<?= $detail['id_tagihan']?>|<?=$detail['ket']?>" data-toggle="modal" class="badge badge-<?= $color?> modal_edit_status_tagihan"><?= $detail['ket']?></a></td> -->
                                                     <td><a href="#" class="badge badge-success modalEditTagihan" data-toggle="modal" data-target="#modal_edit" data-id="<?= $detail['id_tagihan']?>">edit</a></td>
                                                     <td>-</td>
 
@@ -88,7 +93,7 @@
                                                     <td><center><?=$detail['metode']?></center></td>
                                                     <td>-</td>
                                                     <td><a href="#" class="badge badge-success modalEditCash" data-toggle="modal" data-target="#modal_edit" data-id="<?= $detail['id_pembayaran']?>">edit</a></td>
-                                                    <td><a href="<?=base_url()?>kartupiutang/kwitansi/<?= $detail['id_pembayaran']?>" target=_blank><center><i class="fa fa-print"></i></center></a></td>
+                                                    <td><a href="<?=base_url()?>transaksi/kuitansi/<?= MD5($detail['id_pembayaran'])?>" target=_blank><center><i class="fa fa-print"></i></center></a></td>
 
                                                 <?php elseif($detail['status'] == 'transfer') :?>
                                                     

@@ -35,57 +35,16 @@ class Fo_model extends CI_MODEL{
             $this->db->update($table, $data);
             return $this->db->affected_rows();
         }
+
+        public function nominal($nominal){
+            // $nominal = $this->input->post('nominal', true);
+            $nominal = str_replace("Rp. ", "", $nominal);
+            $nominal = str_replace(".", "", $nominal);
+            return $nominal;
+        }
     // tes 
 
-    // other
-        public function getPesertaById($id_peserta){
-            $this->db->select('*');
-            $this->db->from('peserta as a');
-            $this->db->join('alamat as b', 'a.id_peserta = b.id_peserta');
-            $this->db->join('pekerjaan as c', 'a.id_peserta = c.id_peserta');
-            $this->db->join('ortu as d', 'a.id_peserta = d.id_peserta');
-            $this->db->where('a.id_peserta', $id_peserta);
-            return $this->db->get()->row_array();
-        }
-    // other
-
-    // get all
-        public function get_all_program(){
-            $this->db->from("program");
-            $this->db->order_by("id_program");
-            return $this->db->get()->result_array();
-        }
-
-        public function get_all_pengajar(){
-            $this->db->from('kpq');
-            $this->db->order_by('nama_kpq', 'asc');
-            return $this->db->get()->result_array();
-        }
-
-        public function get_all_tagihan_reguler(){
-            $this->db->from("piutang_reguler");
-            $this->db->order_by("tgl_tagihan", "asc");
-            return $this->db->get()->result_array();
-        }
-
-        public function get_all_tagihan_pv_khusus(){
-            $this->db->from("piutang_pv_khusus as a");
-            $this->db->join("kelas as b", "a.id_kelas = b.id_kelas");
-            $this->db->order_by("tgl_tagihan", "asc");
-            return $this->db->get()->result_array();
-        }
-    // get all
-
     // get by
-        public function get_program_by_periode($bulan, $tahun){
-            $this->db->select("program");
-            $this->db->from("peserta as a");
-            $this->db->from("program as b", "a.program=b.nama_program");
-            $this->db->where("MONTH(tgl_masuk)", $bulan);
-            $this->db->where("YEAR(tgl_masuk)", $tahun);
-            $this->db->group_by("program");
-            return $this->db->get()->result_array();
-        }
 
         public function get_peserta_by_periode_by_jk($bulan, $tahun, $jk){
             $this->db->from("peserta");
@@ -112,108 +71,10 @@ class Fo_model extends CI_MODEL{
             return $this->db->get()->result_array();
         }
     
-        public function get_pekerjaan_by_periode($bulan, $tahun){
-            $pekerjaan = array("Pelajar", "Mahasiswa", "Swasta", "PNS/BUMN", "TNI/POLRI");
-    
-            $this->db->select("pekerjaan");
-            $this->db->from("peserta as a");
-            $this->db->join("pekerjaan as b", "a.id_peserta = b.id_peserta");
-            $this->db->where("MONTH(tgl_masuk)", $bulan);
-            $this->db->where("YEAR(tgl_masuk)", $tahun);
-            $this->db->where_in("pekerjaan", $pekerjaan);
-            $this->db->group_by("pekerjaan");
-            return $this->db->get()->result_array();
-        }
-    
-        public function get_pekerjaan_lainnya_by_periode($bulan, $tahun){
-            $pekerjaan = array("Pelajar", "Mahasiswa", "Swasta", "PNS/BUMN", "TNI/POLRI");
-            $this->db->from("peserta as a");
-            $this->db->join("pekerjaan as b", "a.id_peserta = b.id_peserta");
-            $this->db->where("MONTH(tgl_masuk)", $bulan);
-            $this->db->where("YEAR(tgl_masuk)", $tahun);
-            $this->db->where_not_in("pekerjaan", $pekerjaan);
-            // $this->db->group_by("pekerjaan");
-            return $this->db->get()->result_array();
-        }
-    
-        public function get_peserta_by_periode_by_pekerjaan($bulan, $tahun, $pekerjaan){
-            $this->db->from("peserta as a");
-            $this->db->join("pekerjaan as b", "a.id_peserta=b.id_peserta");
-            $this->db->where("pekerjaan", $pekerjaan);
-            $this->db->where("MONTH(tgl_masuk)", $bulan);
-            $this->db->where("YEAR(tgl_masuk)", $tahun);
-            return $this->db->get()->result_array();
-        }
-    
-        public function get_pekerjaan_lain_by_periode($bulan, $tahun){
-            $pekerjaan = array("Pelajar", "Mahasiswa", "Swasta", "PNS/BUMN", "TNI/POLRI");
-            $this->db->select("pekerjaan, count(a.id_peserta) as peserta");
-            $this->db->from("peserta as a");
-            $this->db->join("pekerjaan as b", "a.id_peserta = b.id_peserta");
-            $this->db->where("MONTH(tgl_masuk)", $bulan);
-            $this->db->where("YEAR(tgl_masuk)", $tahun);
-            $this->db->where_not_in("pekerjaan", $pekerjaan);
-            $this->db->group_by("pekerjaan");
-            return $this->db->get()->result_array();
-        }
-    
-        public function get_informasi_by_periode($bulan, $tahun){
-            $informasi = array("Teman", "Media Elektronik", "Spanduk", "Civitas Tar-Q", "Brosur", "Peserta", "Event");
-    
-            $this->db->select("info");
-            $this->db->from("peserta");
-            $this->db->where("MONTH(tgl_masuk)", $bulan);
-            $this->db->where("YEAR(tgl_masuk)", $tahun);
-            $this->db->where_in("info", $informasi);
-            $this->db->group_by("info");
-            return $this->db->get()->result_array();
-        }
-    
-        public function get_informasi_lainnya_by_periode($bulan, $tahun){
-            $informasi = array("Teman", "Media Elektronik", "Spanduk", "Civitas Tar-Q", "Brosur", "Peserta", "Event");
-    
-            $this->db->select("*");
-            $this->db->from("peserta");
-            $this->db->where("MONTH(tgl_masuk)", $bulan);
-            $this->db->where("YEAR(tgl_masuk)", $tahun);
-            $this->db->where_not_in("info", $informasi);
-            // $this->db->group_by("info");
-            return $this->db->get()->result_array();
-        }
-    
-        public function get_informasi_by_jenis($bulan, $tahun, $informasi){
-            $this->db->select("*");
-            $this->db->from("peserta");
-            $this->db->where("info", $informasi);
-            $this->db->where("MONTH(tgl_masuk)", $bulan);
-            $this->db->where("YEAR(tgl_masuk)", $tahun);
-            return $this->db->get()->result_array();
-        }
-    
-        public function get_informasi_lain_by_periode($bulan, $tahun){
-            $informasi = array("Teman", "Media Elektronik", "Spanduk", "Civitas Tar-Q", "Brosur", "Peserta", "Event");
-    
-            $this->db->select("nama_kpq, count(a.id_peserta) as peserta");
-            $this->db->from("peserta as a");
-            $this->db->join("kpq as b", "a.info = b.nip");
-            $this->db->where("MONTH(a.tgl_masuk)", $bulan);
-            $this->db->where("YEAR(a.tgl_masuk)", $tahun);
-            $this->db->group_by("nip");
-            return $this->db->get()->result_array();
-        }
-    
         public function get_kelas_by_periode($bulan, $tahun){
             $this->db->from("kelas");
             $this->db->where("MONTH(tgl_mulai)", $bulan);
             $this->db->where("YEAR(tgl_mulai)", $tahun);
-            return $this->db->get()->result_array();
-        }
-    
-        public function get_peserta_by_periode_by_program($bulan, $tahun, $program){
-            $this->db->from("peserta");
-            $this->db->where("MONTH(tgl_masuk)", $bulan);
-            $this->db->where("YEAR(tgl_masuk)", $tahun);
-            $this->db->where("program", $program);
             return $this->db->get()->result_array();
         }
         
@@ -252,16 +113,6 @@ class Fo_model extends CI_MODEL{
             $this->db->order_by('id_peserta', 'desc');
             return $this->db->get()->row_array();
         }
-
-        public function get_tanggal_between($tgl_awal, $tgl_akhir){
-            $this->db->select("tgl_pembayaran");
-            $this->db->from("pembayaran");
-            $where = "tgl_pembayaran between '$tgl_awal' AND '$tgl_akhir'";
-            $this->db->where($where);
-            $this->db->where("metode", "cash");
-            $this->db->group_by("tgl_pembayaran");
-            return $this->db->get()->result_array();
-        }
         
         public function get_transaksi_tanggal($tgl){
             $this->db->from("pembayaran");
@@ -277,66 +128,11 @@ class Fo_model extends CI_MODEL{
             $this->db->group_by("tgl_masuk");
             return $this->db->get()->result_array();
         }
-        
-        public function get_peserta_by_tgl_masuk($tgl_masuk){
-            $this->db->from("peserta as a");
-            $this->db->join("alamat as b", "a.id_peserta = b.id_peserta");
-            $this->db->join("pekerjaan as c", "a.id_peserta = c.id_peserta");
-            $this->db->join("ortu as d", "a.id_peserta = d.id_peserta");
-            $this->db->where("tgl_masuk", $tgl_masuk);
-            $this->db->group_by("tipe_peserta", "ASC");
-            return $this->db->get()->result_array();
-        }
 
         public function get_pengajar_by_nip($nip){
             $this->db->where("nip", $nip);
             $this->db->from("kpq");
             return $this->db->get()->row_array();
-        }
-
-        
-        public function get_buku_between($tgl_awal, $tgl_akhir){
-            $this->db->select("tgl_pembayaran as tgl");
-            $this->db->from("pembayaran");
-            $where = "tgl_pembayaran between '$tgl_awal' AND '$tgl_akhir'";
-            $this->db->where($where);
-            $this->db->where("keterangan", "Buku");
-            $this->db->group_by("tgl_pembayaran");
-            $data =  $this->db->get()->result_array();
-            $cash = [];
-            foreach ($data as $i => $data) {
-                $cash[$i] = $data['tgl'];
-            }
-
-            $this->db->select("tgl_transfer as tgl");
-            $this->db->from("transfer");
-            $where = "tgl_transfer between '$tgl_awal' AND '$tgl_akhir'";
-            $this->db->where($where);
-            $this->db->where("keterangan", "Buku");
-            $this->db->group_by("tgl_transfer");
-            $data =  $this->db->get()->result_array();
-            $transfer = [];
-            foreach ($data as $i => $data) {
-                $transfer[$i] = $data['tgl'];
-            }
-
-            $this->db->select("tgl_tagihan as tgl");
-            $this->db->from("tagihan");
-            $where = "tgl_tagihan between '$tgl_awal' AND '$tgl_akhir'";
-            $this->db->where($where);
-            $this->db->where("ket", "Buku");
-            $this->db->group_by("tgl_tagihan");
-            $data =  $this->db->get()->result_array();
-            $tagihan = [];
-            foreach ($data as $i => $data) {
-                $tagihan[$i] = $data['tgl'];
-            }
-
-            $tgl = array_unique(array_merge($cash, $transfer, $tagihan), SORT_REGULAR);
-            sort($tgl);
-            // var_dump($tgl);
-            // exit();
-            return $tgl;
         }
 
         public function get_buku_by_tgl($tgl){
@@ -421,7 +217,6 @@ class Fo_model extends CI_MODEL{
         public function get_last_id_transfer(){
             $bulan = date("m", strtotime($this->input->post("tgl")));
             $tahun = date("Y", strtotime($this->input->post("tgl")));
-
             $this->db->select("substr(id_transfer, 1, 3) as id");
             $this->db->from("transfer");
             $this->db->where("MONTH(tgl_transfer)", $bulan);

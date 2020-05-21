@@ -661,7 +661,17 @@ class Kartupiutang extends CI_CONTROLLER{
             redirect($_SERVER['HTTP_REFERER']);
         }
     // add
-
+    
+    // edit data
+        public function edit_status_piutang($id, $status){
+            $result = $this->Fo_model->edit_data("tagihan", ["MD5(id_tagihan)" => $id], ["status" => $status]);
+            if($result)
+                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil merubah status piutang<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            else
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Gagal merubah status piutang<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+    // edit data
     public function kwitansi($id){
         $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-P']);
         

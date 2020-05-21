@@ -4,6 +4,7 @@ class Kelas extends CI_CONTROLLER{
     public function __construct(){
         parent::__construct();
         $this->load->model('Kelas_model');
+        $this->load->model('Fo_model');
         if($this->session->userdata('status') != "login"){
             $this->session->set_flashdata('login', 'Maaf, Anda harus login terlebih dahulu');
 			redirect(base_url("login"));
@@ -52,34 +53,21 @@ class Kelas extends CI_CONTROLLER{
         $this->load->view('templates/footer');
     }
 
-    public function editWl(){
-        $id_kelas = $_POST['id_kelas'];
-        $this->Kelas_model->editWl($id_kelas);
-        $this->session->set_flashdata('wl', 'diedit');
-        redirect($_SERVER['HTTP_REFERER']);
-    }
-
     public function dataKelasById(){
         $id_kelas = $_POST['id_kelas'];
         $kelas = $this->Kelas_model->dataKelasById($id_kelas);
         echo json_encode($kelas);
     }
-    
-    public function dataKelasWlById(){
-        $id_kelas = $_POST['id_kelas'];
-        $kelas = $this->Kelas_model->dataKelasWlById($id_kelas);
-        echo json_encode($kelas);
-    }
 
     public function dataPesertaById(){
         $id_kelas = $_POST['id_kelas'];
-        $kelas = $this->Kelas_model->dataPesertaById($id_kelas);
+        $kelas = $this->Fo_model->get_all("peserta", ["id_kelas" => $id_kelas]);
         echo json_encode($kelas);
     }
 
     public function dataJadwalById(){
         $id_kelas = $_POST['id_kelas'];
-        $kelas = $this->Kelas_model->dataJadwalById($id_kelas);
+        $kelas = $this->Fo_model->get_all("jadwal", ["id_kelas" => $id_kelas, "status" => 'aktif']);
         echo json_encode($kelas);
     }
 
