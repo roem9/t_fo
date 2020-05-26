@@ -12,12 +12,12 @@ class Fo_model extends CI_MODEL{
             return $this->db->get()->row_array();
         }
 
-        public function get_all($table, $where = "", $order = ""){
+        public function get_all($table, $where = "", $order = "", $by = "ASC"){
             $this->db->from($table);
             if($where)
                 $this->db->where($where);
             if($order)
-                $this->db->order_by($order, "ASC");
+                $this->db->order_by($order, $by);
             return $this->db->get()->result_array();
         }
 
@@ -36,8 +36,13 @@ class Fo_model extends CI_MODEL{
             return $this->db->affected_rows();
         }
 
+        public function delete_data($table, $where){
+            $this->db->where($where);
+            $this->db->delete($table);
+            return $this->db->affected_rows();
+        }
+
         public function nominal($nominal){
-            // $nominal = $this->input->post('nominal', true);
             $nominal = str_replace("Rp. ", "", $nominal);
             $nominal = str_replace(".", "", $nominal);
             return $nominal;
@@ -176,23 +181,23 @@ class Fo_model extends CI_MODEL{
             return $data;
         }
 
-        public function get_data_kelas_by_id($id_kelas){
-            $this->db->from("kelas");
-            $this->db->where("id_kelas", $id_kelas);
-            return $this->db->get()->row_array();
-        }
+        // public function get_data_kelas_by_id($id_kelas){
+        //     $this->db->from("kelas");
+        //     $this->db->where("id_kelas", $id_kelas);
+        //     return $this->db->get()->row_array();
+        // }
 
-        public function get_kpq_by_id($nip){
-            $this->db->from("kpq");
-            $this->db->where("nip", $nip);
-            return $this->db->get()->row_array();
-        }
+        // public function get_kpq_by_id($nip){
+        //     $this->db->from("kpq");
+        //     $this->db->where("nip", $nip);
+        //     return $this->db->get()->row_array();
+        // }
 
-        public function get_data_peserta_by_id($id_peserta){
-            $this->db->from("peserta");
-            $this->db->where("id_peserta", $id_peserta);
-            return $this->db->get()->row_array();
-        }
+        // public function get_data_peserta_by_id($id_peserta){
+        //     $this->db->from("peserta");
+        //     $this->db->where("id_peserta", $id_peserta);
+        //     return $this->db->get()->row_array();
+        // }
     // get by
 
     // get last id
@@ -252,159 +257,43 @@ class Fo_model extends CI_MODEL{
             }
         }
         
-        // public function add_peserta($no_urut, $status){
-        //     $tgl_daftar = $this->input->post("tgl_daftar");
-        //     $tahun = date('y', strtotime($tgl_daftar));
-        //     $bulan = date('m', strtotime($tgl_daftar));
-        //     $tipe = $this->input->post('tipe_peserta');
-
-        //     // id peserta
-        //         if ($tipe == 'reguler'){
-        //             $tipe = 'PR';
-        //         } else if ($tipe == 'pv khusus'){
-        //             $tipe = 'PK';
-        //         } else if ($tipe == 'pv luar'){
-        //             $tipe = 'PL';
-        //         }
-
-        //         if ($no_urut < 10){
-        //             $id_peserta = $tipe.$bulan.$tahun.'.000'.$no_urut;
-        //         } else if($no_urut >= 10 && $no_urut < 100){
-        //             $id_peserta = $tipe.$bulan.$tahun.'.00'.$no_urut;
-        //         } else if($no_urut >= 100 && $no_urut <1000){
-        //             $id_peserta = $tipe.$bulan.$tahun.'.0'.$no_urut;
-        //         } else {
-        //             $id_peserta = $tipe.$bulan.$tahun.'.'.$no_urut;
-        //         }
-        //     // id peserta
-
-        //     $info = $this->input->post("info", true);
-        //     if($info == 'Lainnya') {
-        //         $info = $this->input->post("civitas", true);
-        //     }
-
-        //     $pekerjaan = $this->input->post("pekerjaan", true);
-        //     if($pekerjaan == 'Lainnya') {
-        //         $pekerjaan = $this->input->post("pekerjaan_lainnya", true);
-        //     }
-            
-        //     $data['peserta'] = [
-        //         "id_peserta" => $id_peserta,
-        //         "nama_peserta" => $this->input->post('nama_peserta', true),
-        //         "tipe_peserta" => $this->input->post('tipe_peserta', true),
-        //         "t4_lahir" => $this->input->post('t4_lahir', true),
-        //         "tgl_lahir" => $this->input->post('tgl_lahir', true),
-        //         "jk" => $this->input->post('jk', true),
-        //         "pendidikan" => $this->input->post('pendidikan', true),
-        //         "status_nikah" => $this->input->post('status_nikah', true),
-        //         "no_hp" => $this->input->post('no_hp', true),
-        //         "info" => $info,
-        //         "status" => $status,
-        //         "umur" => $this->input->post('umur', true),
-        //         "program" => $this->input->post('program', true),
-        //         "hari" => $this->input->post('hari', true),
-        //         "jam" => $this->input->post('jam', true),
-        //         "tempat" => $this->input->post('tempat', true),
-        //         "tgl_masuk" => $tgl_daftar
-        //     ];
-
-        //     $this->db->insert('peserta', $data['peserta']);
-
-        //     $data['alamat'] = [
-        //         "alamat" => $this->input->post('alamat', true),
-        //         "kab_kota" => $this->input->post('kab_kota', true),
-        //         "provinsi" => $this->input->post('provinsi', true),
-        //         "email" => $this->input->post('email', true),
-        //         "kec" => $this->input->post('kec', true),
-        //         "kel" => $this->input->post('kel', true),
-        //         "no_telp" => $this->input->post('no_telp', true),
-        //         "kd_pos" => $this->input->post('kd_pos', true),
-        //         "id_peserta" => $id_peserta
-        //     ];
-
-        //     $this->db->insert('alamat', $data['alamat']);
-
-        //     $data['ortu'] = [
-        //         "nama_ayah" => $this->input->post('nama_ayah', true),
-        //         "t4_lahir_ayah" => $this->input->post('t4_lahir_ayah', true),
-        //         "tgl_lahir_ayah" => $this->input->post('tgl_lahir_ayah', true),
-        //         "nama_ibu" => $this->input->post('nama_ibu', true),
-        //         "t4_lahir_ibu" => $this->input->post('t4_lahir_ibu', true),
-        //         "tgl_lahir_ibu" => $this->input->post('tgl_lahir_ibu', true),
-        //         "id_peserta" => $id_peserta
-        //     ];
-
-        //     $this->db->insert('ortu', $data['ortu']);
-
-        //     $data['pekerjaan'] = [
-        //         "pekerjaan" => $pekerjaan,
-        //         "nama_perusahaan" => $this->input->post('nama_perusahaan', true),
-        //         "no_telp_perusahaan" => $this->input->post('no_telp_perusahaan', true),
-        //         "alamat_perusahaan" => $this->input->post('alamat_perusahaan', true),
-        //         "id_peserta" => $id_peserta
-        //     ];
-
-        //     $this->db->insert('pekerjaan', $data['pekerjaan']);
-            
-        //     // ketika menambahkan peserta dari kelas yang sudah ada
-        //         if($this->input->post("id_kelas", true)){
-        //             $this->db->where("id_peserta", $id_peserta);
-        //             $this->db->update("peserta", ["id_kelas" => $_POST['id_kelas']]);
-        //         }
-        //     // ketika menambahkan peserta dari kelas yang sudah ada
-
-        //     return $id_peserta;
-        // }
-        
         public function add_kelas($data){
             $this->db->insert('kelas', $data);
         }
 
-        // public function add_koor_kelas($id_kelas, $id_peserta){
-        //     $data['koor'] = [
-        //         "id_kelas" => $id_kelas,
-        //         "id_peserta" => $id_peserta
-        //     ];
-    
-        //     $this->db->insert('kelas_koor', $data['koor']);
-            
-        //     $this->db->where('id_peserta', $id_peserta);
-        //     $this->db->update('peserta', ["id_kelas" => $id_kelas]);
-        // }
-        
         public function add_koor_kelas($data, $id_kelas, $id_peserta){
             $this->db->insert('kelas_koor', $data);
             $this->db->where('id_peserta', $id_peserta);
             $this->db->update('peserta', ["id_kelas" => $id_kelas]);
         }
 
-        public function add_deposit($data){
-            $this->db->insert("deposit", $data);
-        }
+        // public function add_deposit($data){
+        //     $this->db->insert("deposit", $data);
+        // }
 
-        public function add_deposit_by_tipe($tipe, $data){
-            $this->db->insert($tipe, $data);
-        }
+        // public function add_deposit_by_tipe($tipe, $data){
+        //     $this->db->insert($tipe, $data);
+        // }
 
-        public function add_tagihan($data){
-            $this->db->insert("tagihan", $data);
-        }
+        // public function add_tagihan($data){
+        //     $this->db->insert("tagihan", $data);
+        // }
 
-        public function add_tagihan_by_tipe($tipe, $data){
-            $this->db->insert($tipe, $data);
-        }
+        // public function add_tagihan_by_tipe($tipe, $data){
+        //     $this->db->insert($tipe, $data);
+        // }
 
-        public function add_pembayaran($data){
-            $this->db->insert("pembayaran", $data);
-        }
+        // public function add_pembayaran($data){
+        //     $this->db->insert("pembayaran", $data);
+        // }
 
-        public function add_pembayaran_by_tipe($tipe, $data){
-            $this->db->insert($tipe, $data);
-        }
+        // public function add_pembayaran_by_tipe($tipe, $data){
+        //     $this->db->insert($tipe, $data);
+        // }
 
-        public function add_transfer($data){
-            $this->db->insert("transfer", $data);
-        }
+        // public function add_transfer($data){
+        //     $this->db->insert("transfer", $data);
+        // }
 
         public function add_transfer_by_tipe($tipe, $data){
             $this->db->insert($tipe, $data);

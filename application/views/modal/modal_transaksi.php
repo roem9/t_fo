@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title nama-title" id="exampleModalScrollableTitle"></h5>
+                <h5 class="modal-title nama-title" id="exampleModalScrollableTitle"><?= $nama?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -31,7 +31,7 @@
                             <input type="hidden" name="pengajar" value="<?= $kpq?>">
                             <div class="form-group">
                                 <label for="nama_kwitansi">Nama</label>
-                                <input type="text" name="nama" id="nama_kwitansi" class="form-control form-control-sm">
+                                <input type="text" name="nama" class="form-control form-control-sm" value="<?= $nama?>">
                             </div>
                             <div class="form-group">
                                 <label for="">Pembayaran Untuk?</label>
@@ -76,7 +76,7 @@
                             <input type="hidden" name="id" value="<?= $id?>">
                             <div class="form-group">
                                 <label for="nama_tagihan">Nama</label>
-                                <input type="text" name="nama" id="nama_tagihan" class="form-control form-control-sm">
+                                <input type="text" name="nama" class="form-control form-control-sm" value="<?= $nama?>">
                             </div>
                             <div class="form-group">
                                 <label for="piutang">Jenis Piutang</label>
@@ -111,7 +111,7 @@
                             <input type="hidden" name="pengajar" value="<?= $kpq?>">
                             <div class="form-group">
                                 <label for="nama_deposit">Nama</label>
-                                <input type="text" name="nama" id="nama_deposit" class="form-control form-control-sm">
+                                <input type="text" name="nama" class="form-control form-control-sm" value="<?= $nama?>">
                             </div>
                             <div class="form-group">
                                 <label for="">Pembayaran Untuk?</label>
@@ -150,7 +150,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="nominal_deposit">Nominal</label>
-                                <input type="text" name="nominal" id="nominal_deposit" class="form-control form-control-sm" required>
+                                <input type="text" name="nominal" class="form-control form-control-sm" required>
                             </div>
                             <div class="d-flex justify-content-end">
                                 <input type="submit" value="Tambah Pembayaran" class="btn btn-sm btn-primary" id="btn-submit-3">

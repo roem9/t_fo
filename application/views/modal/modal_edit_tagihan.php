@@ -8,8 +8,7 @@
         </button>
       </div>
       <div class="modal-body cus-font">
-        <form action="<?=base_url()?>kartupiutang/edit_transaksi" method="POST" id="form-edit">
-          <input type="hidden" name="transaksi" id="transaksi">
+        <form action="" method="POST" id="form-edit">
           <input type="hidden" name="id" id="id">
           <div class="form-group">
             <label for="password">Password</label>
@@ -33,7 +32,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <input type="submit" class="btn btn-success btn-sm" value="Edit" id="hapusInvoice">
+          <input type="submit" class="btn btn-success btn-sm" value="Edit" id="edit_transaksi">
         </div>
       </form>
     </div>

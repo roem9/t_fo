@@ -123,11 +123,11 @@ class KartuPiutang_model extends CI_MODEL{
         return $this->db->get()->result_array();
     }
 
-    public function getDataKpq($nip){
-        $this->db->from("kpq");
-        $this->db->where("nip", $nip);
-        return $this->db->get()->row_array();
-    }
+    // public function getDataKpq($nip){
+    //     $this->db->from("kpq");
+    //     $this->db->where("nip", $nip);
+    //     return $this->db->get()->row_array();
+    // }
     
     public function getTagihanPeserta($id_peserta){
         $this->db->from("tagihan as a");
@@ -437,17 +437,17 @@ class KartuPiutang_model extends CI_MODEL{
         }
     }
 
-    public function edit_pembayaran_cash(){
-        $data = [
-            "nama_pembayaran" => $this->input->post("nama", TRUE),
-            "tgl_pembayaran" => $this->input->post("tgl"),
-            "uraian" => $this->input->post("uraian"),
-            "nominal" => $this->input->post("nominal")
-        ];
+    // public function edit_pembayaran_cash(){
+    //     $data = [
+    //         "nama_pembayaran" => $this->input->post("nama", TRUE),
+    //         "tgl_pembayaran" => $this->input->post("tgl"),
+    //         "uraian" => $this->input->post("uraian"),
+    //         "nominal" => $this->input->post("nominal")
+    //     ];
 
-        $this->db->where("id_pembayaran", $this->input->post("id"));
-        $this->db->update("pembayaran", $data);
-    }
+    //     $this->db->where("id_pembayaran", $this->input->post("id"));
+    //     $this->db->update("pembayaran", $data);
+    // }
 
     public function edit_invoice(){
         $id = $this->input->post("id");
@@ -461,17 +461,17 @@ class KartuPiutang_model extends CI_MODEL{
         $this->db->update("invoice", $data);
     }
 
-    public function edit_tagihan(){
-        $data = [
-            "nama_tagihan" => $this->input->post("nama", TRUE),
-            "tgl_tagihan" => $this->input->post("tgl"),
-            "uraian" => $this->input->post("uraian"),
-            "nominal" => $this->input->post("nominal")
-        ];
+    // public function edit_tagihan(){
+    //     $data = [
+    //         "nama_tagihan" => $this->input->post("nama", TRUE),
+    //         "tgl_tagihan" => $this->input->post("tgl"),
+    //         "uraian" => $this->input->post("uraian"),
+    //         "nominal" => $this->input->post("nominal")
+    //     ];
 
-        $this->db->where("id_tagihan", $this->input->post("id"));
-        $this->db->update("tagihan", $data);
-    }
+    //     $this->db->where("id_tagihan", $this->input->post("id"));
+    //     $this->db->update("tagihan", $data);
+    // }
 
     public function edit_uraian(){
         foreach ($_POST['uraian'] as $i => $uraian) {
@@ -485,24 +485,24 @@ class KartuPiutang_model extends CI_MODEL{
         }
     }
     
-    public function edit_deposit(){
-        $data = [
-            "nama_deposit" => $this->input->post("nama", TRUE),
-            "tgl_deposit" => $this->input->post("tgl"),
-            "uraian" => $this->input->post("uraian"),
-            "nominal" => $this->input->post("nominal")
-        ];
+    // public function edit_deposit(){
+    //     $data = [
+    //         "nama_deposit" => $this->input->post("nama", TRUE),
+    //         "tgl_deposit" => $this->input->post("tgl"),
+    //         "uraian" => $this->input->post("uraian"),
+    //         "nominal" => $this->input->post("nominal")
+    //     ];
 
-        $this->db->where("id_deposit", $this->input->post("id"));
-        $this->db->update("deposit", $data);
-    }
+    //     $this->db->where("id_deposit", $this->input->post("id"));
+    //     $this->db->update("deposit", $data);
+    // }
 
-    public function get_data_tagihan(){
-        $id = $this->input->post("id");
-        $this->db->from("tagihan");
-        $this->db->where("id_tagihan", $id);
-        return $this->db->get()->row_array();
-    }
+    // public function get_data_tagihan(){
+    //     $id = $this->input->post("id");
+    //     $this->db->from("tagihan");
+    //     $this->db->where("id_tagihan", $id);
+    //     return $this->db->get()->row_array();
+    // }
     
     public function get_data_tagihan_kelas(){
         $id = $this->input->post("id");
@@ -720,10 +720,10 @@ class KartuPiutang_model extends CI_MODEL{
             return $this->db->get()->result_array();
         }
     
-        public function get_data_deposit($id){
-            $this->db->from("deposit");
-            $this->db->where("id_deposit", $id);
-            return $this->db->get()->row_array();
-        }
+        // public function get_data_deposit($id){
+        //     $this->db->from("deposit");
+        //     $this->db->where("id_deposit", $id);
+        //     return $this->db->get()->row_array();
+        // }
     // get data
 }

@@ -15,7 +15,8 @@ class Kartupiutang extends CI_CONTROLLER{
         $data['kelas'] = $this->KartuPiutang_model->dataKelasPrivat($id_kelas);
         $data['peserta'] = $this->KartuPiutang_model->dataPesertaById($id_kelas);
         $data['jadwal'] = $this->KartuPiutang_model->dataJadwalById($id_kelas);
-
+        
+        $data['bulan'] = ["1" => "Januari", "2" => "Februari", "3" => "Maret", "4" => "April", "5" => "Mei", "6" => "Juni", "7" => "Juli", "8" => "Agustus", "9" => "September", "10" => "Oktober", "11" => "November", "12" => "Desember"];
         $data['header'] = "Kartu Piutang {$data['kelas']['nama_peserta']}";
         $data['title'] = "Kartu Piutang {$data['kelas']['nama_peserta']}";
 
@@ -73,11 +74,14 @@ class Kartupiutang extends CI_CONTROLLER{
         $data['kbm'] = $this->KartuPiutang_model->get_data_kbm($id_kelas);
         
         // data modal
-            $kelas = $this->Fo_model->get_data_kelas_by_id($id_kelas);
-            $kpq = $this->Fo_model->get_kpq_by_id($kelas['nip']);
+            // $kelas = $this->Fo_model->get_data_kelas_by_id($id_kelas);
+            $kelas = $this->Fo_model->get_one("kelas", ["id_kelas" => $id_kelas]);
+            // $kpq = $this->Fo_model->get_kpq_by_id($kelas['nip']);
+            $kpq = $this->Fo_model->get_one("kpq", ["nip" => $kelas['nip']]);
             $data['kpq'] = $kpq['nama_kpq'];
             $data['tipe'] = "kelas";
             $data['id'] = $id_kelas;
+            $data['nama'] = $data['kelas']['nama_peserta'];
         // data modal
 
         $this->load->view('templates/header', $data);
@@ -90,11 +94,10 @@ class Kartupiutang extends CI_CONTROLLER{
     }
 
     public function kpq($nip){
-        $data['kpq'] = $this->KartuPiutang_model->getDataKpq($nip);
+        // $data['kpq'] = $this->KartuPiutang_model->getDataKpq($nip);
+        $data['kpq'] = $this->Fo_model->get_one("kpq", ["nip" => $nip]);
         $data['header'] = "Kartu Piutang {$data['kpq']['nama_kpq']}";
         $data['title'] = "Kartu Piutang {$data['kpq']['nama_kpq']}";
-
-        
         $data['total'] = 0;
         $data['detail'] = [];
         $i = 0;
@@ -148,6 +151,7 @@ class Kartupiutang extends CI_CONTROLLER{
         });
         
         // data modal
+            $data['nama'] = $data['kpq']['nama_kpq'];
             $data['kpq'] = "-";
             $data['tipe'] = "kpq";
             $data['id'] = $nip;
@@ -222,16 +226,20 @@ class Kartupiutang extends CI_CONTROLLER{
         });
         
         // data modal
-            $peserta = $this->Fo_model->get_data_peserta_by_id($id_peserta);
-            $kelas = $this->Fo_model->get_data_kelas_by_id($peserta['id_kelas']);
+            // $peserta = $this->Fo_model->get_data_peserta_by_id($id_peserta);
+            $peserta = $this->Fo_model->get_one("peserta", ["id_peserta" => $id_peserta]);
+            // $kelas = $this->Fo_model->get_data_kelas_by_id($peserta['id_kelas']);
+            $kelas = $this->Fo_model->get_one("kelas", ["id_kelas" => $peserta['id_kelas']]);
             if($kelas){
-                $kpq = $this->Fo_model->get_kpq_by_id($kelas['nip']);
+                // $kpq = $this->Fo_model->get_kpq_by_id($kelas['nip']);
+                $kpq = $this->Fo_model->get_one("kpq", ["nip" => $kelas['nip']]);
                 $data['kpq'] = $kpq['nama_kpq'];
             } else {
                 $data['kpq'] = "-";
             }
             $data['tipe'] = "peserta";
             $data['id'] = $id_peserta;
+            $data['nama'] = $peserta['nama_peserta'];
         // data modal
         
         $this->load->view('templates/header', $data);
@@ -240,7 +248,7 @@ class Kartupiutang extends CI_CONTROLLER{
         $this->load->view('modal/modal_edit_invoice');
         $this->load->view('modal/modal_edit_tagihan', $data);
         $this->load->view('modal/modal_transaksi', $data);
-        $this->load->view('modal/modal_edit_status_tagihan');
+        // $this->load->view('modal/modal_edit_status_tagihan');
         $this->load->view('piutang/kartu-piutang-peserta', $data);
         $this->load->view('templates/footer');
     }
@@ -258,7 +266,7 @@ class Kartupiutang extends CI_CONTROLLER{
 
         public function getDataKpq(){
             $nip = $this->input->post("nip");
-            echo json_encode($this->KartuPiutang_model->getDataKpq($nip));
+            echo json_encode($this->Fo_model->get_one("kpq", ["nip" => $nip]));
         }
     // get data
 
@@ -267,28 +275,54 @@ class Kartupiutang extends CI_CONTROLLER{
             $password = $this->input->post("password", true);
             
             if($password == 'wkwkwk'){
-                $this->KartuPiutang_model->edit_deposit();
+                $id_deposit = $this->input->post("id");
+                $data = [
+                    "nama_deposit" => $this->input->post("nama", TRUE),
+                    "tgl_deposit" => $this->input->post("tgl"),
+                    "uraian" => $this->input->post("uraian"),
+                    "nominal" => $this->nominal($this->input->post("nominal"))
+                ];
+                
+                $result = $this->Fo_model->edit_data("deposit", ["id_deposit" => $id_deposit], $data);
             } 
+            if($result)
+                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            else
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Password salah, gagal merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             redirect($_SERVER['HTTP_REFERER']);
         }
 
-        public function edit_transaksi(){
-            $password = $this->input->post("password", true);
+        // public function edit_transaksi(){
+        //     $password = $this->input->post("password", true);
             
-            if($password == 'wkwkwk'){
-                $this->KartuPiutang_model->edit_transaksi();
-            } 
+        //     if($password == 'wkwkwk'){
+        //         $this->KartuPiutang_model->edit_transaksi();
+        //     } 
             // $this->session->set_flashdata('piutang', 'ditambahkan');
-            redirect($_SERVER['HTTP_REFERER']);
-        }
+        //     redirect($_SERVER['HTTP_REFERER']);
+        // }
         
         public function edit_pembayaran_cash(){
             $password = $this->input->post("password", true);
             
             if($password == 'wkwkwk'){
-                $this->KartuPiutang_model->edit_pembayaran_cash();
+                // $this->KartuPiutang_model->edit_pembayaran_cash();
+                $id = $this->input->post("id");
+                $data = [
+                    "nama_pembayaran" => $this->input->post("nama", TRUE),
+                    "tgl_pembayaran" => $this->input->post("tgl"),
+                    "uraian" => $this->input->post("uraian"),
+                    "nominal" => $this->nominal($this->input->post("nominal"))
+                ];
+                $result = $this->Fo_model->edit_data("pembayaran", ["id_pembayaran" => $id], $data);
+                // $this->db->where("id_pembayaran", $this->input->post("id"));
+                // $this->db->update("pembayaran", $data);
             } 
 
+            if($result)
+                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            else
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Password salah, gagal merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             redirect($_SERVER['HTTP_REFERER']);
         }
 
@@ -296,9 +330,23 @@ class Kartupiutang extends CI_CONTROLLER{
             $password = $this->input->post("password", true);
             
             if($password == 'wkwkwk'){
-                $this->KartuPiutang_model->edit_tagihan();
+                // $this->KartuPiutang_model->edit_tagihan();
+                $id = $this->input->post("id");
+                $data = [
+                    "nama_tagihan" => $this->input->post("nama", TRUE),
+                    "tgl_tagihan" => $this->input->post("tgl"),
+                    "uraian" => $this->input->post("uraian"),
+                    "nominal" => $this->nominal($this->input->post("nominal"))
+                ];
+                $result = $this->Fo_model->edit_data("tagihan", ["id_tagihan" => $id], $data);
+                // $this->db->where("id_tagihan", $this->input->post("id"));
+                // $this->db->update("tagihan", $data);
             } 
 
+            if($result)
+                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            else
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Password salah, gagal merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             redirect($_SERVER['HTTP_REFERER']);
         }
     // edit
@@ -324,26 +372,26 @@ class Kartupiutang extends CI_CONTROLLER{
                     "keterangan" => $this->input->post("keterangan"),
                     "metode" => $this->input->post("metode")
                 ]; 
-                $this->Fo_model->add_deposit($data);
+                $this->Fo_model->add_data("deposit", $data);
                 // deposit sesuai tipe
                     if($tipe == 'kelas'){
                         $data = [
                             "id_deposit" => $id_deposit,
                             "id_kelas" => $this->input->post('id')
                         ];
-                        $this->Fo_model->add_deposit_by_tipe("deposit_kelas", $data);
+                        $this->Fo_model->add_data("deposit_kelas", $data);
                     } else if($tipe == 'peserta'){
                         $data = [
                             "id_deposit" => $id_deposit,
                             "id_peserta" => $this->input->post('id')
                         ];
-                        $this->Fo_model->add_deposit_by_tipe("deposit_peserta", $data);
+                        $this->Fo_model->add_data("deposit_peserta", $data);
                     } else if($tipe == 'kpq'){
                         $data = [
                             "id_deposit" => $id_deposit,
                             "nip" => $this->input->post('id')
                         ];
-                        $this->Fo_model->add_deposit_by_tipe("deposit_kpq", $data);
+                        $this->Fo_model->add_data("deposit_kpq", $data);
                     }
                 // deposit sesuai tipe
                 $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil melakukan transaksi langsung dengan metode <b>deposit</b><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
@@ -361,28 +409,27 @@ class Kartupiutang extends CI_CONTROLLER{
                         "nominal" => $this->nominal($this->input->post("nominal")),
                         "status" => "lunas"
                     ];
+                    $this->Fo_model->add_data("tagihan", $data);
 
-                    $this->Fo_model->add_tagihan($data);
-                    
                     // tagihan sesuai tipe
                         if($tipe == "peserta"){
                             $data = [
                                 "id_tagihan" => $id_tagihan,
                                 "id_peserta" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_tagihan_by_tipe("tagihan_peserta", $data);
+                            $this->Fo_model->add_data("tagihan_peserta", $data);
                         } else  if($tipe == "kelas"){
                             $data = [
                                 "id_tagihan" => $id_tagihan,
                                 "id_kelas" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_tagihan_by_tipe("tagihan_kelas", $data);
+                            $this->Fo_model->add_data("tagihan_kelas", $data);
                         } else if($tipe == "kpq"){
                             $data = [
                                 "id_tagihan" => $id_tagihan,
                                 "nip" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_tagihan_by_tipe("tagihan_kpq", $data);
+                            $this->Fo_model->add_data("tagihan_kpq", $data);
                         }
                     // tagihan sesuai tipe
                 // tagihan
@@ -399,30 +446,30 @@ class Kartupiutang extends CI_CONTROLLER{
                         "keterangan" => $this->input->post("keterangan", TRUE),
                         "pengajar" => $this->input->post("pengajar", TRUE)
                     ];
-                    $this->Fo_model->add_pembayaran($data);
+                    $this->Fo_model->add_data("pembayaran", $data);
+
                     // pembayaran sesuai tipe
                         if($tipe == "peserta"){
                             $data = [
                                 "id_pembayaran" => $id_pembayaran,
                                 "id_peserta" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_pembayaran_by_tipe("pembayaran_peserta", $data);
+                            $this->Fo_model->add_data("pembayaran_peserta", $data);
                         } else  if($tipe == "kelas"){
                             $data = [
                                 "id_pembayaran" => $id_pembayaran,
                                 "id_kelas" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_pembayaran_by_tipe("pembayaran_kelas", $data);
+                            $this->Fo_model->add_data("pembayaran_kelas", $data);
                         } else if($tipe == "kpq"){
                             $data = [
                                 "id_pembayaran" => $id_pembayaran,
                                 "nip" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_pembayaran_by_tipe("pembayaran_kpq", $data);
+                            $this->Fo_model->add_data("pembayaran_kpq", $data);
                         }
                     // pembayaran sesuai tipe
                 // pembayaran
-                
                 $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil melakukan transaksi langsung dengan metode <b>cash</b><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             } else if($metode == "Transfer"){
                 // saat pembayaran cash insert tagihan yang berstatus lunas dan transfer
@@ -439,7 +486,7 @@ class Kartupiutang extends CI_CONTROLLER{
                         "status" => "lunas"
                     ];
 
-                    $this->Fo_model->add_tagihan($data);
+                    $this->Fo_model->add_data("tagihan", $data);
                     
                     // tagihan sesuai tipe
                         if($tipe == "peserta"){
@@ -447,19 +494,19 @@ class Kartupiutang extends CI_CONTROLLER{
                                 "id_tagihan" => $id_tagihan,
                                 "id_peserta" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_tagihan_by_tipe("tagihan_peserta", $data);
+                            $this->Fo_model->add_data("tagihan_peserta", $data);
                         } else  if($tipe == "kelas"){
                             $data = [
                                 "id_tagihan" => $id_tagihan,
                                 "id_kelas" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_tagihan_by_tipe("tagihan_kelas", $data);
+                            $this->Fo_model->add_data("tagihan_kelas", $data);
                         } else if($tipe == "kpq"){
                             $data = [
                                 "id_tagihan" => $id_tagihan,
                                 "nip" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_tagihan_by_tipe("tagihan_kpq", $data);
+                            $this->Fo_model->add_data("tagihan_kpq", $data);
                         }
                     // tagihan sesuai tipe
                 // tagihan
@@ -488,26 +535,26 @@ class Kartupiutang extends CI_CONTROLLER{
                         "metode" => $this->input->post("metode"),
                         "alamat" => ''
                     ];
-                    $this->Fo_model->add_transfer($data);
+                    $this->Fo_model->add_data("transfer", $data);
                     // transfer sesuai tipe
                         if($tipe == "peserta"){
                             $data = [
                                 "id_transfer" => $id_transfer,
                                 "id_peserta" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_transfer_by_tipe("transfer_peserta", $data);
+                            $this->Fo_model->add_data("transfer_peserta", $data);
                         } else  if($tipe == "kelas"){
                             $data = [
                                 "id_transfer" => $id_transfer,
                                 "id_kelas" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_transfer_by_tipe("transfer_kelas", $data);
+                            $this->Fo_model->add_data("transfer_kelas", $data);
                         } else if($tipe == "kpq"){
                             $data = [
                                 "id_transfer" => $id_transfer,
                                 "nip" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_transfer_by_tipe("transfer_kpq", $data);
+                            $this->Fo_model->add_data("transfer_kpq", $data);
                         }
                     // transfer sesuai tipe
                 // transfer
@@ -518,11 +565,9 @@ class Kartupiutang extends CI_CONTROLLER{
 
         public function add_piutang(){
             $tipe = $this->input->post("tipe");
-
             // tagihan
                 $id_tagihan = $this->Fo_model->get_last_id_tagihan();
                 $id_tagihan = $id_tagihan['id_tagihan'] + 1;
-
                 $data = [
                     "id_tagihan" => $id_tagihan,
                     "tgl_tagihan" => $this->input->post("tgl"),
@@ -531,32 +576,29 @@ class Kartupiutang extends CI_CONTROLLER{
                     "nominal" => $this->nominal($this->input->post("nominal")),
                     "status" => "piutang"
                 ];
-
-                $this->Fo_model->add_tagihan($data);
-                
+                $this->Fo_model->add_data("tagihan", $data);
                 // tagihan sesuai tipe
                     if($tipe == "peserta"){
                         $data = [
                             "id_tagihan" => $id_tagihan,
                             "id_peserta" => $this->input->post("id", TRUE)
                         ];
-                        $this->Fo_model->add_tagihan_by_tipe("tagihan_peserta", $data);
+                        $this->Fo_model->add_data("tagihan_peserta", $data);
                     } else  if($tipe == "kelas"){
                         $data = [
                             "id_tagihan" => $id_tagihan,
                             "id_kelas" => $this->input->post("id", TRUE)
                         ];
-                        $this->Fo_model->add_tagihan_by_tipe("tagihan_kelas", $data);
+                        $this->Fo_model->add_data("tagihan_kelas", $data);
                     } else if($tipe == "kpq"){
                         $data = [
                             "id_tagihan" => $id_tagihan,
                             "nip" => $this->input->post("id", TRUE)
                         ];
-                        $this->Fo_model->add_tagihan_by_tipe("tagihan_kpq", $data);
+                        $this->Fo_model->add_data("tagihan_kpq", $data);
                     }
                 // tagihan sesuai tipe
             // tagihan
-            
             $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil menambahkan piutang<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             redirect($_SERVER['HTTP_REFERER']);
         }
@@ -567,7 +609,6 @@ class Kartupiutang extends CI_CONTROLLER{
             $pengajar = $this->input->post("pengajar");
             $nama = $this->input->post("nama");
             $metode = $this->input->post("metode");
-
             if($metode == "Cash"){
                 // pembayaran
                     $id_pembayaran = $this->Fo_model->get_last_id_pembayaran();
@@ -582,26 +623,26 @@ class Kartupiutang extends CI_CONTROLLER{
                         "keterangan" => $this->input->post("keterangan", TRUE),
                         "pengajar" => $this->input->post("pengajar", TRUE)
                     ];
-                    $this->Fo_model->add_pembayaran($data);
+                    $this->Fo_model->add_data("pembayaran", $data);
                     // pembayaran sesuai tipe
                         if($tipe == "peserta"){
                             $data = [
                                 "id_pembayaran" => $id_pembayaran,
                                 "id_peserta" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_pembayaran_by_tipe("pembayaran_peserta", $data);
+                            $this->Fo_model->add_data("pembayaran_peserta", $data);
                         } else  if($tipe == "kelas"){
                             $data = [
                                 "id_pembayaran" => $id_pembayaran,
                                 "id_kelas" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_pembayaran_by_tipe("pembayaran_kelas", $data);
+                            $this->Fo_model->add_data("pembayaran_kelas", $data);
                         } else if($tipe == "kpq"){
                             $data = [
                                 "id_pembayaran" => $id_pembayaran,
                                 "nip" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_pembayaran_by_tipe("pembayaran_kpq", $data);
+                            $this->Fo_model->add_data("pembayaran_kpq", $data);
                         }
                     // pembayaran sesuai tipe
                 // pembayaran
@@ -633,26 +674,26 @@ class Kartupiutang extends CI_CONTROLLER{
                         "metode" => $this->input->post("metode"),
                         "alamat" => ''
                     ];
-                    $this->Fo_model->add_transfer($data);
+                    $this->Fo_model->add_data("transfer", $data);
                     // transfer sesuai tipe
                         if($tipe == "peserta"){
                             $data = [
                                 "id_transfer" => $id_transfer,
                                 "id_peserta" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_transfer_by_tipe("transfer_peserta", $data);
+                            $this->Fo_model->add_data("transfer_peserta", $data);
                         } else  if($tipe == "kelas"){
                             $data = [
                                 "id_transfer" => $id_transfer,
                                 "id_kelas" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_transfer_by_tipe("transfer_kelas", $data);
+                            $this->Fo_model->add_data("transfer_kelas", $data);
                         } else if($tipe == "kpq"){
                             $data = [
                                 "id_transfer" => $id_transfer,
                                 "nip" => $this->input->post("id", TRUE)
                             ];
-                            $this->Fo_model->add_transfer_by_tipe("transfer_kpq", $data);
+                            $this->Fo_model->add_data("transfer_kpq", $data);
                         }
                     // transfer sesuai tipe
                 // transfer
@@ -672,50 +713,11 @@ class Kartupiutang extends CI_CONTROLLER{
             redirect($_SERVER['HTTP_REFERER']);
         }
     // edit data
-    public function kwitansi($id){
-        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-P']);
-        
-        $kwitansi['kwitansi'] = $this->KartuPiutang_model->get_data_pembayaran($id);
-        $bulan = date("m", strtotime($kwitansi['kwitansi']['tgl_pembayaran']));
-        $tahun = date("y", strtotime($kwitansi['kwitansi']['tgl_pembayaran']));
-        $id = $kwitansi['kwitansi']['id_pembayaran'];
-        if($id > 0 && $id < 10){
-            $id = '00000'.$id;
-        } else if($id >= 10 && $id < 100){
-            $id = '0000'.$id;
-        } else if($id >= 100 && $id < 1000){
-            $id = '000'.$id;
-        } else if($id >= 1000 && $id < 10000){
-            $id = '00'.$id;
-        } else if($id >= 10000 && $id < 100000){
-            $id = '0'.$id;
-        } else {
-            $id = $id;
-        };
-
-        $kwitansi['id'] = $tahun.$bulan.$id;
-
-        // var_dump($kwitansi);
-		$data = $this->load->view('piutang/cetak_kwitansi', $kwitansi, TRUE);
-        $mpdf->WriteHTML($data);
-		$mpdf->Output();
-    }
-    
-    public function deposit($id){
-        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-P', 'margin_top' => '3', 'margin_left' => '3', 'margin_right' => '3', 'margin_bottom' => '3']);
-        
-        $kwitansi['kwitansi'] = $this->KartuPiutang_model->get_data_pembayaran_deposit($id);
-
-        // var_dump($kwitansi);
-		$data = $this->load->view('piutang/cetak_kwitansi', $kwitansi, TRUE);
-        $mpdf->WriteHTML($data);
-		$mpdf->Output();
-    }
     
     // get data for ajax
-
         public function get_data_tagihan(){
-            $data = $this->KartuPiutang_model->get_data_tagihan();
+            $id = $this->input->post("id");
+            $data = $this->Fo_model->get_one("tagihan", ["id_tagihan" => $id]);
             echo json_encode($data);
         }
         
@@ -726,7 +728,7 @@ class Kartupiutang extends CI_CONTROLLER{
 
         public function get_data_pembayaran(){
             $id = $this->input->post("id");
-            $data = $this->KartuPiutang_model->get_data_pembayaran($id);
+            $data = $this->Fo_model->get_one("pembayaran", ["id_pembayaran" => $id]);
             echo json_encode($data);
         }
 
@@ -744,16 +746,16 @@ class Kartupiutang extends CI_CONTROLLER{
 
         public function get_data_deposit(){
             $id = $this->input->post("id");
-            $data = $this->KartuPiutang_model->get_data_deposit($id);
+            $data = $this->Fo_model->get_one("deposit", ["id_deposit" => $id]);
             echo json_encode($data);
         }
     // get data for ajax
 
     // other function
         public function nominal($nominal){
-            $nominal = $this->input->post('nominal', true);
             $nominal = str_replace("Rp. ", "", $nominal);
             $nominal = str_replace(".", "", $nominal);
             return $nominal;
         }
+    // other function
 }
