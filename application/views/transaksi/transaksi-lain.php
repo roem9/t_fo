@@ -144,7 +144,7 @@
                                     <?php 
                                         $no = 0;
                                         foreach ($detail as $detail) :
-                                            if($detail['nama'] != "" || ($detail['nama'] == "" && $detail['nominal'] == 0)) :
+                                            if($detail['nama'] != "" || ($detail['nama'] == "" && $detail['nominal'] != 0)) :
                                         ?>
                                                 <tr>
                                                     <td><center><?= ++$no?></center></td>
@@ -157,13 +157,11 @@
                                                         <td><a href="#" class="badge badge-success modalEditPembayaran" data-toggle="modal" data-target="#modalEditPembayaran" data-id="<?= $detail['id_pembayaran']?>">edit</a></td>
                                                     <?php elseif($detail['metode'] == "Transfer"):?>
                                                         <td><center>-</center></td>
-                                                        <!-- <td><a href="#" class="badge badge-success modalEditPembayaran" data-toggle="modal" data-target="#modalEditPembayaran" data-id="<?= $detail['id_transfer']?>">edit</a></td> -->
                                                     <?php endif;?>
                                                     <?php if($detail['metode'] == "Cash"):?>
                                                         <td><a href="<?=base_url()?>transaksi/kuitansi/<?= MD5($detail['id_pembayaran'])?>" target=_blank><center><i class="fa fa-print"></i></center></a></td>
                                                     <?php elseif($detail['metode'] == "Transfer"):?>
                                                         <td><center>-</center></td>
-                                                        <!-- <td><a href="<?=base_url()?>kartupiutang/kwitansi/<?= $detail['id_transfer']?>" target=_blank><center><i class="fa fa-print"></i></center></a></td>                                             -->
                                                     <?php endif;?>
                                                 </tr>
                                             <?php endif;?>

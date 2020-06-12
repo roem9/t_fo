@@ -13,7 +13,6 @@ class Laporan_model extends CI_MODEL{
         $this->db->join("pekerjaan as c", "a.id_peserta = c.id_peserta");
         $this->db->join("ortu as d", "a.id_peserta = d.id_peserta");
         $this->db->where("tgl_masuk", $tgl_masuk);
-        $this->db->group_by("tipe_peserta", "ASC");
         return $this->db->get()->result_array();
     }
     

@@ -308,7 +308,7 @@ class Pendaftaran extends CI_CONTROLLER{
                 "tgl_mulai" => date('Y-m-d'),
                 "program" => $this->input->post('program', true),
                 "catatan" => $this->input->post('catatan', true),
-                "status" => 'wl',
+                "status" => $this->input->post('status_kelas', true),
                 "tipe_kelas" => $this->input->post('tipe_peserta', true),
                 "ket" => $this->input->post('ket', true),
                 "pengajar" => $this->input->post('pengajar', true),
@@ -329,7 +329,7 @@ class Pendaftaran extends CI_CONTROLLER{
             // $this->Fo_model->add_koor_kelas($id_kelas, $id_peserta);
             // $this->Fo_model->add_koor_kelas($data['koor'], $id_kelas, $id_peserta);
     
-            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mendaftarkan peserta reguler baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mendaftarkan kelas privat baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             redirect($_SERVER['HTTP_REFERER']);
         }
 

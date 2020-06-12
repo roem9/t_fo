@@ -65,6 +65,7 @@
             <h6 class="collapse-header text-light">Waiting List</h6>
             <a class="collapse-item text-light" href="<?=base_url()?>wl/reguler">Reguler</a>
             <a class="collapse-item text-light" href="<?=base_url()?>wl/privat">Privat</a>
+            <a class="collapse-item text-light" href="<?=base_url()?>wl/pending">Pending</a>
           </div>
         </div>
       </li>

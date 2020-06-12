@@ -29,6 +29,14 @@
                                     <input type="hidden" name="tipe_peserta" value="<?= $tipe?>">
                                     <input type="hidden" name="ket" value="<?= $ket?>">
                                     <div class="form-group">
+                                        <label for="status_kelas">Status Kelas (WL / Pending) <span class="text-danger">*</span></label>
+                                        <select name="status_kelas" id="status_kelas" class="form-control form-control-sm" required>
+                                            <option value="">Pilih Status Kelas</option>
+                                            <option value="wl">Waiting List</option>
+                                            <option value="pending">Pending</option>;
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="tgl_daftar">Tgl Pendaftaran <span class="text-danger">*</span></label>
                                         <input type="date" name="tgl_daftar" id="tgl_daftar" class="form-control form-control-sm" value="<?= date('Y-m-d')?>" required>
                                     </div>
@@ -311,7 +319,7 @@
 
     //data akademik
     $("#nextDiri").click(function(){
-        if($("#tipe_peserta").val() == '' || $("#tgl_daftar").val() == ''|| $("#program").val() == '' || $("#tempat").val() == '' || $("#pengajar").val() == '' || $("#catatan").val() == '' || $("#info").val() == ''){
+        if($("#tipe_peserta").val() == '' || $("#tgl_daftar").val() == ''|| $("#program").val() == '' || $("#tempat").val() == '' || $("#pengajar").val() == '' || $("#catatan").val() == '' || $("#info").val() == '' || $("#status_kelas").val() == ''){
             Swal.fire({
                 icon: 'error',
                 text: 'Harap mengisi yang bertanda *'

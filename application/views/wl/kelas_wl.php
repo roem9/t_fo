@@ -28,6 +28,7 @@
                             <option value="">Pilih Status</option>
                             <option value="wl">WL</option>
                             <option value="nonaktif">Nonaktif</option>
+                            <option value="pending">Pending</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -81,9 +82,6 @@
                 </ul>
             </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>

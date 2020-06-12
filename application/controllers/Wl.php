@@ -35,6 +35,18 @@ class Wl extends CI_CONTROLLER{
         $this->load->view('wl/kelas_wl', $data);
         $this->load->view('templates/footer');
     }
+    
+    public function pending(){
+        $data['header'] = 'Waiting List Privat Pending';
+        $data['title'] = 'Waiting List Privat Pending';
+        $data['tabs'] = 'kelas';
+        $data['wl'] = $this->Wl_model->getKelasWlPending();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar');
+        $this->load->view('wl/kelas_wl', $data);
+        $this->load->view('templates/footer');
+    }
 
     // edit data
         public function editWl(){

@@ -65,9 +65,9 @@ class Kartupiutang extends CI_CONTROLLER{
         $data['invoice'] = $this->KartuPiutang_model->get_invoice_kelas($id_kelas);
         
         usort($data['detail'], function($a, $b) {
-            // return $a['tgl'] <=> $b['tgl'];
-            if($a['tgl']==$b['tgl']) return 0;
-            return $a['tgl'] < $b['tgl']?1:-1;
+            return $a['tgl'] <=> $b['tgl'];
+            // if($a['tgl']==$b['tgl']) return 0;
+            // return $a['tgl'] < $b['tgl']?1:-1;
         });
 
         $data['id'] = $id_kelas;
@@ -145,9 +145,9 @@ class Kartupiutang extends CI_CONTROLLER{
         
         
         usort($data['detail'], function($a, $b) {
-            // return $a['tgl'] <=> $b['tgl'];
-            if($a['tgl']==$b['tgl']) return 0;
-            return $a['tgl'] < $b['tgl']?1:-1;
+            return $a['tgl'] <=> $b['tgl'];
+            // if($a['tgl']==$b['tgl']) return 0;
+            // return $a['tgl'] < $b['tgl']?1:-1;
         });
         
         // data modal
@@ -220,9 +220,9 @@ class Kartupiutang extends CI_CONTROLLER{
         $data['id'] = $id_peserta;
         
         usort($data['detail'], function($a, $b) {
-            // return $a['tgl'] <=> $b['tgl'];
-            if($a['tgl']==$b['tgl']) return 0;
-            return $a['tgl'] < $b['tgl']?1:-1;
+            return $a['tgl'] <=> $b['tgl'];
+            // if($a['tgl']==$b['tgl']) return 0;
+            // return $a['tgl'] < $b['tgl']?1:-1;
         });
         
         // data modal

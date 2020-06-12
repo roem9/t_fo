@@ -31,7 +31,9 @@
                 <select name="laporan" id="jenis-laporan" class="form-control form-control-sm" required>
                     <option value="">Pilih Laporan</option>
                     <option value="Buku">Laporan Buku</option>
-                    <option value="Peserta">Laporan Peserta</option>
+                    <option value="Peserta Reguler">Laporan Peserta Reguler</option>
+                    <option value="Peserta PV Khusus">Laporan Peserta PV Khusus</option>
+                    <option value="Peserta PV Luar">Laporan Peserta PV Luar</option>
                     <option value="Transaksi">Laporan Transaksi Cash</option>
                     <option value="Piutang PV Khusus">Laporan Piutang PV Khusus</option>
                     <option value="Piutang Reguler">Laporan Piutang Reguler</option>

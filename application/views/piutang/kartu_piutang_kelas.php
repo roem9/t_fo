@@ -343,7 +343,6 @@
                 async : true,
                 dataType : 'json',
                 success : function(data){
-                    $("#transaksi").val("pembayaran");
                     $("#id").val(data.id_pembayaran);
                     $("#nama").val(data.nama_pembayaran);
                     $("#tgl_transaksi").val(data.tgl_pembayaran);
@@ -368,7 +367,6 @@
                 async : true,
                 dataType : 'json',
                 success : function(data){
-                    $("#transaksi").val("pembayaran");
                     $("#edit_alamat").val(data.alamat);
                     $("#id").val(data.id_transfer);
                     $("#nama").val(data.nama_transfer);

@@ -180,24 +180,6 @@ class Fo_model extends CI_MODEL{
 
             return $data;
         }
-
-        // public function get_data_kelas_by_id($id_kelas){
-        //     $this->db->from("kelas");
-        //     $this->db->where("id_kelas", $id_kelas);
-        //     return $this->db->get()->row_array();
-        // }
-
-        // public function get_kpq_by_id($nip){
-        //     $this->db->from("kpq");
-        //     $this->db->where("nip", $nip);
-        //     return $this->db->get()->row_array();
-        // }
-
-        // public function get_data_peserta_by_id($id_peserta){
-        //     $this->db->from("peserta");
-        //     $this->db->where("id_peserta", $id_peserta);
-        //     return $this->db->get()->row_array();
-        // }
     // get by
 
     // get last id
@@ -266,34 +248,6 @@ class Fo_model extends CI_MODEL{
             $this->db->where('id_peserta', $id_peserta);
             $this->db->update('peserta', ["id_kelas" => $id_kelas]);
         }
-
-        // public function add_deposit($data){
-        //     $this->db->insert("deposit", $data);
-        // }
-
-        // public function add_deposit_by_tipe($tipe, $data){
-        //     $this->db->insert($tipe, $data);
-        // }
-
-        // public function add_tagihan($data){
-        //     $this->db->insert("tagihan", $data);
-        // }
-
-        // public function add_tagihan_by_tipe($tipe, $data){
-        //     $this->db->insert($tipe, $data);
-        // }
-
-        // public function add_pembayaran($data){
-        //     $this->db->insert("pembayaran", $data);
-        // }
-
-        // public function add_pembayaran_by_tipe($tipe, $data){
-        //     $this->db->insert($tipe, $data);
-        // }
-
-        // public function add_transfer($data){
-        //     $this->db->insert("transfer", $data);
-        // }
 
         public function add_transfer_by_tipe($tipe, $data){
             $this->db->insert($tipe, $data);
