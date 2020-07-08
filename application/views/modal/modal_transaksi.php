@@ -128,6 +128,7 @@
                                     <option value="MMQ 1 TL">MMQ 1 Tahsin Lanjutan</option>
                                     <option value="MMQ 2 TA">MMQ 2 Tahfidz Anak</option>
                                     <option value="MMQ 2 TD">MMQ 2 Tahfidz Dewasa</option>
+                                    <option value="MMQ 2 TK">MMQ 2 Takhosus</option>
                                     <option value="MMQ 3">MMQ 3 Bahasa Arab</option>
                                     <option value="Piutang">Piutang</option>
                                 </select>

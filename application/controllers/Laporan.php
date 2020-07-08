@@ -32,7 +32,7 @@ class Laporan extends CI_CONTROLLER{
                 $name = date("d/m/y", strtotime($tgl_awal)) ." - ". date("d/m/y", strtotime($tgl_akhir));
                 header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
                 header('Content-Disposition: attachment;filename="Transaksi Cash '.$name.'.xls"');
-                $tgl = $this->Fo_model->get_all_group_by("pembayaran", ["tgl_pembayaran between '$tgl_awal' AND '$tgl_akhir'", "metode" => "cash"], "tgl_pembayaran");
+                $tgl = $this->Fo_model->get_all_group_by("pembayaran", "(tgl_pembayaran between '$tgl_awal' AND '$tgl_akhir') AND metode = 'cash'", "tgl_pembayaran");
         
                 $data['data'] = [];
                 foreach ($tgl as $i => $tgl) {
