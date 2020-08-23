@@ -78,9 +78,12 @@
         <div id="dropthree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-primary py-2 collapse-inner rounded">
             <h6 class="collapse-header text-light">Peserta</h6>
-            <a class="collapse-item text-light" href="<?=base_url()?>peserta/reguler">Reguler</a>
-            <a class="collapse-item text-light" href="<?=base_url()?>peserta/pvkhusus">PV Khusus</a>
-            <a class="collapse-item text-light" href="<?=base_url()?>peserta/pvluar">PV Luar</a>
+            <a class="collapse-item text-light" href="<?= base_url()?>peserta/reguler/aktif">Reguler Aktif</a>
+            <a class="collapse-item text-light bg-danger" href="<?= base_url()?>peserta/reguler/nonaktif">Reguler Nonaktif</a>
+            <a class="collapse-item text-light" href="<?= base_url()?>peserta/pvkhusus/aktif">Pv Khusus Aktif</a>
+            <a class="collapse-item text-light bg-danger" href="<?= base_url()?>peserta/pvkhusus/nonaktif">Pv Khusus Nonaktif</a>
+            <a class="collapse-item text-light" href="<?= base_url()?>peserta/pvluar/aktif">Pv Luar Aktif</a>
+            <a class="collapse-item text-light bg-danger" href="<?= base_url()?>peserta/pvluar/nonaktif">Pv Luar Nonaktif</a>
           </div>
         </div>
       </li>

@@ -23,6 +23,18 @@ class Kelas_model extends CI_MODEL{
             $this->db->where("a.tipe_kelas", $tipe);
             return $this->db->get()->result_array();
         }
+        
+        public function getAllKelasPvLuar(){
+            $query = "a.id_kelas, a.status, nama_peserta, nama_kpq, c.no_hp, a.program";
+            $this->db->select($query);
+            $this->db->from("kelas as a");
+            $this->db->join("kelas_koor as b", "a.id_kelas = b.id_kelas");
+            $this->db->join("peserta as c", "c.id_peserta = b.id_peserta");
+            $this->db->join("kpq as d", "d.nip = a.nip");
+            $where = "a.tipe_kelas = 'pv luar' OR a.tipe_kelas = 'pv luar kota'";
+            $this->db->where($where);
+            return $this->db->get()->result_array();
+        }
 
         public function dataKelasById($id_kelas){
             $query = "a.status, a.program, nama_peserta, nama_kpq, pengajar";

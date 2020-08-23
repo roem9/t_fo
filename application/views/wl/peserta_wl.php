@@ -20,7 +20,7 @@
         <?php endif; ?>
 
         <!-- DataTales Example -->
-        <div class="card shadow mb-4" style="max-width: 700px;">
+        <div class="card shadow mb-4" style="max-width: 1000px;">
         <div class="card-body">
             <div class="table-responsive">
                 <table id="dataTable" class="table table-sm cus-font">
@@ -29,6 +29,9 @@
                             <th>No</th>
                             <th>Status</th>
                             <th>Nama Peserta</th>
+                            <th>Program</th>
+                            <th>Hari</th>
+                            <th>Jam</th>
                             <th>Gender</th>
                             <th>No Hp</th>
                             <th>Detail</th>
@@ -42,6 +45,9 @@
                                 <td><center><?= ++$i?></center></td>
                                 <td><?= $peserta['status']?></td>
                                 <td><?= $peserta['nama_peserta']?></td>
+                                <td><?= $peserta['program']?></td>
+                                <td><?= $peserta['hari']?></td>
+                                <td><?= $peserta['jam']?></td>
                                 <td><?= $peserta['jk']?></td>
                                 <td><?= $peserta['no_hp']?></td>
                                 <td><a href="#" data-toggle="modal" data-target="#exampleModalScrollable" data-id="<?= $peserta['id_peserta']?>" class="detailPeserta">
@@ -72,15 +78,13 @@
     
     $(".detailPeserta").click(function(){
         const id = $(this).data('id');
-        
         $.ajax({
             url : "<?=base_url()?>peserta/detail",
             method : "POST",
-            data : {id_peserta : id},
+            data : {id : id},
             async : true,
             dataType : 'json',
             success : function(data){
-                // console.log(data)
                 $(".modal-title").html(data.nama_peserta);
                 $("#id_peserta").val(data.id_peserta);
                 $("#nama").val(data.nama_peserta);
@@ -98,19 +102,15 @@
     })
 
     $("#btn-form-1").click(function(){
-
         $("#btn-form-1").addClass("active")
         $("#btn-form-2").removeClass("active")
-        
         $("#form-1").show();
         $("#form-2").hide();
     })
 
     $("#btn-form-2").click(function(){
-        
         $("#btn-form-1").removeClass("active")
         $("#btn-form-2").addClass("active")
-        
         $("#form-1").hide();
         $("#form-2").show();
     })

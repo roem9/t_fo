@@ -81,7 +81,7 @@
                                                 <td><?= rupiah($detail['nominal'])?></td>
                                                 <td><center><?=$detail['metode']?></center></td>
                                                 <td>-</td>
-                                                <td>-</td>
+                                                <td><a href="#" class="badge badge-success modalEditTransfer" data-toggle="modal" data-target="#modal_edit" data-id="<?= $detail['id_transfer']?>">edit</a></td>
                                                 <td>-</td>
                                             <?php endif;?>
                                         </tr>
@@ -213,6 +213,31 @@
         })
     // modal edit pembayaran cash
     
+    // modal edit transfer
+        $(".modalEditTransfer").click(function(){
+            $("#modal-edit").html("Edit Pembayaran");
+            let id = $(this).data("id");
+            $("#form-edit").attr("action", "<?=base_url()?>kartupiutang/edit_pembayaran_transfer")
+            $("#edit_alamat").removeAttr("readonly");
+
+            $.ajax ({
+                url : "<?=base_url()?>kartupiutang/get_data_pembayaran_transfer",
+                method : "POST",
+                data : {id: id},
+                async : true,
+                dataType : 'json',
+                success : function(data){
+                    $("#edit_alamat").val(data.alamat);
+                    $("#id").val(data.id_transfer);
+                    $("#nama").val(data.nama_transfer);
+                    $("#tgl_transaksi").val(data.tgl_transfer);
+                    $("#keterangan").val(data.uraian);
+                    $("#nominal_uang").val(data.nominal);
+                }
+            })
+        })
+    // modal edit transfer
+
     // modal edit deposit
         $(".modalEditDeposit").click(function(){
             $("#modal-edit").html("Edit Pembayaran");

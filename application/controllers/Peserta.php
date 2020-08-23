@@ -5,50 +5,88 @@ class Peserta extends CI_CONTROLLER{
         parent::__construct();
         $this->load->model('Fo_model');
         $this->load->model('Peserta_model');
+        $this->load->model('Main_model');
         if($this->session->userdata('status') != "login"){
             $this->session->set_flashdata('login', 'Maaf, Anda harus login terlebih dahulu');
 			redirect(base_url("login"));
 		}
     }
     
-    public function reguler(){
-        $data['header'] = 'Peserta Reguler';
-        $data['title'] = 'Peserta Reguler';
-        $data['peserta'] = $this->Fo_model->get_all("peserta_reguler", "", "nama_peserta");
+    public function reguler($status){
+        if($status == "nonaktif"){
+            $data['title'] = 'Peserta Reguler Nonaktif';
+            $data['peserta'] = $this->Main_model->get_all("peserta_reguler", ["status" => "nonaktif"], "nama_peserta", "ASC");
+        } else {
+            $data['title'] = 'Peserta Reguler Aktif';
+            $data['peserta'] = $this->Main_model->get_all("peserta_reguler", ["status" => "aktif"], "nama_peserta", "ASC");
+        }
+        $data['tabs'] = 'reguler';
+        
+        $data['kpq'] = $this->Main_model->get_all("kpq", ["status" => "aktif"], "nama_kpq", "ASC");
+        $data['ruangan'] = $this->Main_model->get_all("ruangan");
+        $data['program'] = $this->Main_model->get_all("program");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
-        $this->load->view('modal/modal_detail_peserta');
         $this->load->view('peserta/peserta_reguler', $data);
         $this->load->view('templates/footer');
     }
     
-    public function pvkhusus(){
-        $data['header'] = 'Peserta Pv Khusus';
-        $data['title'] = 'Peserta Pv Khusus';
-        $data['peserta'] = $this->Fo_model->get_all("peserta_pv_khusus", "", "nama_peserta");
+    public function pvkhusus($status){
+        if($status == "nonaktif"){
+            $data['title'] = 'Peserta Pv Khusus Nonaktif';
+            $data['peserta'] = $this->Main_model->get_all("peserta_pv_khusus", ["status" => "nonaktif"], "nama_peserta", "ASC");
+        } else {
+            $data['title'] = 'Peserta Pv Khusus Aktif';
+            $data['peserta'] = $this->Main_model->get_all("peserta_pv_khusus", ["status" => "aktif"], "nama_peserta", "ASC");
+        }
+        $data['tabs'] = 'pv khusus';
+        
+        $data['kpq'] = $this->Main_model->get_all("kpq", ["status" => "aktif"], "nama_kpq", "ASC");
+        $data['ruangan'] = $this->Main_model->get_all("ruangan");
+        $data['program'] = $this->Main_model->get_all("program");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
-        $this->load->view('modal/modal_detail_peserta');
-        $this->load->view('peserta/peserta_pv', $data);
+        $this->load->view('peserta/peserta_privat', $data);
         $this->load->view('templates/footer');
     }
     
-    public function pvluar(){
-        $data['header'] = 'Peserta Pv Luar';
-        $data['title'] = 'Peserta Pv Luar';
-        $data['peserta'] = $this->Fo_model->get_all("peserta_pv_luar", "", "nama_peserta");
+    public function pvluar($status){
+        if($status == "nonaktif"){
+            $data['title'] = 'Peserta Pv Luar Nonaktif';
+            $data['tabs'] = 'pv luar';
+            // $data['peserta'] = $this->Akademik_model->get_all_peserta_pv_luar();
+            $data['peserta'] = $this->Main_model->get_all("peserta_pv_luar", ["status" => "nonaktif"], "nama_peserta", "ASC");
+        } else {
+            $data['title'] = 'Peserta Pv Luar Aktif';
+            $data['tabs'] = 'pv luar';
+            // $data['peserta'] = $this->Akademik_model->get_all_peserta_pv_luar();
+            $data['peserta'] = $this->Main_model->get_all("peserta_pv_luar", ["status" => "aktif"], "nama_peserta", "ASC");
+        }
+        
+        $data['kpq'] = $this->Main_model->get_all("kpq", ["status" => "aktif"], "nama_kpq", "ASC");
+        $data['ruangan'] = $this->Main_model->get_all("ruangan");
+        $data['program'] = $this->Main_model->get_all("program");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
-        $this->load->view('modal/modal_detail_peserta');
-        $this->load->view('peserta/peserta_pv', $data);
+        $this->load->view('peserta/peserta_privat', $data);
         $this->load->view('templates/footer');
     }
 
+    public function get_detail_peserta(){
+        $id_peserta = $this->input->post("id");
+        $data['diri'] = $this->Main_model->get_one("peserta", ["id_peserta" => $id_peserta]);
+        $data['alamat'] = $this->Main_model->get_one("alamat", ["id_peserta" => $id_peserta]);
+        $data['ortu'] = $this->Main_model->get_one("ortu", ["id_peserta" => $id_peserta]);
+        $data['pekerjaan'] = $this->Main_model->get_one("pekerjaan", ["id_peserta" => $id_peserta]);
+
+        echo json_encode($data);
+    }
+
     public function detail(){
-        $id_peserta = $_POST['id_peserta'];
+        $id_peserta = $_POST['id'];
         $peserta = $this->Peserta_model->getPesertaById($id_peserta);
         echo json_encode($peserta);
     }
@@ -75,6 +113,67 @@ class Peserta extends CI_CONTROLLER{
         $this->Fo_model->edit_data("alamat", ["id_peserta" => $id_peserta], $data['alamat']);
 
         $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil <b>merubah</b> data peserta<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function edit_peserta(){
+        $id_peserta = $this->input->post("id_peserta");
+        
+        $info = $this->input->post("info", true);
+        if($info == 'Lainnya') {
+            $info = $this->input->post("civitas", true);
+        }
+
+        $data['diri'] = [
+            'tgl_masuk' => $this->input->post("tgl_masuk"),
+            'nama_peserta' =>$this->input->post("nama_peserta"),
+            'no_hp' => $this->input->post("no_hp"),
+            't4_lahir' => $this->input->post("t4_lahir"),
+            'tgl_lahir' => $this->input->post("tgl_lahir"),
+            'umur' => $this->input->post("umur"),
+            'jk' => $this->input->post("jk"),
+            'pendidikan' => $this->input->post("pendidikan"),
+            'status_nikah' => $this->input->post("status_nikah"),
+            'info' => $info
+        ];
+        $this->Main_model->edit_data("peserta", ["id_peserta" => $id_peserta], $data['diri']);
+
+        $data['alamat'] = [
+            'alamat' => $this->input->post("alamat"),
+            'kel' => $this->input->post("kel"),
+            'kd_pos' => $this->input->post("kd_pos"),
+            'kec' => $this->input->post("kec"),
+            'kab_kota' => $this->input->post("kab_kota"),
+            'provinsi' => $this->input->post("provinsi"),
+            'no_telp' => $this->input->post("no_telp"),
+            'email' => $this->input->post("email"),
+        ];
+        $this->Main_model->edit_data("alamat", ["id_peserta" => $id_peserta], $data['alamat']);
+
+        $pekerjaan = $this->input->post("pekerjaan", true);
+        if($pekerjaan == 'Lainnya') {
+            $pekerjaan = $this->input->post("pekerjaan_lainnya", true);
+        }
+        $data['pekerjaan'] = [
+            'pekerjaan' => $this->input->post("pekerjaan"),
+            'nama_perusahaan' => $this->input->post("nama_perusahaan"),
+            'alamat_perusahaan' => $this->input->post("alamat_perusahaan"),
+            'no_telp_perusahaan' => $this->input->post("no_telp_perusahaan"),
+            'pekerjaan' => $pekerjaan
+        ];
+        $this->Main_model->edit_data("pekerjaan", ["id_peserta" => $id_peserta], $data['pekerjaan']);
+
+        $data['ortu'] = [
+            'nama_ibu' => $this->input->post("nama_ibu"),
+            't4_lahir_ibu' => $this->input->post("t4_lahir_ibu"),
+            'tgl_lahir_ibu' => $this->input->post("tgl_lahir_ibu"),
+            'nama_ayah' => $this->input->post("nama_ayah"),
+            't4_lahir_ayah' => $this->input->post("t4_lahir_ayah"),
+            'tgl_lahir_ayah' => $this->input->post("tgl_lahir_ayah"),
+        ];
+        $this->Main_model->edit_data("ortu", ["id_peserta" => $id_peserta], $data['ortu']);
+        
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil mengubah data peserta<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         redirect($_SERVER['HTTP_REFERER']);
     }
 }

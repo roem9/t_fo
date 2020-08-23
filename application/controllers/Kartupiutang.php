@@ -4,6 +4,7 @@ class Kartupiutang extends CI_CONTROLLER{
         parent::__construct();
         $this->load->model('KartuPiutang_model');
         $this->load->model('Fo_model');
+        $this->load->model('Main_model');
         
         if($this->session->userdata('status') != "login"){
             $this->session->set_flashdata('flash', 'Maaf, Anda harus login terlebih dahulu');
@@ -271,6 +272,29 @@ class Kartupiutang extends CI_CONTROLLER{
     // get data
 
     // edit
+        public function edit_pembayaran_transfer(){
+            $password = $this->input->post("password", true);
+            
+            if($password == 'wkwkwk'){
+                $id_transfer = $this->input->post("id");
+                $data = [
+                    "nama_transfer" => $this->input->post("nama", TRUE),
+                    "tgl_transfer" => $this->input->post("tgl"),
+                    "uraian" => $this->input->post("uraian"),
+                    "nominal" => $this->Main_model->nominal($this->input->post("nominal")),
+                    "alamat" => $this->input->post("alamat")
+                ];
+                
+                $result = $this->Main_model->edit_data("transfer", ["id_transfer" => $id_transfer], $data);
+            }
+            
+            if($result)
+                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            else
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Gagal merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+
         public function edit_deposit(){
             $password = $this->input->post("password", true);
             
@@ -291,16 +315,6 @@ class Kartupiutang extends CI_CONTROLLER{
                 $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Password salah, gagal merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             redirect($_SERVER['HTTP_REFERER']);
         }
-
-        // public function edit_transaksi(){
-        //     $password = $this->input->post("password", true);
-            
-        //     if($password == 'wkwkwk'){
-        //         $this->KartuPiutang_model->edit_transaksi();
-        //     } 
-            // $this->session->set_flashdata('piutang', 'ditambahkan');
-        //     redirect($_SERVER['HTTP_REFERER']);
-        // }
         
         public function edit_pembayaran_cash(){
             $password = $this->input->post("password", true);
@@ -715,6 +729,12 @@ class Kartupiutang extends CI_CONTROLLER{
     // edit data
     
     // get data for ajax
+        public function get_data_pembayaran_transfer(){
+            $id = $this->input->post("id");
+            $data = $this->Main_model->get_one("transfer", ["id_transfer" => $id]);
+            echo json_encode($data);
+        }
+
         public function get_data_tagihan(){
             $id = $this->input->post("id");
             $data = $this->Fo_model->get_one("tagihan", ["id_tagihan" => $id]);

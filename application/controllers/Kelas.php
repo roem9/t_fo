@@ -44,7 +44,7 @@ class Kelas extends CI_CONTROLLER{
         $data['header'] = 'Kelas Pv Luar';
         $data['title'] = 'Kelas Pv Luar';
         $data['tabs'] = 'pv luar';
-        $data['kelas'] = $this->Kelas_model->getAllKelasByTipe('pv luar');
+        $data['kelas'] = $this->Kelas_model->getAllKelasPvLuar();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
