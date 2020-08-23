@@ -131,7 +131,7 @@ class Laporan extends CI_CONTROLLER{
                 $data['title'] = "Laporan Buku " . date("d-M-Y", strtotime($tgl_awal)) . " - " . date("d-M-Y", strtotime($tgl_akhir));
                 $name = date("d/m/y", strtotime($tgl_awal)) ." - ". date("d/m/y", strtotime($tgl_akhir));
                 header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                header('Content-Disposition: attachment;filename="Laporan Buku '.$name.'.xlsx"');
+                header('Content-Disposition: attachment;filename="Laporan Buku '.$name.'.xls"');
                 $tgl = $this->Laporan_model->get_buku_between($tgl_awal, $tgl_akhir);
                 $data['data'] = [];
                 $urut = 0;
