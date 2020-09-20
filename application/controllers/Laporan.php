@@ -5,6 +5,7 @@ class Laporan extends CI_CONTROLLER{
         parent::__construct();
         $this->load->model('Fo_model');
         $this->load->model('Laporan_model');
+        $this->load->model('Home_model');
         if($this->session->userdata('status') != "login"){
             $this->session->set_flashdata('login', 'Maaf, Anda harus login terlebih dahulu');
 			redirect(base_url("login"));
@@ -56,6 +57,79 @@ class Laporan extends CI_CONTROLLER{
                 header('Content-Disposition: attachment;filename="'.$name.'.xls"');
                 $data['data'] = $this->Laporan_model->get_all_tagihan_pv_khusus();
                 $this->load->view("laporan/piutang", $data);
+            } else if($laporan == "Peserta Keseluruhan"){
+                $tgl_awal = $this->input->post("tgl_awal");
+                $tgl_akhir = $this->input->post("tgl_akhir");
+                $data['title'] = "Laporan Peserta Keseluruhan " . date("d-M-Y", strtotime($tgl_awal)) . " - " . date("d-M-Y", strtotime($tgl_akhir));
+        
+                $name = date("d/m/y", strtotime($tgl_awal)) ." - ". date("d/m/y", strtotime($tgl_akhir));
+                header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                header('Content-Disposition: attachment;filename="Laporan Peserta Keseluruhan '.$name.'.xls"');
+                $tgl = $this->Fo_model->get_all_group_by("peserta", "(tgl_masuk between '$tgl_awal' AND '$tgl_akhir')", "tgl_masuk");
+                $data['data'] = [];
+                $urut = 0;
+
+                foreach ($tgl as $tgl) {
+                    $peserta = $this->Laporan_model->get_peserta_by_tgl_masuk($tgl['tgl_masuk']);
+                    foreach ($peserta as $peserta) {
+                        $data['data'][$urut] = $peserta;
+                        $info = $this->Fo_model->get_one("kpq", ["nip" => $peserta['info']]);
+                        if($info){
+                            $data['data'][$urut]['info'] = $info['nama_kpq'];
+                        }
+                        $urut++;
+                    }
+                }
+
+                $data['rekap']['gender']['wanita'] = COUNT($this->Fo_model->get_all("peserta", "(tgl_masuk between '$tgl_awal' AND '$tgl_akhir') AND jk = 'Wanita'"));
+                $data['rekap']['gender']['pria'] = COUNT($this->Fo_model->get_all("peserta", "(tgl_masuk between '$tgl_awal' AND '$tgl_akhir') AND jk = 'Pria'"));
+
+                // $data['rekap']['pendidikan'] = [];
+                $pendidikan = $this->Fo_model->get_all_group_by("peserta", "(tgl_masuk between '$tgl_awal' AND '$tgl_akhir')", "pendidikan");
+                foreach ($pendidikan as $key => $pendidikan) {
+                    $data['rekap']['pendidikan'][$key]['pendidikan'] = $pendidikan['pendidikan'];
+                    // $where = ["MONTH(tgl_masuk)" => $bulan, "YEAR(tgl_masuk)" => $tahun, "pendidikan" => $pendidikan['rekap'];
+                    $data['rekap']['pendidikan'][$key]['peserta'] = COUNT($this->Fo_model->get_all("peserta", "(tgl_masuk between '$tgl_awal' AND '$tgl_akhir') AND pendidikan = '$pendidikan[pendidikan]'"));
+                }
+
+                // $data['rekap']['pekerjaan'] = [];
+                $pekerjaan = $this->Home_model->get_pekerjaan_between("(tgl_masuk between '$tgl_awal' AND '$tgl_akhir')");
+                foreach ($pekerjaan as $key => $pekerjaan) {
+                    $data['rekap']['pekerjaan'][$key]['pekerjaan'] = $pekerjaan['pekerjaan'];
+                    $data['rekap']['pekerjaan'][$key]['peserta'] = COUNT($this->Home_model->get_peserta_between_by_pekerjaan("(tgl_masuk between '$tgl_awal' AND '$tgl_akhir')", $pekerjaan['pekerjaan']));
+                }
+
+                $data['rekap']['pekerjaan_lainnya'] = COUNT($this->Home_model->get_pekerjaan_lainnya_between("(tgl_masuk between '$tgl_awal' AND '$tgl_akhir')"));
+
+                
+                $informasi = $this->Home_model->get_informasi_between("(tgl_masuk between '$tgl_awal' AND '$tgl_akhir')");
+                $data['informasi'] = [];
+                foreach ($informasi as $key => $informasi) {
+                    $data['rekap']['informasi'][$key]['informasi'] = $informasi['info'];
+                    $data['rekap']['informasi'][$key]['peserta'] = COUNT($this->Home_model->get_informasi_between_by_jenis("(tgl_masuk between '$tgl_awal' AND '$tgl_akhir')", $informasi['info']));
+                }
+
+                $data['rekap']['informasi_lainnya'] = COUNT($this->Home_model->get_informasi_lainnya_between("(tgl_masuk between '$tgl_awal' AND '$tgl_akhir')"));
+
+                $program = $this->Home_model->get_program_between("(tgl_masuk between '$tgl_awal' AND '$tgl_akhir')");
+                $data['program'] = [];
+                foreach ($program as $key => $program) {
+                    $data['rekap']['program'][$key]['program'] = $program['program'];
+                    $data['rekap']['program'][$key]['peserta'] = COUNT($this->Home_model->get_peserta_between_by_program("(tgl_masuk between '$tgl_awal' AND '$tgl_akhir')", $program['program']));
+                }
+
+                
+                $data['rekap']['total'] = $data['rekap']['gender']['wanita'] + $data['rekap']['gender']['pria'];
+                $data['rekap']['kelas'] = COUNT($this->Fo_model->get_all("kelas", "(tgl_mulai between '$tgl_awal' AND '$tgl_akhir')"));
+                $data['rekap']['peserta_reguler'] = COUNT($this->Fo_model->get_all("peserta", "(tgl_masuk between '$tgl_awal' AND '$tgl_akhir') AND tipe_peserta = 'reguler'"));
+                $data['rekap']['peserta_pv_khusus'] = COUNT($this->Fo_model->get_all("peserta", "(tgl_masuk between '$tgl_awal' AND '$tgl_akhir') AND tipe_peserta = 'pv khusus'"));
+                $data['rekap']['peserta_pv_luar'] = COUNT($this->Fo_model->get_all("peserta", "(tgl_masuk between '$tgl_awal' AND '$tgl_akhir') AND tipe_peserta = 'pv luar'"));
+                $data['rekap']['kelas_pv_khusus'] = COUNT($this->Fo_model->get_all("kelas", "(tgl_mulai between '$tgl_awal' AND '$tgl_akhir') AND tipe_kelas = 'pv khusus'"));
+                $data['rekap']['kelas_pv_luar'] = COUNT($this->Fo_model->get_all("kelas", "(tgl_mulai between '$tgl_awal' AND '$tgl_akhir') AND tipe_kelas = 'pv luar'"));
+                $data['rekap']['kelas_reguler'] = COUNT($this->Fo_model->get_all("kelas", "(tgl_mulai between '$tgl_awal' AND '$tgl_akhir') AND tipe_kelas = 'reguler'"));
+
+                // var_dump($data['rekap']);
+                $this->load->view("laporan/peserta-keseluruhan", $data);
             } else if($laporan == "Peserta Reguler"){
                 $tgl_awal = $this->input->post("tgl_awal");
                 $tgl_akhir = $this->input->post("tgl_akhir");
