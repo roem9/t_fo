@@ -98,24 +98,28 @@
                                     <td><center><?= ++$no?></center></td>
                                     <td><?= date("d-m-Y", strtotime($tgl['tgl_pembayaran']))?></td>
                                     <?php
-                                        if($tgl['id_pembayaran'] > 0 && $tgl['id_pembayaran'] < 10){
-                                            $tgl['id_pembayaran'] = '00000'.$tgl['id_pembayaran'];
-                                        } else if($tgl['id_pembayaran'] >= 10 && $tgl['id_pembayaran'] < 100){
-                                            $tgl['id_pembayaran'] = '0000'.$tgl['id_pembayaran'];
-                                        } else if($tgl['id_pembayaran'] >= 100 && $tgl['id_pembayaran'] < 1000){
-                                            $tgl['id_pembayaran'] = '000'.$tgl['id_pembayaran'];
-                                        } else if($tgl['id_pembayaran'] >= 1000 && $tgl['id_pembayaran'] < 10000){
-                                            $tgl['id_pembayaran'] = '00'.$tgl['id_pembayaran'];
-                                        } else if($tgl['id_pembayaran'] >= 10000 && $tgl['id_pembayaran'] < 100000){
-                                            $tgl['id_pembayaran'] = '0'.$tgl['id_pembayaran'];
+                                        if($tgl['tgl_pembayaran'] < "2020-10-01") {
+                                            if($tgl['id_pembayaran'] > 0 && $tgl['id_pembayaran'] < 10){
+                                                $tgl['id_pembayaran'] = '00000'.$tgl['id_pembayaran'];
+                                            } else if($tgl['id_pembayaran'] >= 10 && $tgl['id_pembayaran'] < 100){
+                                                $tgl['id_pembayaran'] = '0000'.$tgl['id_pembayaran'];
+                                            } else if($tgl['id_pembayaran'] >= 100 && $tgl['id_pembayaran'] < 1000){
+                                                $tgl['id_pembayaran'] = '000'.$tgl['id_pembayaran'];
+                                            } else if($tgl['id_pembayaran'] >= 1000 && $tgl['id_pembayaran'] < 10000){
+                                                $tgl['id_pembayaran'] = '00'.$tgl['id_pembayaran'];
+                                            } else if($tgl['id_pembayaran'] >= 10000 && $tgl['id_pembayaran'] < 100000){
+                                                $tgl['id_pembayaran'] = '0'.$tgl['id_pembayaran'];
+                                            } else {
+                                                $tgl['id_pembayaran'] = $tgl['id_pembayaran'];
+                                            };
+    
+                                            $bulan = date("m", strtotime($tgl['tgl_pembayaran']));
+                                            $tahun = date("y", strtotime($tgl['tgl_pembayaran']));
+    
+                                            $id = $tahun.$bulan.$tgl['id_pembayaran'];
                                         } else {
-                                            $tgl['id_pembayaran'] = $tgl['id_pembayaran'];
-                                        };
-
-                                        $bulan = date("m", strtotime($tgl['tgl_pembayaran']));
-                                        $tahun = date("y", strtotime($tgl['tgl_pembayaran']));
-
-                                        $id = $tahun.$bulan.$tgl['id_pembayaran'];
+                                            $id = "LKP" . $tgl['id_pembayaran'];
+                                        }
                                     ?>
                                     <td><?= $id?></td>
                                     <td><?= $tgl['nama_pembayaran']?></td>

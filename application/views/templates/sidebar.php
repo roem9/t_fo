@@ -38,6 +38,13 @@
         </div>
       </li>
       
+      
+      <li class="nav-item" id="ppu">
+        <a class="nav-link" href="<?= base_url()?>ppu/">
+          <i class="fas fa-fw fa-share-alt"></i>
+          <span>PPU</span></a>
+      </li>
+
       <li class="nav-item" id="piutang">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#droptwo" aria-expanded="true" aria-controls="droptwo">
           <i class="fas fa-fw fa-money-check-alt"></i>

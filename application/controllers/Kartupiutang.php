@@ -648,8 +648,23 @@ class Kartupiutang extends CI_CONTROLLER{
             $metode = $this->input->post("metode");
             if($metode == "Cash"){
                 // pembayaran
-                    $id_pembayaran = $this->Fo_model->get_last_id_pembayaran();
-                    $id_pembayaran = $id_pembayaran['id_pembayaran'] + 1;
+                    // $id_pembayaran = $this->Fo_model->get_last_id_pembayaran();
+                    // $id_pembayaran = $id_pembayaran['id_pembayaran'] + 1;
+                    $bulan = date("m", strtotime($this->input->post("tgl")));
+                    $tahun = date("Y", strtotime($this->input->post("tgl")));
+                    $id = $this->Main_model->get_last_id("pembayaran", "id_pembayaran", "MONTH(tgl_pembayaran) = '$bulan' AND YEAR(tgl_pembayaran) = '$tahun'");
+                    $id = substr($id['id_pembayaran'], -3) + 1;
+                    
+                    // id cash
+                        if($id >= 1 && $id < 10){
+                            $id_pembayaran = date('ymd', strtotime($this->input->post("tgl")))."00".$id;
+                        } else if($id >= 10 && $id < 100){
+                            $id_pembayaran = date('ymd', strtotime($this->input->post("tgl")))."0".$id;
+                        } else if($id >= 100 && $id < 1000){
+                            $id_pembayaran = date('ymd', strtotime($this->input->post("tgl"))).$id;
+                        }
+                    // id cash
+                    
                     $data = [
                         "id_pembayaran" => $id_pembayaran,
                         "nama_pembayaran" => $this->input->post("nama"),

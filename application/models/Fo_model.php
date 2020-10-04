@@ -145,7 +145,7 @@ class Fo_model extends CI_MODEL{
             $this->db->from("pembayaran");
             $this->db->where("tgl_pembayaran", $tgl);
             $this->db->where("keterangan", "Buku");
-            $this->db->group_by("tgl_pembayaran");
+            // $this->db->group_by("tgl_pembayaran");
             $cash =  $this->db->get()->result_array();
 
             $urut = 0;
@@ -158,25 +158,26 @@ class Fo_model extends CI_MODEL{
             $this->db->from("transfer");
             $this->db->where("tgl_transfer", $tgl);
             $this->db->where("keterangan", "Buku");
-            $this->db->group_by("tgl_transfer");
+            // $this->db->group_by("tgl_transfer");
             $transfer =  $this->db->get()->result_array();
             foreach ($transfer as $transfer) {
                 $data[$urut] = $transfer;
                 $urut++;
             }
 
-            $this->db->select("tgl_tagihan as tgl, id_tagihan as no_kuitansi, nama_tagihan as nama, uraian, nominal");
-            $this->db->from("tagihan");
-            $this->db->where("tgl_tagihan", $tgl);
-            $this->db->where("ket", "Buku");
-            $this->db->group_by("tgl_tagihan");
-            $tagihan =  $this->db->get()->result_array();
-            foreach ($tagihan as $tagihan) {
-                $data[$urut] = $tagihan;
-                $data[$urut]['pengajar'] = "-";
-                $data[$urut]['metode'] = "Piutang";
-                $urut++;
-            }
+            // $this->db->select("tgl_tagihan as tgl, id_tagihan as no_kuitansi, nama_tagihan as nama, uraian, nominal");
+            // $this->db->from("tagihan");
+            // $this->db->where("tgl_tagihan", $tgl);
+            // $this->db->where("ket", "Buku");
+            // $this->db->where("status", "piutang");
+            // $this->db->group_by("tgl_tagihan");
+            // $tagihan =  $this->db->get()->result_array();
+            // foreach ($tagihan as $tagihan) {
+            //     $data[$urut] = $tagihan;
+            //     $data[$urut]['pengajar'] = "-";
+            //     $data[$urut]['metode'] = "Piutang";
+            //     $urut++;
+            // }
 
             return $data;
         }
