@@ -142,7 +142,7 @@ class Laporan extends CI_CONTROLLER{
                 $data['data'] = [];
                 $urut = 0;
                 foreach ($tgl as $tgl) {
-                    $peserta = $this->Laporan_model->get_peserta_by_tgl_masuk($tgl['tgl_masuk']);
+                    $peserta = $this->Laporan_model->get_peserta_by_tgl_masuk($tgl['tgl_masuk'], "reguler");
                     foreach ($peserta as $peserta) {
                         $data['data'][$urut] = $peserta;
                         $info = $this->Fo_model->get_one("kpq", ["nip" => $peserta['info']]);
@@ -165,7 +165,7 @@ class Laporan extends CI_CONTROLLER{
                 $data['data'] = [];
                 $urut = 0;
                 foreach ($tgl as $tgl) {
-                    $peserta = $this->Laporan_model->get_peserta_by_tgl_masuk($tgl['tgl_masuk']);
+                    $peserta = $this->Laporan_model->get_peserta_by_tgl_masuk($tgl['tgl_masuk'], "pv khusus");
                     foreach ($peserta as $peserta) {
                         $data['data'][$urut] = $peserta;
                         $info = $this->Fo_model->get_one("kpq", ["nip" => $peserta['info']]);
@@ -188,7 +188,7 @@ class Laporan extends CI_CONTROLLER{
                 $data['data'] = [];
                 $urut = 0;
                 foreach ($tgl as $tgl) {
-                    $peserta = $this->Laporan_model->get_peserta_by_tgl_masuk($tgl['tgl_masuk']);
+                    $peserta = $this->Laporan_model->get_peserta_by_tgl_masuk($tgl['tgl_masuk'], "pv luar");
                     foreach ($peserta as $peserta) {
                         $data['data'][$urut] = $peserta;
                         $info = $this->Fo_model->get_one("kpq", ["nip" => $peserta['info']]);

@@ -1,4 +1,4 @@
-<?php
+;<?php
 class Laporan_model extends CI_MODEL{
     public function get_all_tagihan_pv_khusus(){
         $this->db->from("piutang_pv_khusus as a");
@@ -7,12 +7,14 @@ class Laporan_model extends CI_MODEL{
         return $this->db->get()->result_array();
     }
     
-    public function get_peserta_by_tgl_masuk($tgl_masuk){
+    public function get_peserta_by_tgl_masuk($tgl_masuk, $tipe = ""){
         $this->db->from("peserta as a");
         $this->db->join("alamat as b", "a.id_peserta = b.id_peserta");
         $this->db->join("pekerjaan as c", "a.id_peserta = c.id_peserta");
         $this->db->join("ortu as d", "a.id_peserta = d.id_peserta");
         $this->db->where("tgl_masuk", $tgl_masuk);
+        if($tipe)
+            $this->db->where("tipe_peserta", $tipe);
         return $this->db->get()->result_array();
     }
     

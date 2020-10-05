@@ -143,7 +143,11 @@ class Ppu extends CI_CONTROLLER{
                 $bulan = date("m", strtotime($this->input->post("tgl")));
                 $tahun = date("Y", strtotime($this->input->post("tgl")));
                 $id = $this->Main_model->get_last_id("ppu_transfer", "id", "MONTH(tgl) = '$bulan' AND YEAR(tgl) = '$tahun'");
-                $id = substr($id['id'], 0, 3) + 1;
+                if($id){
+                    $id = substr($id['id'], 0, 3) + 1;
+                } else {
+                    $id = 1;
+                }
                     
                 // id transfer
                     if($id >= 1 && $id < 10){
