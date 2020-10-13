@@ -81,7 +81,7 @@
                     </div>
                     <div class="form-group">
                         <label for="tgl_edit">Tanggal</label>
-                        <input type="date" name="tgl" id="tgl_edit" class="form-control form-control-sm">
+                        <input type="date" name="tgl" id="tgl_edit" class="form-control form-control-sm" readonly>
                     </div>
                     <div class="form-group">
                         <label for="uraian_edit">Keterangan</label>

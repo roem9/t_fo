@@ -1,4 +1,4 @@
-;<?php
+<?php
 class Laporan_model extends CI_MODEL{
     public function get_all_tagihan_pv_khusus(){
         $this->db->from("piutang_pv_khusus as a");

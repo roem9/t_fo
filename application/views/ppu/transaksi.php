@@ -1,5 +1,5 @@
 <!-- modal transaksi lain -->
-    <div class="modal fade" id="modalTransaksi" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalTransaksi" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -47,6 +47,10 @@
                         <div class="form-group">
                             <label for="alamat">Alamat</label>
                             <textarea name="alamat" id="alamat" class="form-control form-control-sm" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan</label>
+                            <textarea name="keterangan" id="keterangan" class="form-control form-control-sm"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="nominal_deposit">Nominal</label>
@@ -99,7 +103,7 @@
                     </div>
                     <div class="form-group">
                         <label for="tgl">Tgl</label>
-                        <input type="date" name="tgl" id="tgl" class="form-control form-control-sm" value="<?= date('Y-m-d')?>" required>
+                        <input type="date" name="tgl" id="tgl" class="form-control form-control-sm" value="" readonly>
                     </div>
                     <div class="form-group">
                         <label for="metode">Metode Pembayaran</label>
@@ -108,6 +112,10 @@
                     <div class="form-group">
                         <label for="alamat">Alamat</label>
                         <textarea name="alamat" id="alamat" class="form-control form-control-sm" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="keterangan">Keterangan</label>
+                        <textarea name="keterangan" id="keterangan" class="form-control form-control-sm"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="nominal_deposit">Nominal</label>
@@ -174,7 +182,7 @@
                                                 <td><?= rupiah($detail['nominal'])?></td>
                                                 <td><?= $detail['metode']?></td>
                                                 <?php if($detail['metode'] == "Cash"):?>
-                                                    <td><center>-</center></td>
+                                                    <td><a href="<?=base_url()?>ppu/kuitansi_cash/<?= $detail['id']?>" target=_blank><center><i class="fa fa-print"></i></center></a></td>
                                                 <?php elseif($detail['metode'] == "Transfer"):?>
                                                     <td><a href="<?=base_url()?>ppu/kuitansi_transfer/<?= $detail['id']?>" target=_blank><center><i class="fa fa-print"></i></center></a></td>
                                                 <?php endif;?>
@@ -234,6 +242,7 @@
                     $("[name = 'nama']").val(data.nama);
                     $("[name = 'tgl']").val(data.tgl);
                     $("[name = 'alamat']").val(data.alamat);
+                    $("[name = 'keterangan']").val(data.keterangan);
                     $("[name = 'metode']").val("Cash");
                     $("[name = 'nominal']").val(formatRupiah(data.nominal, 'Rp. '));
 
@@ -252,6 +261,8 @@
     
     // modal edit transfer
         $(".modalEditTransfer").click(function(){
+            $('#formInput').trigger("reset");
+
             let jenis = ["Al-Quran", "Ambulance","Infaq", "P2J", "Waqaf", "Zakat"];
             $("#modal-edit").html("Edit Transaksi");
             let id = $(this).data("id");
@@ -268,6 +279,7 @@
                     $("[name = 'nama']").val(data.nama);
                     $("[name = 'tgl']").val(data.tgl);
                     $("[name = 'alamat']").val(data.alamat);
+                    $("[name = 'keterangan']").val(data.keterangan);
                     $("[name = 'metode']").val("Transfer");
                     $("[name = 'nominal']").val(formatRupiah(data.nominal, 'Rp. '));
 
