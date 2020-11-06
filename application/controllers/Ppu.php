@@ -95,6 +95,10 @@ class Ppu extends CI_CONTROLLER{
 		$mpdf->Output();
     }
 
+    public function laporan_ppu(){
+        // $cash = $this->Main_model->get_all("ppu_cash", )
+    }
+
     // add
         public function add_transaksi(){
             // var_dump($_POST);
@@ -209,4 +213,5 @@ class Ppu extends CI_CONTROLLER{
             $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mengubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             redirect($_SERVER['HTTP_REFERER']);
         }
+    // edit
 }

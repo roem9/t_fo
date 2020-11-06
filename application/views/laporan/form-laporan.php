@@ -38,6 +38,7 @@
                     <option value="Transaksi">Laporan Transaksi Cash</option>
                     <option value="Piutang PV Khusus">Laporan Piutang PV Khusus</option>
                     <option value="Piutang Reguler">Laporan Piutang Reguler</option>
+                    <option value="PPU">Laporan PPU</option>
                 </select>
             </div>
             <div class="form-group">

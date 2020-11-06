@@ -6,6 +6,7 @@ class Laporan extends CI_CONTROLLER{
         $this->load->model('Fo_model');
         $this->load->model('Laporan_model');
         $this->load->model('Home_model');
+        $this->load->model('Main_model');
         if($this->session->userdata('status') != "login"){
             $this->session->set_flashdata('login', 'Maaf, Anda harus login terlebih dahulu');
 			redirect(base_url("login"));
@@ -176,7 +177,7 @@ class Laporan extends CI_CONTROLLER{
                     }
                 }
                 $this->load->view("laporan/peserta", $data);
-            }else if($laporan == "Peserta PV Luar"){
+            } else if($laporan == "Peserta PV Luar"){
                 $tgl_awal = $this->input->post("tgl_awal");
                 $tgl_akhir = $this->input->post("tgl_akhir");
                 $data['title'] = "Laporan Peserta PV Luar " . date("d-M-Y", strtotime($tgl_awal)) . " - " . date("d-M-Y", strtotime($tgl_akhir));
@@ -199,7 +200,7 @@ class Laporan extends CI_CONTROLLER{
                     }
                 }
                 $this->load->view("laporan/peserta", $data);
-            }else if($laporan == "Buku"){
+            } else if($laporan == "Buku"){
                 $tgl_awal = $this->input->post("tgl_awal");
                 $tgl_akhir = $this->input->post("tgl_akhir");
                 $data['title'] = "Laporan Buku " . date("d-M-Y", strtotime($tgl_awal)) . " - " . date("d-M-Y", strtotime($tgl_akhir));
@@ -217,6 +218,48 @@ class Laporan extends CI_CONTROLLER{
                     }
                 }
                 $this->load->view("laporan/buku", $data);
+            } else if($laporan == "PPU"){
+                $tgl_awal = $this->input->post("tgl_awal");
+                $tgl_akhir = $this->input->post("tgl_akhir");
+                
+                $data['title'] = "Laporan Transaksi PPU " . date("d-m-y", strtotime($tgl_awal)) . " - " . date("d-m-y", strtotime($tgl_akhir));
+                
+                $name = "Transaksi PPU " . $tgl_awal . " - " . $tgl_akhir;
+                // header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                // header('Content-Disposition: attachment;filename="'.$name.'.xls"');
+    
+                $data['transaksi'] = [];
+                $tgl = [];
+                $i = 0;
+                $cash = $this->Main_model->get_all("ppu_cash", "tgl between '$tgl_awal' AND '$tgl_akhir'");
+                foreach ($cash as $cash) {
+                    $tgl[] = $cash['tgl'];
+                    $data['transaksi'][$i] = $cash;
+                    $data['transaksi'][$i]['metode'] = "Cash";
+                    $data['transaksi'][$i]['id'] = "PPU".$cash['id'];
+                    $i++;
+                }
+                
+                // $transfer = $this->Main_model->get_all("ppu_transfer", "tgl between '$tgl_awal' AND '$tgl_akhir'");
+                // foreach ($transfer as $transfer) {
+                //     $tgl[] = $transfer['tgl'];
+                //     $data['transaksi'][$i] = $transfer;
+                //     $data['transaksi'][$i]['metode'] = "Transfer";
+                //     $data['transaksi'][$i]['id'] = substr($transfer['id'],0, 3)."/PPU-Im/".date('m', strtotime($transfer['tgl']))."/".date('Y', strtotime($transfer['tgl']));
+                //     $i++;
+                // }
+                
+                $data['tgl'] = array_unique($tgl);
+                
+                usort($data['tgl'], function($a, $b) {
+                    return $a <=> $b;
+                });
+    
+                usort($data['transaksi'], function($a, $b) {
+                    return $a['tgl'] <=> $b['tgl'];
+                });
+    
+                $this->load->view("ppu/laporan_ppu", $data);
             }
         } else {
             $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Password salah, gagal mencetak laporan<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
