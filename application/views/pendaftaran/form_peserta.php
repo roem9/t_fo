@@ -35,6 +35,10 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
+                                        <a href="#generatePeserta" class="btn btn-success" data-toggle="modal">Generate Peserta</a>
+                                    </div>
+                                    <div class="msg-generate"></div>
+                                    <div class="form-group">
                                         <label for="tgl_daftar">Tgl Pendaftaran</label>
                                         <input type="date" name="tgl_daftar" id="tgl_daftar" class="form-control form-control-sm" value="<?= date('Y-m-d')?>">
                                     </div>
@@ -265,6 +269,41 @@
     </div>
 </div>
 
+
+<!-- modal detail peserta -->
+    <div class="modal fade" id="generatePeserta" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="">Generate Data Peserta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="tipe_generate">Tipe Peserta</label>
+                        <select name="tipe_generate" id="tipe_generate" class="form-control form-control-sm">
+                            <option value="">Pilih Tipe Peserta</option>
+                            <option value="reguler">Peserta Reguler</option>
+                            <option value="pv khusus">Peserta Privat Khusus</option>
+                            <option value="pv luar">Peserta Luar</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="peserta">Peserta</label>
+                        <select name="id_generate" id="id_generate" class="form-control form-control-sm">
+                        </select>
+                    </div>
+                    <div class="form-group d-flex justify-content-end">
+                        <a href="javascript:void(0)" id="btnGenerate" class="btn btn-sm btn-primary">Generate Peserta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- modal detail peserta -->
+
 <script>
     $("#tambahPeserta").addClass("active");
     $("#dataDiri").hide();
@@ -436,4 +475,108 @@
         }
     })
 
+    // generate peserta 
+        $("#tipe_generate").change(function(){
+            let tipe = $(this).val();
+
+            $.ajax({
+                url: "<?= base_url()?>pendaftaran/get_peserta_by_tipe",
+                dataType: "JSON",
+                data: {tipe: tipe},
+                method: "POST",
+                success: function(result){
+                    html = "";
+                    result.forEach(peserta => {
+                        html += `<option value="`+peserta.id_peserta+`">`+peserta.nama_peserta+`</option>`
+                    });
+                    $("#id_generate").html(html);
+                }
+            })
+        })
+        
+        $("#btnGenerate").click(function(){
+            let id_peserta = $("#id_generate").val();
+
+            $.ajax({
+                url: "<?= base_url()?>peserta/get_detail_peserta",
+                dataType: "JSON",
+                data: {id: id_peserta},
+                method: "POST",
+                success: function(data){
+                    // console.log(data);
+                    if(data.diri != null){
+                        $("#nama_peserta").val(data.diri.nama_peserta)
+                        $("#no_hp").val(data.diri.no_hp)
+                        $("#t4_lahir").val(data.diri.t4_lahir)
+                        $("#tgl_lahir").val(data.diri.tgl_lahir)
+                        $("#tgl_masuk").val(data.diri.tgl_masuk)
+                        $("#umur").val(data.diri.umur)
+                        $("#jk").val(data.diri.jk)
+                        $("#pendidikan").val(data.diri.pendidikan)
+                        $("#status_nikah").val(data.diri.status_nikah)
+                        $("#info").val(data.diri.info);
+                        
+                        var info = ["Teman", "Spanduk", "Media Elektronik", "Civitas Tar-Q", "Brosur", "Peserta", "Event"]
+                        if(data.diri.info == "" || data.diri.info == null){
+                            $("#info").val("");
+                            $("#civitas").attr("disabled", true);
+                            $("#civitas").val("");
+                        } else if(info.includes(data.diri.info) == false){
+                            $("#info").val("Lainnya");
+                            $("#civitas").attr("disabled", false);
+                            $("#civitas").val(data.diri.info);
+                        } else {
+                            $("#info").val(data.diri.info);
+                            $("#civitas").attr("disabled", true);
+                            $("#civitas").val("");
+                        }
+
+                        // data alamat
+                        $("#alamat").val(data.alamat.alamat)
+                        $("#kel").val(data.alamat.kel)
+                        $("#kd_pos").val(data.alamat.kd_pos)
+                        $("#kec").val(data.alamat.kec)
+                        $("#kab_kota").val(data.alamat.kab_kota)
+                        $("#provinsi").val(data.alamat.provinsi)
+                        $("#no_telp").val(data.alamat.no_telp)
+                        $("#email").val(data.alamat.email)
+
+                        // data pekerjaan
+                        $("#nama_perusahaan").val(data.pekerjaan.nama_perusahaan)
+                        $("#alamat_perusahaan").val(data.pekerjaan.alamat_perusahaan)
+                        $("#no_telp_perusahaan").val(data.pekerjaan.no_telp_perusahaan)
+                        
+                        var pekerjaan = ["Pelajar", "Mahasiswa", "Swasta", "PNS/BUMN", "TNI/POLRI"]
+                        if(data.pekerjaan.pekerjaan == "" || data.pekerjaan.pekerjaan == null){
+                            $("#pekerjaan").val(data.pekerjaan.pekerjaan)
+                            $("#pekerjaan_lainnya").attr("disabled", true);
+                            $("#pekerjaan_lainnya").val("");
+                        } else if(pekerjaan.includes(data.pekerjaan.pekerjaan) == false){
+                            $("#pekerjaan").val("Lainnya");
+                            $("#pekerjaan_lainnya").attr("disabled", false);
+                            $("#pekerjaan_lainnya").val(data.pekerjaan.pekerjaan);
+                        } else {
+                            $("#pekerjaan").val(data.pekerjaan.pekerjaan);
+                            $("#pekerjaan_lainnya").attr("disabled", true);
+                            $("#pekerjaan_lainnya").val("");
+                        }
+
+                        // data ortu
+                        $("#nama_ibu").val(data.ortu.nama_ibu)
+                        $("#t4_lahir_ibu").val(data.ortu.t4_lahir_ibu)
+                        $("#tgl_lahir_ibu").val(data.ortu.tgl_lahir_ibu)
+                        $("#nama_ayah").val(data.ortu.nama_ayah)
+                        $("#t4_lahir_ayah").val(data.ortu.t4_lahir_ayah)
+                        $("#tgl_lahir_ayah").val(data.ortu.tgl_lahir_ayah)
+
+                        $(".msg-generate").html(`<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mengenerate data `+data.diri.nama_peserta+`<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`)
+                    } else {
+                        $("#formPendaftaran").trigger("reset");
+                        $(".msg-generate").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert">Gagal mengenerate data<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`)
+                    }
+                    
+                }
+            })
+        })
+    // generate peserta 
 </script>

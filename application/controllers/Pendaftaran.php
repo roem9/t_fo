@@ -4,6 +4,7 @@ class Pendaftaran extends CI_CONTROLLER{
     public function __construct(){
         parent::__construct();
         $this->load->model('Fo_model');
+        $this->load->model('Main_model');
         if($this->session->userdata('status') != "login"){
             $this->session->set_flashdata('login', 'Maaf, Anda harus login terlebih dahulu');
 			redirect(base_url("login"));
@@ -445,4 +446,12 @@ class Pendaftaran extends CI_CONTROLLER{
             return $id_peserta;
         }
     // other function
+
+    // get 
+        public function get_peserta_by_tipe(){
+            $tipe = $this->input->post("tipe");
+            $data = $this->Main_model->get_all("peserta", ["tipe_peserta" => $tipe, "nama_peserta !=" => ""], "nama_peserta");
+            echo json_encode($data);
+        }
+    // get 
 }
