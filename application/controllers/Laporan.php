@@ -225,8 +225,8 @@ class Laporan extends CI_CONTROLLER{
                 $data['title'] = "Laporan Transaksi PPU " . date("d-m-y", strtotime($tgl_awal)) . " - " . date("d-m-y", strtotime($tgl_akhir));
                 
                 $name = "Transaksi PPU " . $tgl_awal . " - " . $tgl_akhir;
-                // header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                // header('Content-Disposition: attachment;filename="'.$name.'.xls"');
+                header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                header('Content-Disposition: attachment;filename="'.$name.'.xls"');
     
                 $data['transaksi'] = [];
                 $tgl = [];
