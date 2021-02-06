@@ -28,6 +28,10 @@
                         <option value="">Tahun</option>
                         <option value="2019" <?php if($year == '2019')echo "selected"?>>2019</option>
                         <option value="2020" <?php if($year == '2020')echo "selected"?>>2020</option>
+                        <option value="2021" <?php if($year == '2021')echo "selected"?>>2021</option>
+                        <option value="2022" <?php if($year == '2022')echo "selected"?>>2022</option>
+                        <option value="2023" <?php if($year == '2023')echo "selected"?>>2023</option>
+                        <option value="2024" <?php if($year == '2024')echo "selected"?>>2024</option>
                     </select>
                 </div>
 
