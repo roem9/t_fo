@@ -1,12 +1,10 @@
 <!-- modal transaksi lain -->
-    <div class="modal fade" id="modalTransaksi" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal fade" id="modalTransaksi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title nama-title" id="exampleModalScrollableTitle">Transaksi Lainnya</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="<?=base_url()?>transaksi/add_transaksi_lain" method="post">
@@ -49,9 +47,13 @@
                             <textarea name="alamat" id="alamat" class="form-control form-control-sm"></textarea>
                         </div>
                         <div class="d-flex justify-content-end mb-3">
-                            <input type="submit" value="Tambah Transaksi" class="btn btn-sm btn-primary" id="btn-submit-3">
+                            <input type="submit" value="Tambah Transaksi" class="btn btn-sm btn-success" id="btn-submit-3">
                         </div>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <!-- <input type="submit" value="Tambah Transaksi" class="btn btn-sm btn-success" id="btn-submit-3"> -->
                 </div>
             </div>
         </div>
@@ -59,14 +61,12 @@
 <!-- modal transaksi lain -->
 
 <!-- modal edit transaksi -->
-    <div class="modal fade" id="modalEditPembayaran" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal fade" id="modalEditPembayaran" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal-edit">Edit Pembayaran</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body cus-font">
                 <form action="<?=base_url()?>transaksi/edit_transaksi" method="POST" id="form-edit">
@@ -93,6 +93,7 @@
                     </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
                         <input type="submit" class="btn btn-success btn-sm" value="Edit" id="submitEditPembayaran">
                     </div>
                 </form>
@@ -101,82 +102,116 @@
     </div>
 <!-- modal edit transaksi -->
 
-<div id="content-wrapper" class="d-flex flex-column">
-    <div id="content">
-        <div class="container-fluid">
-            <div class="row ml-2 mb-3">
-                <h1 class="h3 mb-0 text-gray-800 mt-3"><?= $header?></h1>
-            </div>
-            <div class="row">
-                <?php if( $this->session->flashdata('pesan') ) : ?>
-                    <div class="col-6">
-                        <?= $this->session->flashdata('pesan');?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card" style="max-width: 1000px">
-                        <div class="card-header">
-                            <ul class="nav nav-tabs card-header-tabs">
-                                <li class="nav-item">
-                                    <a href="#" class='nav-link active'>Transaksi</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class='nav-link bg-success text-light modalTransaksi' data-toggle="modal" data-target="#modalTransaksi">Tambah Transaksi</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-sm cus-font" id="dataTable">
-                                <thead>
-                                    <th><center>No</center></th>
-                                    <!-- <th>Tagihan</th> -->
-                                    <th>Tgl</th>
-                                    <th>Nama</th>
-                                    <th>Keterangan</th>
-                                    <th>Nominal</th>
-                                    <th>Metode</th>
-                                    <th>Edit</th>
-                                    <th>Print</th>
-                                </thead>
-                                <tbody>
-                                    <?php 
-                                        $no = 0;
-                                        foreach ($detail as $detail) :
-                                            if($detail['nama'] != "" || ($detail['nama'] == "" && $detail['nominal'] != 0)) :
-                                        ?>
-                                                <tr>
-                                                    <td><center><?= ++$no?></center></td>
-                                                    <td><?= date("d-M-Y", strtotime($detail['tgl']))?></td>
-                                                    <td><?= $detail['nama']?></td>
-                                                    <td><?= $detail['uraian']?></td>
-                                                    <td><?= rupiah($detail['nominal'])?></td>
-                                                    <td><?= $detail['metode']?></td>
-                                                    <?php if($detail['metode'] == "Cash"):?>
-                                                        <td><a href="#" class="badge badge-success modalEditPembayaran" data-toggle="modal" data-target="#modalEditPembayaran" data-id="<?= $detail['id_pembayaran']?>">edit</a></td>
-                                                    <?php elseif($detail['metode'] == "Transfer"):?>
-                                                        <td><center>-</center></td>
-                                                    <?php endif;?>
-                                                    <?php if($detail['metode'] == "Cash"):?>
-                                                        <td><a href="<?=base_url()?>transaksi/kuitansi/<?= MD5($detail['id_pembayaran'])?>" target=_blank><center><i class="fa fa-print"></i></center></a></td>
-                                                    <?php elseif($detail['metode'] == "Transfer"):?>
-                                                        <td><center>-</center></td>
-                                                    <?php endif;?>
-                                                </tr>
-                                            <?php endif;?>
-                                    <?php endforeach;?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="">
+    <a href="javascript:void(0)" data-bs-toggle="modal" class="btn btn-success btn-sm mb-3 modalTransaksi" data-bs-toggle="modal" data-bs-target="#modalTransaksi">Tambah Transaksi</a>
+</div>
+
+<div class="card shadow mb-4 overflow-auto">
+    <div class="card-body">
+        <table id="tableData" class="table table-hover align-items-center mb-0 text-dark">
+            <thead>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder w-1 desktop">Tgl</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder all">Nama</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder desktop">Keterangan</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder desktop">Nominal</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder desktop">Metode</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder all">Action</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
 </div>
 
+<?= footer()?>
+
 <script>
+    <?php if( $this->session->flashdata('pesan') ) : ?>
+        Toast.fire({
+            icon: "info",
+            title: "<?= $this->session->flashdata('pesan')?>"
+        });
+    <?php endif; ?>
+
+    var dataTable = $('#tableData').DataTable({
+        initComplete: function () {
+            var api = this.api();
+            $("#mytable_filter input")
+                .off(".DT")
+                .on("input.DT", function () {
+                    api.search(this.value).draw();
+                });
+        },
+        oLanguage: {
+            sProcessing: "loading...",
+        },
+        language: {
+            paginate: {
+                first: '<<',
+                previous: '<',
+                next: '>',
+                last: '>>'
+            }
+        },
+        processing: true,
+        serverSide: true,
+        ajax: { url: `<?= base_url()?>transaksi/getListTransaksiLainnya`, type: "POST" },
+        columns: [
+            { data: "tgl", orderable: true, searchable: false, className: "text-sm w-1 text-center" },
+            { data: "nama", orderable: true, searchable: true, className: "text-sm" },
+            { data: "uraian", orderable: false, searchable: false, className: "text-sm w-1" },
+            { 
+                data: "nominal", 
+                orderable: false, 
+                searchable: false, 
+                className: "text-sm w-1",
+                render : function(data, type, row){
+                    return `Rp ${parseInt(row['nominal']).toLocaleString("id-ID")}`;
+                }
+            },
+            { data: "metode", orderable: true, searchable: true, className: "text-sm w-1" },
+            { 
+                data: null, 
+                orderable: false, 
+                searchable: false, 
+                className: "text-sm w-1 text-center",
+                render: function(data, type, row) {
+                    if(row['metode'] == 'Cash'){
+                        return `
+                            <a href="<?=base_url()?>transaksi/kuitansi/${row['id']}" target="_blank">
+                                <span class="badge bg-gradient-success">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                        <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1"/>
+                                        <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
+                                    </svg>
+                                </span>
+                            </a>
+                            <a href="javascript:void(0)" class="modalEditPembayaran" data-bs-toggle="modal" data-bs-target="#modalEditPembayaran" data-id="${row['id']}">
+                                <span class="badge bg-gradient-info">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/>
+                                    </svg>
+                                </span>
+                            </a>
+                        `;
+                    } else {
+                        return `-`;
+                    }
+                }
+            },
+        ],
+        order: [[0, "desc"]],
+        rowReorder: {
+            selector: "td:nth-child(0)",
+        },
+        responsive: true,
+        pageLength: 5,
+        lengthMenu: [
+        [5, 10, 20],
+        [5, 10, 20]
+        ]
+    });
+
     $("#piutang").addClass("active")
 
     $("#metode").change(function(){
@@ -188,7 +223,7 @@
         }
     })
 
-    $(".modalEditPembayaran").click(function(){
+    $(document).on("click", ".modalEditPembayaran", function(){
         let id = $(this).data("id");
         console.log(id)
         $.ajax ({
@@ -209,7 +244,7 @@
 
     // validasi
     $("input[name='nominal']").keyup(function(){
-        $(this).val(formatRupiah(this.value, 'Rp. '))
+        $(this).val(formFormatRupiah(this.value, 'Rp. '))
     })
 
     // submit

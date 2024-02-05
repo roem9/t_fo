@@ -1,0 +1,66 @@
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+	font-size: 14px;
+}
+
+p{
+	font-size: 14px;
+}
+
+h6{
+	color: black;
+}
+
+.sweet_loader {
+	width: 140px;
+	height: 140px;
+	margin: 0 auto;
+	animation-duration: 0.5s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-name: ro;
+	transform-origin: 50% 50%;
+	transform: rotate(0) translate(0,0);
+}
+
+.tableSoal table, th, td, tr {
+	border: 1px solid black;
+	border-collapse: collapse;
+	color: black;
+	padding: 5px 5px 5px 5px;
+}
+
+.form-inline {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+}
+
+.question {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.highlight {
+	background-color: #ffff00;
+}
+
+.table {
+	position: relative;
+  }
+  
+  .table thead th,
+  .table tbody th:first-child {
+	position: sticky;
+	top: 0;
+	background-color: #f8f9fa;
+	z-index: 1;
+  }
+  
+  .table thead th {
+	background-color: #343a40;
+	color: #fff;
+  }

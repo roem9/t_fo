@@ -14,21 +14,32 @@ class Pendaftaran extends CI_CONTROLLER{
     public function reguler(){
         $data['title'] = 'Tambah Peserta Reguler';
         $data['tipe'] = 'reguler';
+        $data['sidebar'] = "tambah pendaftar";
+        $data['sidebarDropdown'] = "reguler";
 
         // get all (table, where, order)
         $data['program'] = $this->Fo_model->get_all("program", "", "id_program");
         // get all (table, where, order)
         $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
         $this->load->view('pendaftaran/form_reguler', $data);
-        $this->load->view('templates/footer');
+        // $this->load->view('templates/footer');
     }
 
     public function pvKhusus(){
+        // $data['title'] = 'Tambah WL PV Khusus';
+        // $data['tipe'] = 'pv khusus';
+        // $data['ket'] = 'pv khusus';
+
+        
         $data['title'] = 'Tambah WL PV Khusus';
         $data['tipe'] = 'pv khusus';
+        $data['sidebar'] = "tambah pendaftar";
+        $data['sidebarDropdown'] = "pv khusus";
         $data['ket'] = 'pv khusus';
 
         // get all (table, where, order)
@@ -36,15 +47,23 @@ class Pendaftaran extends CI_CONTROLLER{
         // get all (table, where, order)
         $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
         $this->load->view('pendaftaran/form_privat', $data);
-        $this->load->view('templates/footer');
+        // $this->load->view('templates/footer');
     }
 
     public function pvLuar(){
+        // $data['title'] = 'Tambah WL PV Luar';
+        // $data['tipe'] = 'pv luar';
+        // $data['ket'] = 'pv luar';
+
         $data['title'] = 'Tambah WL PV Luar';
         $data['tipe'] = 'pv luar';
+        $data['sidebar'] = "tambah pendaftar";
+        $data['sidebarDropdown'] = "pv luar";
         $data['ket'] = 'pv luar';
 
         // get all (table, where, order)
@@ -52,15 +71,24 @@ class Pendaftaran extends CI_CONTROLLER{
         // get all (table, where, order)
         $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        // $this->load->view('pendaftaran/form_privat', $data);
+        // $this->load->view('templates/footer');
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
         $this->load->view('pendaftaran/form_privat', $data);
-        $this->load->view('templates/footer');
     }
     
     public function pvInstansi(){
-        $data['title'] = 'Tambah WL Pv Instansi';
+        // $data['title'] = 'Tambah WL Pv Instansi';
+        // $data['tipe'] = 'pv luar';
+        // $data['ket'] = 'pv instansi';
+
+        $data['title'] = 'Tambah WL PV Instansi';
         $data['tipe'] = 'pv luar';
+        $data['sidebar'] = "tambah pendaftar";
+        $data['sidebarDropdown'] = "pv instansi";
         $data['ket'] = 'pv instansi';
 
         // get all (table, where, order)
@@ -68,10 +96,13 @@ class Pendaftaran extends CI_CONTROLLER{
         // get all (table, where, order)
         $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        // $this->load->view('pendaftaran/form_privat', $data);
+        // $this->load->view('templates/footer');
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
         $this->load->view('pendaftaran/form_privat', $data);
-        $this->load->view('templates/footer');
     }
     
     public function event(){
@@ -100,17 +131,21 @@ class Pendaftaran extends CI_CONTROLLER{
         $data['prog'] = $koor['program'];
         $data['tempat'] = $koor['tempat'];
         $data['title'] = 'Tambah Peserta Baru';
-        $data['header'] = 'Tambah Peserta Baru';
+        $data['sidebar'] = "";
+        $data['sidebarDropdown'] = "";
 
         // get all (table, where, order)
         $data['program'] = $this->Fo_model->get_all("program", "", "id_program");
         // get all (table, where, order)
         $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
     
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        // $this->load->view('pendaftaran/form_peserta', $data);
+        // $this->load->view('templates/footer');
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
         $this->load->view('pendaftaran/form_peserta', $data);
-        $this->load->view('templates/footer');
     }
     
     public function pesertaBaruReguler($id_kelas){
@@ -121,17 +156,21 @@ class Pendaftaran extends CI_CONTROLLER{
         $data['prog'] = $koor['program'];
         $data['tempat'] = $koor['tempat'];
         $data['title'] = 'Tambah Peserta Baru';
-        $data['header'] = 'Tambah Peserta Baru';
+        $data['sidebar'] = "";
+        $data['sidebarDropdown'] = "";
 
         // get all (table, where, order)
         $data['program'] = $this->Fo_model->get_all("program", "", "id_program");
         // get all (table, where, order)
         $data['pengajar'] = $this->Fo_model->get_all("kpq", ["status" => "aktif"], "nama_kpq");
     
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        // $this->load->view('pendaftaran/form_peserta', $data);
+        // $this->load->view('templates/footer');
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
         $this->load->view('pendaftaran/form_peserta', $data);
-        $this->load->view('templates/footer');
     }
 
     // add
@@ -216,7 +255,7 @@ class Pendaftaran extends CI_CONTROLLER{
 
             // $this->Fo_model->add_peserta($data, $id_peserta);
 
-            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mendaftarkan peserta reguler baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            $this->session->set_flashdata('pesan', 'Berhasil mendaftarkan peserta reguler baru');
             redirect('pendaftaran/reguler');
         }
 
@@ -330,7 +369,8 @@ class Pendaftaran extends CI_CONTROLLER{
             // $this->Fo_model->add_koor_kelas($id_kelas, $id_peserta);
             // $this->Fo_model->add_koor_kelas($data['koor'], $id_kelas, $id_peserta);
     
-            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mendaftarkan kelas privat baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            // $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mendaftarkan kelas privat baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            $this->session->set_flashdata('pesan', 'Berhasil mendaftarkan kelas privat baru');
             redirect($_SERVER['HTTP_REFERER']);
         }
 
@@ -418,7 +458,7 @@ class Pendaftaran extends CI_CONTROLLER{
             ];
             $this->Fo_model->edit_data("peserta", ["id_peserta" => $id_peserta], $data['kelas']);
     
-            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mendaftarkan peserta baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            $this->session->set_flashdata('pesan', 'Berhasil mendaftarkan peserta baru');
             redirect($_SERVER['HTTP_REFERER']);
         }
     // add

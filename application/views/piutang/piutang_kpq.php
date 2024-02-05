@@ -1,79 +1,84 @@
-<div id="content-wrapper" class="d-flex flex-column">
-
-<!-- Main Content -->
-<div id="content">
-
-  <!-- Begin Page Content -->
-  <div class="container-fluid">
-
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-gray-800 mt-3"><?=$header?></h1>
-    </div>
-
-    <?php if( $this->session->flashdata('piutang') ) : ?>
-        <div class="row">
-            <div class="col-6">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Data piutang <strong>berhasil</strong> <?= $this->session->flashdata('piutang');?>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    <?php endif; ?>
-
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4" style="max-width: 700px">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-hover table-sm cus-font" id="dataTable" cellspacing="0">
+<div class="card shadow mb-4 overflow-auto">
+    <div class="card-body">
+        <table id="tableData" class="table table-hover align-items-center mb-0 text-dark">
             <thead>
-              <tr>
-                <th style="max-width: 20px">No</th>
-                <th>Status</th>
-                <th>Nama Civitas</th>
-                <th>Tipe</th>
-                <th>Piutang</th>
-              </tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder w-1 desktop">Status</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder all">Nama Civitas</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder desktop">Tipe</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder all">Piutang</th>
             </thead>
             <tbody>
-              <?php $no = 0;
-              foreach ($kpq as $kpq) :?>
-                  <tr>
-                      <td><center><?=++$no?></center></td>
-                      <td><center><?= $kpq['status']?></center></td>
-                      <td><?=$kpq['nama_kpq']?></td>
-                      <?php if(substr($kpq['nip'], 0, 3) == "012"):?>
-                        <td><center>KPQ</center></td>
-                      <?php else:?>
-                        <td><center>Karyawan</center></td>
-                      <?php endif;?>
-                      <?php if(($kpq['bayar'] - $kpq['piutang']) == 0):?>
-                          <td class="bg-warning text-white"><a class="text-light" href="<?=base_url()?>kartupiutang/kpq/<?=$kpq['nip']?>"><?= rupiah(($kpq['bayar'] - $kpq['piutang']))?></a></td>
-                      <?php elseif(($kpq['bayar'] - $kpq['piutang']) < 0):?>
-                          <td class="bg-danger text-white"><a class="text-light" href="<?=base_url()?>kartupiutang/kpq/<?=$kpq['nip']?>"><?= rupiah(($kpq['bayar'] - $kpq['piutang']))?></a></td>
-                      <?php elseif(($kpq['bayar'] - $kpq['piutang']) > 0):?>
-                          <td class="bg-success text-white"><a class="text-light" href="<?=base_url()?>kartupiutang/kpq/<?=$kpq['nip']?>"><?= rupiah(($kpq['bayar'] - $kpq['piutang']))?></a></td>
-                      <?php endif;?>
-                  </tr>
-              <?php endforeach;?>
             </tbody>
-          </table>
-        </div>
-      </div>
+        </table>
     </div>
-
-  </div>
-  <!-- /.container-fluid -->
-
 </div>
-<!-- End of Main Content -->
-
-</div>
+<?= footer()?>
 
 <script>
+  var dataTable = $('#tableData').DataTable({
+        initComplete: function () {
+            var api = this.api();
+            $("#mytable_filter input")
+                .off(".DT")
+                .on("input.DT", function () {
+                    api.search(this.value).draw();
+                });
+        },
+        oLanguage: {
+            sProcessing: "loading...",
+        },
+        language: {
+            paginate: {
+                first: '<<',
+                previous: '<',
+                next: '>',
+                last: '>>'
+            }
+        },
+        processing: true,
+        serverSide: true,
+        ajax: { url: `<?= base_url()?>piutang/getListPiutangCivitas`, type: "POST" },
+        columns: [
+            { data: "status", orderable: false, searchable: false, className: "text-sm w-1 text-center" },
+            { data: "nama_kpq", orderable: true, searchable: true, className: "text-sm" },
+            { data: "tipe", orderable: false, searchable: false, className: "text-sm w-1" },
+            { 
+                data: 'piutang', 
+                orderable: true, 
+                searchable: false, 
+                className: "text-sm w-1 text-center",
+                render: function(data, type, row) {
+                  let piutang = row['piutang'];
+
+                  let piutangRupiah = parseInt(piutang).toLocaleString("id-ID");
+
+                  if(piutang > 0){
+                    return `
+                      <a href="<?=base_url()?>kartupiutang/kpq/${row['nip']} " target="_blank"><span class="text-success">Rp ${piutangRupiah}</span></a>
+                    `
+                  } else if(piutang < 0){
+                    return `
+                      <a href="<?=base_url()?>kartupiutang/kpq/${row['nip']} " target="_blank"><span class="text-danger">Rp ${piutangRupiah}</span></a>
+                    `
+                  } else if(piutang == 0){
+                    return `
+                      <a href="<?=base_url()?>kartupiutang/kpq/${row['nip']} " target="_blank"><span class="text-warning">Rp ${piutangRupiah}</span></a>
+                    `
+                  }
+                }
+            },
+        ],
+        order: [[1, "asc"]],
+        rowReorder: {
+            selector: "td:nth-child(0)",
+        },
+        responsive: true,
+        pageLength: 5,
+        lengthMenu: [
+        [5, 10, 20],
+        [5, 10, 20]
+        ]
+    });
 $("#piutang").addClass("active");
 
 $(".modalInvoice").click(function(){

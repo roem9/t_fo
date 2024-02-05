@@ -14,12 +14,18 @@ class Laporan extends CI_CONTROLLER{
     }
 
     public function index(){
-        $data['title'] = 'Form Laporan';
+        // $data['title'] = 'Form Laporan';
+        $data['title'] = "Form Laporan";
+        $data['sidebar'] = "laporan";
+        $data['sidebarDropdown'] = "";
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
-        $this->load->view('laporan/form-laporan');
-        $this->load->view('templates/footer');
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        // $this->load->view('laporan/form-laporan');
+        // $this->load->view('templates/footer');
+        $this->load->view("layout/header", $data);
+        $this->load->view("layout/navbar", $data);
+        $this->load->view("laporan/form-laporan", $data);
     }
 
     public function cetak_laporan(){

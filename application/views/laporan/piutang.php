@@ -1,9 +1,9 @@
 <?php
-    function rupiah($angka){
+    // function rupiah($angka){
             
-        $hasil_rupiah = "Rp " . number_format($angka,0,',','.');
-        return $hasil_rupiah;
-    }
+    //     $hasil_rupiah = "Rp " . number_format($angka,0,',','.');
+    //     return $hasil_rupiah;
+    // }
 
     function penyebut($nilai) {
 		$nilai = abs($nilai);

@@ -4,6 +4,7 @@ class Ppu extends CI_CONTROLLER{
     public function __construct(){
         parent::__construct();
         $this->load->model("Main_model");
+        $this->load->model('Ppu_model');
         if($this->session->userdata("status") != "login"){
             $this->session->set_flashdata("flash", "Maaf, Anda harus login terlebih dahulu");
             redirect(base_url('login'));
@@ -11,7 +12,11 @@ class Ppu extends CI_CONTROLLER{
     }
 
     public function index(){
-        $data['title'] = "Transaksi PPU";
+        // $data['title'] = "Transaksi PPU";
+        
+        $data['title'] = 'Transaksi PPU';
+        $data['sidebar'] = "ppu";
+        $data['sidebarDropdown'] = "";
 
         // get_all($table, $where = "", $order = "", $by = "ASC")
         $transfer = $this->Main_model->get_all("ppu_transfer", "", "tgl", "DESC");
@@ -20,27 +25,37 @@ class Ppu extends CI_CONTROLLER{
         $i = 0;
         $data['ppu'] = [];
 
-        foreach ($transfer as $trf) {
-            $data['ppu'][$i] = $trf;
-            $data['ppu'][$i]['metode'] = "Transfer";
-            $i++;
-        }
+        // foreach ($transfer as $trf) {
+        //     $data['ppu'][$i] = $trf;
+        //     $data['ppu'][$i]['metode'] = "Transfer";
+        //     $i++;
+        // }
         
-        foreach ($cash as $cash) {
-            $data['ppu'][$i] = $cash;
-            $data['ppu'][$i]['metode'] = "Cash";
-            $i++;
-        }
+        // foreach ($cash as $cash) {
+        //     $data['ppu'][$i] = $cash;
+        //     $data['ppu'][$i]['metode'] = "Cash";
+        //     $i++;
+        // }
 
-        usort($data['ppu'], function($a, $b) {
-            return $a['tgl'] < $b['tgl']?1:-1;
-        });
+        // usort($data['ppu'], function($a, $b) {
+        //     return $a['tgl'] < $b['tgl']?1:-1;
+        // });
 
         // var_dump($data);
-        $this->load->view("templates/header", $data);
-        $this->load->view("templates/sidebar");
+        // $this->load->view("templates/header", $data);
+        // $this->load->view("templates/sidebar");
+        // $this->load->view("ppu/transaksi", $data);
+        // $this->load->view("templates/footer");
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
         $this->load->view("ppu/transaksi", $data);
-        $this->load->view("templates/footer");
+    }
+
+    function getListPPU() { //data data produk by JSON object
+        header('Content-Type: application/json');
+        $output = $this->Ppu_model->getListPPU();
+        echo $output;
     }
 
     public function kuitansi_transfer($id){
@@ -56,8 +71,9 @@ class Ppu extends CI_CONTROLLER{
             'candara' => [
                 'R' => 'Candara.ttf'
             ]
-        ],
-        'default_font' => 'candara']);
+        ]
+        // , 'default_font' => 'candara'
+        ]);
         
         $kwitansi['data'] = $this->Main_model->get_one("ppu_transfer", ["id" => $id]);
         
@@ -83,8 +99,9 @@ class Ppu extends CI_CONTROLLER{
             'candara' => [
                 'R' => 'Candara.ttf'
             ]
-        ],
-        'default_font' => 'candara']);
+        ]
+        // , 'default_font' => 'candara'
+        ]);
         
         // $kwitansi['kwitansi'] = $this->Fo_model->get_data_pembayaran($id);
         $kwitansi['data'] = $this->Main_model->get_one("ppu_cash", ["id" => $id]);
@@ -168,7 +185,7 @@ class Ppu extends CI_CONTROLLER{
                 $this->Main_model->add_data("ppu_transfer", $data);
             }
 
-            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil menambahkan transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            $this->session->set_flashdata('pesan', 'Berhasil menambahkan transaksi');
             redirect($_SERVER['HTTP_REFERER']);
         }
     // add
@@ -210,7 +227,7 @@ class Ppu extends CI_CONTROLLER{
                 $this->Main_model->edit_data("ppu_transfer", ["id" => $this->input->post("id")], $data);
             }
 
-            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil mengubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            $this->session->set_flashdata('pesan', 'Berhasil mengubah data transaksi');
             redirect($_SERVER['HTTP_REFERER']);
         }
     // edit

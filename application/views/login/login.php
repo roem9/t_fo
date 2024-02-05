@@ -1,48 +1,45 @@
-<div class="container">
-
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
-
-      <div class="col-xl-5 col-lg-5 col-md-5">
-
-        <div class="card o-hidden border-0 shadow-lg my-5">
-          <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="p-5">
-                  <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                  </div>
-                    <?php if( $this->session->flashdata('login') ) : ?>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <?=$this->session->flashdata('login')?>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                    <form action="<?=base_url()?>login/ceklogin" method="POST">
-                        <div class="form-group">
-                        <input type="text" class="form-control form-control-user" placeholder="Enter Username" name="username" required>
-                        </div>
-                        <div class="form-group">
-                        <input type="password" class="form-control form-control-user" placeholder="Password" name="password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
-                    </form>
+<main class="main-content  mt-0">
+  <section>
+    <div class="page-header min-vh-75">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+            <div class="card card-plain mt-0">
+              <div class="card-header pb-0 text-left bg-transparent">
+                <div class="text-center">
+                  <img src="public/assets/img/logo.png" alt="" class="img-fluid" width="50%">
+                  <h3 class="font-weight-bolder text-info text-gradient">Selamat Datang</h3>
+                  <p class="mb-0">Silakan masukkan username dan password untuk masuk ke sistem</p>
                 </div>
+              </div>
+              <div class="card-body">
+                <?php if( $this->session->flashdata('login') ) : ?>
+                  <div class="alert alert-danger fade show text-light alert-error" role="alert">
+                    <?=$this->session->flashdata('login')?>
+                  </div>
+                <?php endif; ?>
+                <form action="<?= base_url()?>/login/ceklogin" method="post" role="form">
+                  <label>Username</label>
+                  <div class="mb-3">
+                    <input type="username" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="email-addon">
+                  </div>
+                  <label>Password</label>
+                  <div class="mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                  </div>
+                  <!-- <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="remember" value="remember" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Ingat saya</label>
+                  </div> -->
+                  <div class="text-center">
+                    <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Login</button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
-
       </div>
-
     </div>
-
-  </div>
+  </section>
+</main>

@@ -14,37 +14,51 @@ class Transaksi extends CI_CONTROLLER{
 
     public function lainnya(){
         $data['title'] = "Transaksi Lain-Lain";
-        $data['header'] = "Transaksi Lain-Lain";
+        // $data['header'] = "Transaksi Lain-Lain";
+        
+        $data['sidebar'] = "transaksi";
+        $data['sidebarDropdown'] = "transaksi lainnya";
+
         // $data['detail'] = $this->Transaksi_model->get_transaksi_lain();
-        $cash = $this->Fo_model->get_all("pembayaran", "id_pembayaran NOT IN(SELECT id_pembayaran FROM pembayaran_peserta) AND id_pembayaran NOT IN(SELECT id_pembayaran FROM pembayaran_kelas) AND id_pembayaran NOT IN(SELECT id_pembayaran FROM pembayaran_kpq)");
-        $i = 1;
-        $data['detail'] = [];
+        // $cash = $this->Fo_model->get_all("pembayaran", "id_pembayaran NOT IN(SELECT id_pembayaran FROM pembayaran_peserta) AND id_pembayaran NOT IN(SELECT id_pembayaran FROM pembayaran_kelas) AND id_pembayaran NOT IN(SELECT id_pembayaran FROM pembayaran_kpq)");
+        // $i = 1;
+        // $data['detail'] = [];
 
-        foreach ($cash as $cash) {
-            $data['detail'][$i] = $cash;
-            $data['detail'][$i]['tgl'] = $cash['tgl_pembayaran'];
-            $data['detail'][$i]['nama'] = $cash['nama_pembayaran'];
-            $i++;
-        }
+        // foreach ($cash as $cash) {
+        //     $data['detail'][$i] = $cash;
+        //     $data['detail'][$i]['tgl'] = $cash['tgl_pembayaran'];
+        //     $data['detail'][$i]['nama'] = $cash['nama_pembayaran'];
+        //     $i++;
+        // }
 
-        $transfer = $this->Fo_model->get_all("transfer", "id_transfer NOT IN(SELECT id_transfer FROM transfer_peserta) AND id_transfer NOT IN(SELECT id_transfer FROM transfer_kelas) AND id_transfer NOT IN(SELECT id_transfer FROM transfer_kpq)");
-        foreach ($transfer as $transfer) {
-            $data['detail'][$i] = $transfer;
-            $data['detail'][$i]['tgl'] = $transfer['tgl_transfer'];
-            $data['detail'][$i]['nama'] = $transfer['nama_transfer'];
-            $i++;
-        }
+        // $transfer = $this->Fo_model->get_all("transfer", "id_transfer NOT IN(SELECT id_transfer FROM transfer_peserta) AND id_transfer NOT IN(SELECT id_transfer FROM transfer_kelas) AND id_transfer NOT IN(SELECT id_transfer FROM transfer_kpq)");
+        // foreach ($transfer as $transfer) {
+        //     $data['detail'][$i] = $transfer;
+        //     $data['detail'][$i]['tgl'] = $transfer['tgl_transfer'];
+        //     $data['detail'][$i]['nama'] = $transfer['nama_transfer'];
+        //     $i++;
+        // }
 
-        usort($data['detail'], function($a, $b) {
-            // return $a['tgl'] <=> $b['tgl'];
-            if($a['tgl']==$b['tgl']) return 0;
-            return $a['tgl'] < $b['tgl']?1:-1;
-        });
+        // usort($data['detail'], function($a, $b) {
+        //     // return $a['tgl'] <=> $b['tgl'];
+        //     if($a['tgl']==$b['tgl']) return 0;
+        //     return $a['tgl'] < $b['tgl']?1:-1;
+        // });
 
-        $this->load->view("templates/header", $data);
-        $this->load->view("templates/sidebar");
+        // $this->load->view("templates/header", $data);
+        // $this->load->view("templates/sidebar");
+        // $this->load->view("transaksi/transaksi-lain", $data);
+        // $this->load->view("templates/footer");
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
         $this->load->view("transaksi/transaksi-lain", $data);
-        $this->load->view("templates/footer");
+    }
+
+    public function getListTransaksiLainnya(){
+        header('Content-Type: application/json');
+        $output = $this->Transaksi_model->getListTransaksiLainnya();
+        echo $output;
     }
 
     public function add_transaksi_lain(){
@@ -89,7 +103,7 @@ class Transaksi extends CI_CONTROLLER{
                 ];
         
                 $result = $this->Main_model->add_data("pembayaran", $data);
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil menambahkan transaksi cash<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Berhasil menambahkan transaksi cash');
             }
 
             // $data = [
@@ -137,7 +151,7 @@ class Transaksi extends CI_CONTROLLER{
             // transfer
         }
 
-        $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil menambahkan transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        $this->session->set_flashdata('pesan', 'Berhasil menambahkan transaksi');
         redirect($_SERVER['HTTP_REFERER']);
     }
     
@@ -145,7 +159,7 @@ class Transaksi extends CI_CONTROLLER{
         $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-P']);
         
         // $kwitansi['kwitansi'] = $this->Fo_model->get_data_pembayaran($id);
-        $kwitansi['kwitansi'] = $this->Fo_model->get_one("pembayaran", ["MD5(id_pembayaran) = " => $id]);
+        $kwitansi['kwitansi'] = $this->Fo_model->get_one("pembayaran", ["md5(id_pembayaran) = " => $id]);
         $bulan = date("m", strtotime($kwitansi['kwitansi']['tgl_pembayaran']));
         $tahun = date("y", strtotime($kwitansi['kwitansi']['tgl_pembayaran']));
         $id = $kwitansi['kwitansi']['id_pembayaran'];
@@ -195,9 +209,9 @@ class Transaksi extends CI_CONTROLLER{
                 ];
 
                 $this->Fo_model->edit_data("pembayaran", ["id_pembayaran" => $id], $data);
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Berhasil merubah data transaksi');
             } else {
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Password salah, gagal mengubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Password salah, gagal mengubah data transaksi');
             }
             redirect($_SERVER['HTTP_REFERER']);
         }

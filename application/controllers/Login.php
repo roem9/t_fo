@@ -9,9 +9,9 @@ class Login extends CI_CONTROLLER{
         $data['header'] = 'Login';
         $data['title'] = 'Login';
 
-        $this->load->view("templates/header", $data);
+        $this->load->view("layout/header", $data);
         $this->load->view("login/login");
-        $this->load->view("templates/footer");
+        $this->load->view("layout/footer");
     }
 
     public function cekLogin(){		

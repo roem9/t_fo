@@ -1,12 +1,10 @@
 <!-- modal edit pj -->
-    <div class="modal fade" id="modalEditPj" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal fade" id="modalEditPj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Edit PJ</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body cus-font">
                 <form action="<?=base_url()?>piutang/edit_pj_by_id" method="POST" id="form-edit">
@@ -17,7 +15,8 @@
                 </div>
                 </div>
                 <div class="modal-footer">
-                <input type="submit" class="btn btn-success btn-sm" value="Edit">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <input type="submit" class="btn btn-success btn-sm" value="Edit">
                 </div>
             </form>
             </div>
@@ -25,85 +24,116 @@
     </div>
 <!-- modal edit pj -->
 
-<div id="content-wrapper" class="d-flex flex-column">
-    <div id="content">
-        <div class="container-fluid">
-
-            <!-- Page Heading -->
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800 mt-3"><?= $header?></h1>
-            </div>
-            
-            
-          <?php if( $this->session->flashdata('pesan') ) : ?>
-              <div class="row">
-                  <div class="col-12">
-                        <?= $this->session->flashdata('pesan');?>
-                  </div>
-              </div>
-          <?php endif; ?>
-
-            <div class="card shadow mb-4">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-sm cus-font" id="dataTable" cellspacing="0">
-                            <thead>
-                                <th style="max-width: 20px">No</th>
-                                <th style="max-width: 35px">Status</th>
-                                <th>Koor</th>
-                                <th>PJ</th>
-                                <th style="max-width: 65px">No HP</th>
-                                <th style="max-width: 65px">Tgl Mulai</th>
-                                <th>Pengajar</th>
-                                <th>Piutang</th>
-                            </thead>
-                            <tbody>
-                                <?php $no = 0;
-                                foreach ($kelas as $i => $kelas) :?>
-                                    <tr>
-                                        <td><center><?= ++$no?></center></td>
-                                        <td><?= $kelas['status']?></td>
-                                        <td><?= $kelas['nama_peserta']?></td>
-                                        <?php if($kelas['pj'] == ""):?>
-                                            <td><a href="#modalEditPj" class="modalEditPj" data-toggle="modal" data-id="<?=$kelas['id_kelas']?>|<?=$kelas['pj']?>">-</a></td>
-                                        <?php else :?>
-                                            <td><a href="#modalEditPj" class="modalEditPj" data-toggle="modal" data-id="<?=$kelas['id_kelas']?>|<?=$kelas['pj']?>"><?=$kelas['pj']?></a></td>
-                                        <?php endif;?>
-                                        <td><?= $kelas['no_hp']?></td>
-                                        <td>
-                                            <!-- <center> -->
-                                                <?php  
-                                                    if($kelas['tgl_mulai'] == "0000-00-00") {
-                                                        echo "-";
-                                                    } else {
-                                                        echo date("d-m-Y", strtotime($kelas['tgl_mulai']));
-                                                    }
-                                                ?>
-                                            <!-- </center> -->
-                                        </td>
-                                        <td><?= $kelas['nama_kpq']?></td>
-                                        <?php if(($kelas['bayar'] - $kelas['piutang']) == 0):?>
-                                            <td class="bg-warning text-white"><a class="text-light" href="<?=base_url()?>kartupiutang/kelas/<?=$kelas['id_kelas']?>"><?= rupiah(($kelas['bayar'] - $kelas['piutang']))?></a></td>
-                                        <?php elseif(($kelas['bayar'] - $kelas['piutang']) < 0):?>
-                                            <td class="bg-danger text-white"><a class="text-light" href="<?=base_url()?>kartupiutang/kelas/<?=$kelas['id_kelas']?>"><?= rupiah(($kelas['bayar'] - $kelas['piutang']))?></a></td>
-                                        <?php elseif(($kelas['bayar'] - $kelas['piutang']) > 0):?>
-                                            <td class="bg-success text-white"><a class="text-light" href="<?=base_url()?>kartupiutang/kelas/<?=$kelas['id_kelas']?>"><?= rupiah(($kelas['bayar'] - $kelas['piutang']))?></a></td>
-                                        <?php endif;?>
-                                    </tr>
-                                <?php endforeach;?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="card shadow mb-4 overflow-auto">
+    <div class="card-body">
+        <table id="tableData" class="table table-hover align-items-center mb-0 text-dark">
+            <thead>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder w-1 desktop">Status</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder all">Koor</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder desktop">PJ</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder desktop">No HP</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder none">Tgl Mulai</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder desktop">Pengajar</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder all">Piutang</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
 </div>
+<?= footer()?>
 
 <script>
+    <?php if( $this->session->flashdata('pesan') ) : ?>
+        Toast.fire({
+            icon: "success",
+            title: "<?= $this->session->flashdata('pesan')?>"
+        });
+    <?php endif; ?>
+
+    var dataTable = $('#tableData').DataTable({
+        initComplete: function () {
+            var api = this.api();
+            $("#mytable_filter input")
+                .off(".DT")
+                .on("input.DT", function () {
+                    api.search(this.value).draw();
+                });
+        },
+        oLanguage: {
+            sProcessing: "loading...",
+        },
+        language: {
+            paginate: {
+                first: '<<',
+                previous: '<',
+                next: '>',
+                last: '>>'
+            }
+        },
+        processing: true,
+        serverSide: true,
+        ajax: { url: `<?= base_url()?>piutang/getListPiutangPrivat/<?= $table?>`, type: "POST" },
+        columns: [
+            { data: "status", orderable: true, searchable: true, className: "text-sm w-1 text-center" },
+            { data: "nama_peserta", orderable: true, searchable: true, className: "text-sm" },
+            { 
+                data: "pj", 
+                orderable: true, 
+                searchable: true, 
+                className: "text-sm w-1",
+                render: function(data, type, row){
+                    return `
+                        <a href="javascript:void(0)" class="modalEditPj" data-bs-toggle="modal" data-bs-target="#modalEditPj" data-id="${row['id_kelas']}|${row['pj']}">
+                            ${row['pj']}
+                        </a>
+                    `
+                }
+            },
+            { data: "no_hp", orderable: false, searchable: false, className: "text-sm w-1" },
+            { data: "tgl_mulai", orderable: false, searchable: false, className: "text-sm" },
+            { data: "nama_kpq", orderable: true, searchable: true, className: "text-sm" },
+            { 
+                data: 'piutang', 
+                orderable: true, 
+                searchable: false, 
+                className: "text-sm w-1 text-center",
+                render: function(data, type, row) {
+                  let piutang = row['piutang'];
+
+                  let piutangRupiah = parseInt(piutang).toLocaleString("id-ID");
+
+                  if(piutang > 0){
+                    return `
+                      <a href="<?=base_url()?>kartupiutang/kelas/${row['id_kelas']} " target="_blank"><span class="text-success">Rp ${piutangRupiah}</span></a>
+                    `
+                  } else if(piutang < 0){
+                    return `
+                      <a href="<?=base_url()?>kartupiutang/kelas/${row['id_kelas']} " target="_blank"><span class="text-danger">Rp ${piutangRupiah}</span></a>
+                    `
+                  } else if(piutang == 0){
+                    return `
+                      <a href="<?=base_url()?>kartupiutang/kelas/${row['id_kelas']} " target="_blank"><span class="text-warning">Rp ${piutangRupiah}</span></a>
+                    `
+                  }
+                }
+            },
+        ],
+        order: [[1, "asc"]],
+        rowReorder: {
+            selector: "td:nth-child(0)",
+        },
+        responsive: true,
+        pageLength: 5,
+        lengthMenu: [
+        [5, 10, 20],
+        [5, 10, 20]
+        ]
+    });
+
     $("#piutang").addClass("active");
     
-    $(".modalEditPj").click(function(){
+    $(document).on("click", ".modalEditPj", function(){
         let data = $(this).data("id");
         // console.log(data);
         data = data.split("|");

@@ -20,6 +20,8 @@ class Kartupiutang extends CI_CONTROLLER{
         $data['bulan'] = ["1" => "Januari", "2" => "Februari", "3" => "Maret", "4" => "April", "5" => "Mei", "6" => "Juni", "7" => "Juli", "8" => "Agustus", "9" => "September", "10" => "Oktober", "11" => "November", "12" => "Desember"];
         $data['header'] = "Kartu Piutang {$data['kelas']['nama_peserta']}";
         $data['title'] = "Kartu Piutang {$data['kelas']['nama_peserta']}";
+        $data['sidebar'] = "";
+        $data['sidebarDropdown'] = "";
 
         $data['total'] = 0;
         $data['detail'] = [];
@@ -85,13 +87,21 @@ class Kartupiutang extends CI_CONTROLLER{
             $data['nama'] = $data['kelas']['nama_peserta'];
         // data modal
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
-        $this->load->view('modal/modal_transaksi', $data);
-        $this->load->view('modal/modal_edit_status_tagihan');
-        $this->load->view('modal/modal_edit_tagihan');
-        $this->load->view('piutang/kartu_piutang_kelas', $data);
-        $this->load->view('templates/footer');
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        // $this->load->view('modal/modal_transaksi', $data);
+        // $this->load->view('modal/modal_edit_status_tagihan');
+        // $this->load->view('modal/modal_edit_tagihan');
+        // $this->load->view('piutang/kartu_piutang_kelas', $data);
+        // $this->load->view('templates/footer');
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
+        $this->load->view('modal/modal_tambah_invoice');
+        $this->load->view('modal/modal_edit_invoice');
+        // $this->load->view('modal/modal_edit_tagihan', $data);
+        // $this->load->view('modal/modal_transaksi', $data);
+        $this->load->view("piutang/kartu_piutang_kelas", $data);
     }
 
     public function kpq($nip){
@@ -99,6 +109,9 @@ class Kartupiutang extends CI_CONTROLLER{
         $data['kpq'] = $this->Fo_model->get_one("kpq", ["nip" => $nip]);
         $data['header'] = "Kartu Piutang {$data['kpq']['nama_kpq']}";
         $data['title'] = "Kartu Piutang {$data['kpq']['nama_kpq']}";
+        $data['sidebar'] = "";
+        $data['sidebarDropdown'] = "";
+        
         $data['total'] = 0;
         $data['detail'] = [];
         $i = 0;
@@ -158,15 +171,23 @@ class Kartupiutang extends CI_CONTROLLER{
             $data['id'] = $nip;
         // data modal
         
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        // $this->load->view('modal/modal_tambah_invoice');
+        // $this->load->view('modal/modal_edit_invoice');
+        // $this->load->view('modal/modal_edit_status_tagihan');
+        // $this->load->view('modal/modal_transaksi', $data);
+        // $this->load->view('modal/modal_edit_tagihan');
+        // $this->load->view('piutang/kartu-piutang-kpq', $data);
+        // $this->load->view('templates/footer');
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
         $this->load->view('modal/modal_tambah_invoice');
         $this->load->view('modal/modal_edit_invoice');
-        $this->load->view('modal/modal_edit_status_tagihan');
-        $this->load->view('modal/modal_transaksi', $data);
-        $this->load->view('modal/modal_edit_tagihan');
-        $this->load->view('piutang/kartu-piutang-kpq', $data);
-        $this->load->view('templates/footer');
+        // $this->load->view('modal/modal_edit_tagihan', $data);
+        // $this->load->view('modal/modal_transaksi', $data);
+        $this->load->view("piutang/kartu-piutang-kpq", $data);
     }
 
     public function peserta($id_peserta){
@@ -218,6 +239,8 @@ class Kartupiutang extends CI_CONTROLLER{
         $data['peserta'] = $this->KartuPiutang_model->getDataPeserta($id_peserta);
         $data['header'] = "Kartu Piutang {$data['peserta']['nama_peserta']}";
         $data['title'] = "Kartu Piutang {$data['peserta']['nama_peserta']}";
+        $data['sidebar'] = "";
+        $data['sidebarDropdown'] = "";
         $data['id'] = $id_peserta;
         
         usort($data['detail'], function($a, $b) {
@@ -243,15 +266,23 @@ class Kartupiutang extends CI_CONTROLLER{
             $data['nama'] = $peserta['nama_peserta'];
         // data modal
         
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        // $this->load->view('modal/modal_tambah_invoice');
+        // $this->load->view('modal/modal_edit_invoice');
+        // $this->load->view('modal/modal_edit_tagihan', $data);
+        // $this->load->view('modal/modal_transaksi', $data);
+        // // $this->load->view('modal/modal_edit_status_tagihan');
+        // $this->load->view('piutang/kartu-piutang-peserta', $data);
+        // $this->load->view('templates/footer');
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
         $this->load->view('modal/modal_tambah_invoice');
         $this->load->view('modal/modal_edit_invoice');
-        $this->load->view('modal/modal_edit_tagihan', $data);
-        $this->load->view('modal/modal_transaksi', $data);
-        // $this->load->view('modal/modal_edit_status_tagihan');
-        $this->load->view('piutang/kartu-piutang-peserta', $data);
-        $this->load->view('templates/footer');
+        // $this->load->view('modal/modal_edit_tagihan', $data);
+        // $this->load->view('modal/modal_transaksi', $data);
+        $this->load->view("piutang/kartu-piutang-peserta", $data);
     }
 
     // get data
@@ -289,9 +320,9 @@ class Kartupiutang extends CI_CONTROLLER{
             }
             
             if($result)
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Berhasil merubah data transaksi');
             else
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Gagal merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Gagal merubah data transaksi');
             redirect($_SERVER['HTTP_REFERER']);
         }
 
@@ -310,9 +341,9 @@ class Kartupiutang extends CI_CONTROLLER{
                 $result = $this->Fo_model->edit_data("deposit", ["id_deposit" => $id_deposit], $data);
             } 
             if($result)
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Berhasil merubah data transaksi');
             else
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Password salah, gagal merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Password salah, gagal merubah data transaksi');
             redirect($_SERVER['HTTP_REFERER']);
         }
         
@@ -334,9 +365,9 @@ class Kartupiutang extends CI_CONTROLLER{
             } 
 
             if($result)
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Berhasil merubah data transaksi');
             else
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Password salah, gagal merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Password salah, gagal merubah data transaksi');
             redirect($_SERVER['HTTP_REFERER']);
         }
 
@@ -358,9 +389,9 @@ class Kartupiutang extends CI_CONTROLLER{
             } 
 
             if($result)
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Berhasil merubah data transaksi');
             else
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Password salah, gagal merubah data transaksi<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Password salah, gagal merubah data transaksi');
             redirect($_SERVER['HTTP_REFERER']);
         }
     // edit
@@ -408,7 +439,7 @@ class Kartupiutang extends CI_CONTROLLER{
                         $this->Fo_model->add_data("deposit_kpq", $data);
                     }
                 // deposit sesuai tipe
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil melakukan transaksi langsung dengan metode <b>deposit</b><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Berhasil melakukan transaksi langsung dengan metode <b>deposit</b>');
             } else if($metode == "Cash"){
                 // saat pembayaran cash insert tagihan yang berstatus lunas dan pembayaran
                 if($this->input->post("tgl") >= "2020-10-01"){
@@ -453,7 +484,7 @@ class Kartupiutang extends CI_CONTROLLER{
                 // pembayaran
                     // $id_pembayaran = $this->Main_model->get_last_id_pembayaran();
                     if($this->input->post("tgl") < "2020-10-01"){
-                        $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Gagal menambahkan transaksi, tanggal yang Anda masukkan salah<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        $this->session->set_flashdata('pesan', 'Gagal menambahkan transaksi, tanggal yang Anda masukkan salah');
                         redirect($_SERVER['HTTP_REFERER']);
                     } else {
                         $bulan = date("m", strtotime($this->input->post("tgl")));
@@ -511,7 +542,7 @@ class Kartupiutang extends CI_CONTROLLER{
                         }
                     // pembayaran sesuai tipe
                 // pembayaran
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil melakukan transaksi langsung dengan metode <b>cash</b><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Berhasil melakukan transaksi langsung dengan metode <b>cash</b>');
             } else if($metode == "Transfer"){
                 // saat pembayaran cash insert tagihan yang berstatus lunas dan transfer
                 // tagihan
@@ -599,7 +630,7 @@ class Kartupiutang extends CI_CONTROLLER{
                         }
                     // transfer sesuai tipe
                 // transfer
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil melakukan transaksi langsung dengan metode <b>transfer</b><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Berhasil melakukan transaksi langsung dengan metode <b>transfer</b>');
             }
             redirect($_SERVER['HTTP_REFERER']);
         }
@@ -640,7 +671,7 @@ class Kartupiutang extends CI_CONTROLLER{
                     }
                 // tagihan sesuai tipe
             // tagihan
-            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil menambahkan piutang<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            $this->session->set_flashdata('pesan', 'Berhasil menambahkan piutang');
             redirect($_SERVER['HTTP_REFERER']);
         }
 
@@ -707,7 +738,7 @@ class Kartupiutang extends CI_CONTROLLER{
                     // pembayaran sesuai tipe
                 // pembayaran
                 
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil melakukan pembayaran dengan metode <b>cash</b><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Berhasil melakukan pembayaran dengan metode <b>cash</b>');
             } else if($metode == "Transfer"){
                 // transfer
                     $id = $this->Fo_model->get_last_id_transfer();
@@ -757,7 +788,7 @@ class Kartupiutang extends CI_CONTROLLER{
                         }
                     // transfer sesuai tipe
                 // transfer
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil melakukan pembayaran dengan metode <b>transfer</b><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Berhasil melakukan pembayaran dengan metode <b>transfer</b>');
             }
             redirect($_SERVER['HTTP_REFERER']);
         }
@@ -767,9 +798,9 @@ class Kartupiutang extends CI_CONTROLLER{
         public function edit_status_piutang($id, $status){
             $result = $this->Fo_model->edit_data("tagihan", ["MD5(id_tagihan)" => $id], ["status" => $status]);
             if($result)
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil merubah status piutang<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Berhasil merubah status piutang');
             else
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">Gagal merubah status piutang<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                $this->session->set_flashdata('pesan', 'Gagal merubah status piutang');
             redirect($_SERVER['HTTP_REFERER']);
         }
     // edit data

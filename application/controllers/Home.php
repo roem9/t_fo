@@ -19,8 +19,12 @@ class Home extends CI_CONTROLLER{
             $tahun = date('Y');
         }
 
-        $data['header'] = 'Home';
-        $data['title'] = 'Home';
+        // $data['header'] = 'Home';
+        // $data['title'] = 'Home';
+        $data['title'] = "Home";
+        $data['sidebar'] = "home";
+        $data['sidebarDropdown'] = "";
+
         $data['bulan'] = [ 
             ["id" => "1","bulan" => "Januari"], ["id" => "2","bulan" => "Februari"], ["id" => "3","bulan" => "Maret"], ["id" => "4","bulan" => "April"], ["id" => "5","bulan" => "Mei"], ["id" => "6","bulan" => "Juni"], ["id" => "7","bulan" => "Juli"], ["id" => "8","bulan" => "Agustus"], ["id" => "9","bulan" => "September"], ["id" => "10","bulan" => "Oktober"], ["id" => "11","bulan" => "November"], ["id" => "12","bulan" => "Desember"]
         ];
@@ -76,12 +80,14 @@ class Home extends CI_CONTROLLER{
         $data['kelas_pv_luar'] = COUNT($this->Fo_model->get_all("kelas", ["MONTH(tgl_mulai)" => $bulan, "YEAR(tgl_mulai)" => $tahun, "tipe_kelas" => "pv luar"]));
         $data['kelas_reguler'] = COUNT($this->Fo_model->get_all("kelas", ["MONTH(tgl_mulai)" => $bulan, "YEAR(tgl_mulai)" => $tahun, "tipe_kelas" => "reguler"]));
         
-        $this->load->view("templates/header", $data);
-        $this->load->view("templates/sidebar");
-        $this->load->view("modal/modal_lainnya_pekerjaan");
-        $this->load->view("modal/modal_lainnya_informasi");
+        // $this->load->view("templates/header", $data);
+        // $this->load->view("templates/sidebar");
+        $this->load->view("layout/header", $data);
+        $this->load->view("layout/navbar", $data);
+        // $this->load->view("modal/modal_lainnya_pekerjaan");
+        // $this->load->view("modal/modal_lainnya_informasi");
         $this->load->view("home/index", $data);
-        $this->load->view("templates/footer");
+        // $this->load->view("templates/footer");
     }
 
     public function get_pekerjaan_lain_by_periode(){

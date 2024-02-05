@@ -56,48 +56,56 @@
         tr td{
             height: 30px;
             vertical-align: bottom;
+			font-family: 'candara';
         }
         
         .no{
 			position: absolute;
 			left: 110px;
 			top: 74px;
+			font-family: 'candara';
 		}
         
         .nama{
 			position: absolute;
 			left: 210px;
 			top: 99px;
+			font-family: 'candara';
 		}
         
         .alamat{
 			position: absolute;
 			left: 210px;
 			top: 125px;
+			font-family: 'candara';
 		}
         
         .jenis{
 			position: absolute;
 			left: 210px;
 			top: 177px;
+			font-family: 'candara';
 		}
         
         .nominal{
 			position: absolute;
 			left: 210px;
 			top: 152px;
+			font-family: 'candara';
 		}
         
         .uang{
 			position: absolute;
 			left: 110px;
 			top: 273px;
+			font-family: 'candara';
 		}
         
         .tgl{
 			position: absolute;
 			left: 555px;
 			top: 202px;
+			font-family: 'candara';
 		}
     </style>
 </head><body>

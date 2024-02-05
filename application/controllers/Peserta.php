@@ -15,10 +15,12 @@ class Peserta extends CI_CONTROLLER{
     public function reguler($status){
         if($status == "nonaktif"){
             $data['title'] = 'Peserta Reguler Nonaktif';
-            $data['peserta'] = $this->Main_model->get_all("peserta_reguler", ["status" => "nonaktif"], "nama_peserta", "ASC");
+            // $data['peserta'] = $this->Main_model->get_all("peserta_reguler", ["status" => "nonaktif"], "nama_peserta", "ASC");
+            $data['sidebarDropdown'] = "reguler nonaktif";
         } else {
             $data['title'] = 'Peserta Reguler Aktif';
-            $data['peserta'] = $this->Main_model->get_all("peserta_reguler", ["status" => "aktif"], "nama_peserta", "ASC");
+            // $data['peserta'] = $this->Main_model->get_all("peserta_reguler", ["status" => "aktif"], "nama_peserta", "ASC");
+            $data['sidebarDropdown'] = "reguler aktif";
         }
         $data['tabs'] = 'reguler';
         
@@ -26,53 +28,88 @@ class Peserta extends CI_CONTROLLER{
         $data['ruangan'] = $this->Main_model->get_all("ruangan");
         $data['program'] = $this->Main_model->get_all("program");
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
-        $this->load->view('peserta/peserta_reguler', $data);
-        $this->load->view('templates/footer');
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        // $this->load->view('peserta/peserta_reguler', $data);
+        // $this->load->view('templates/footer');
+        $data['sidebar'] = "peserta";
+        $data['status'] = $status;
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
+        $this->load->view("peserta/peserta_reguler", $data);
     }
     
     public function pvkhusus($status){
         if($status == "nonaktif"){
+            $data['sidebarDropdown'] = "pv khusus nonaktif";
             $data['title'] = 'Peserta Pv Khusus Nonaktif';
-            $data['peserta'] = $this->Main_model->get_all("peserta_pv_khusus", ["status" => "nonaktif"], "nama_peserta", "ASC");
+            // $data['peserta'] = $this->Main_model->get_all("peserta_pv_khusus", ["status" => "nonaktif"], "nama_peserta", "ASC");
         } else {
+            $data['sidebarDropdown'] = "pv khusus aktif";
             $data['title'] = 'Peserta Pv Khusus Aktif';
-            $data['peserta'] = $this->Main_model->get_all("peserta_pv_khusus", ["status" => "aktif"], "nama_peserta", "ASC");
+            // $data['peserta'] = $this->Main_model->get_all("peserta_pv_khusus", ["status" => "aktif"], "nama_peserta", "ASC");
         }
-        $data['tabs'] = 'pv khusus';
+        $data['tipe'] = 'pvkhusus';
         
-        $data['kpq'] = $this->Main_model->get_all("kpq", ["status" => "aktif"], "nama_kpq", "ASC");
-        $data['ruangan'] = $this->Main_model->get_all("ruangan");
-        $data['program'] = $this->Main_model->get_all("program");
+        // $data['kpq'] = $this->Main_model->get_all("kpq", ["status" => "aktif"], "nama_kpq", "ASC");
+        // $data['ruangan'] = $this->Main_model->get_all("ruangan");
+        // $data['program'] = $this->Main_model->get_all("program");
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
-        $this->load->view('peserta/peserta_privat', $data);
-        $this->load->view('templates/footer');
+        $data['sidebar'] = "peserta";
+        $data['status'] = $status;
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
+        $this->load->view("peserta/peserta_privat", $data);
+        
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        // $this->load->view('peserta/peserta_privat', $data);
+        // $this->load->view('templates/footer');
     }
     
     public function pvluar($status){
         if($status == "nonaktif"){
+            $data['sidebarDropdown'] = "pv luar nonaktif";
             $data['title'] = 'Peserta Pv Luar Nonaktif';
-            $data['tabs'] = 'pv luar';
             // $data['peserta'] = $this->Akademik_model->get_all_peserta_pv_luar();
-            $data['peserta'] = $this->Main_model->get_all("peserta_pv_luar", ["status" => "nonaktif"], "nama_peserta", "ASC");
+            // $data['peserta'] = $this->Main_model->get_all("peserta_pv_luar", ["status" => "nonaktif"], "nama_peserta", "ASC");
         } else {
+            $data['sidebarDropdown'] = "pv luar aktif";
             $data['title'] = 'Peserta Pv Luar Aktif';
-            $data['tabs'] = 'pv luar';
             // $data['peserta'] = $this->Akademik_model->get_all_peserta_pv_luar();
-            $data['peserta'] = $this->Main_model->get_all("peserta_pv_luar", ["status" => "aktif"], "nama_peserta", "ASC");
+            // $data['peserta'] = $this->Main_model->get_all("peserta_pv_luar", ["status" => "aktif"], "nama_peserta", "ASC");
         }
-        
+        $data['tipe'] = 'pvluar';
+
         $data['kpq'] = $this->Main_model->get_all("kpq", ["status" => "aktif"], "nama_kpq", "ASC");
         $data['ruangan'] = $this->Main_model->get_all("ruangan");
         $data['program'] = $this->Main_model->get_all("program");
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
-        $this->load->view('peserta/peserta_privat', $data);
-        $this->load->view('templates/footer');
+        $data['sidebar'] = "peserta";
+        $data['status'] = $status;
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/navbar');
+        $this->load->view("peserta/peserta_privat", $data);
+
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('templates/sidebar');
+        // $this->load->view('peserta/peserta_privat', $data);
+        // $this->load->view('templates/footer');
+    }
+
+    function getListPesertaReguler($status) { //data data produk by JSON object
+        header('Content-Type: application/json');
+        $output = $this->Peserta_model->getListPesertaReguler($status);
+        echo $output;
+    }
+
+    function getListPesertaPrivat($tipe, $status) { //data data produk by JSON object
+        header('Content-Type: application/json');
+        $output = $this->Peserta_model->getListPesertaPrivat($tipe, $status);
+        echo $output;
     }
 
     public function get_detail_peserta(){
@@ -112,7 +149,7 @@ class Peserta extends CI_CONTROLLER{
         // edit data (table, where, data)
         $this->Fo_model->edit_data("alamat", ["id_peserta" => $id_peserta], $data['alamat']);
 
-        $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">Berhasil <b>merubah</b> data peserta<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        $this->session->set_flashdata('pesan', 'Berhasil merubah data peserta');
         redirect($_SERVER['HTTP_REFERER']);
     }
 
@@ -173,7 +210,7 @@ class Peserta extends CI_CONTROLLER{
         ];
         $this->Main_model->edit_data("ortu", ["id_peserta" => $id_peserta], $data['ortu']);
         
-        $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil mengubah data peserta<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        $this->session->set_flashdata('pesan', 'Berhasil mengubah data peserta');
         redirect($_SERVER['HTTP_REFERER']);
     }
 }

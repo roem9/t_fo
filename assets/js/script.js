@@ -33,16 +33,5 @@ function setInputFilter(textbox, inputFilter) {
         rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
         return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
     }
-    
-// modal edit status tagihan
-    $(".modal_edit_status_tagihan").click(function(){
-        let data = $(this).data("id");
-        data = data.split("|")
-        let id = data[0];
-        let status = data[1];
-        $("#id_edit_tagihan").val(id)
-        $("#status_tagihan").val(status)
-    })
-// modal edit status tagihan
 
 

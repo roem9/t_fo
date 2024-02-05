@@ -1,120 +1,90 @@
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content">
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-
-          <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800 mt-3"><?= $header?></h1>
-          </div>
-
-          
-          <?php if( $this->session->flashdata('piutang') ) : ?>
-              <div class="row">
-                  <div class="col-6">
-                      <div class="alert alert-success alert-dismissible fade show" role="alert">
-                          Data Piutang<strong>berhasil</strong> <?= $this->session->flashdata('piutang');?>
-                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                          </button>
-                      </div>
-                  </div>
-              </div>
-          <?php endif; ?>
-
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4" style="max-width: 1000px;">
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-hover table-sm cus-font" id="dataTable" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th style="max-width: 20px">No</th>
-                      <th>Status</th>
-                      <th>Nama Peserta</th>
-                      <th>Program</th>
-                      <th>Hari</th>
-                      <th>Waktu</th>
-                      <th>Pengajar</th>
-                      <th>Piutang</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php 
-                      $no = 0;
-                      foreach ($peserta as $peserta) :?>
-                        <tr>
-                            <td><center><?= ++$no?></center></td>
-                            <td><?= $peserta['status']?></td>
-                            <td><?= $peserta['nama_peserta']?></td>
-                            <td>
-                              <?php 
-                                if($peserta['program'] == ''){
-                                  echo '<center>-</center>';
-                                } else {
-                                  echo $peserta['program'];
-                                }
-                              ?>
-                            </td>
-                            <td>
-                              <?php 
-                                if($peserta['hari'] == ''){
-                                  echo '<center>-</center>';
-                                } else {
-                                  echo $peserta['hari'];
-                                }
-                              ?>
-                            </td>
-                            <td>
-                              <?php 
-                                if($peserta['jam'] == ''){
-                                  echo '<center>-</center>';
-                                } else {
-                                  echo $peserta['jam'];
-                                }
-                              ?>
-                            </td>
-                            <td>
-                              <?php 
-                                if($peserta['nama_kpq'] == ''){
-                                  echo '<center>-</center>';
-                                } else {
-                                  echo $peserta['nama_kpq'];
-                                }
-                              ?>
-                            </td>
-                            <?php if(($peserta['bayar'] - $peserta['piutang']) == 0):?>
-                                <td class="bg-warning text-white"><a class="text-light" href="<?=base_url()?>kartupiutang/peserta/<?=$peserta['id_peserta']?>"><?= rupiah(($peserta['bayar'] - $peserta['piutang']))?></a></td>
-                            <?php elseif(($peserta['bayar'] - $peserta['piutang']) < 0):?>
-                                <td class="bg-danger text-white"><a class="text-light" href="<?=base_url()?>kartupiutang/peserta/<?=$peserta['id_peserta']?>"><?= rupiah(($peserta['bayar'] - $peserta['piutang']))?></a></td>
-                            <?php elseif(($peserta['bayar'] - $peserta['piutang']) > 0):?>
-                                <td class="bg-success text-white"><a class="text-light" href="<?=base_url()?>kartupiutang/peserta/<?=$peserta['id_peserta']?>"><?= rupiah(($peserta['bayar'] - $peserta['piutang']))?></a></td>
-                            <?php endif;?>
-                        </tr>
-                    <?php endforeach;?>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!-- /.container-fluid -->
-
-      </div>
-      <!-- End of Main Content -->
-
+<div class="card shadow mb-4 overflow-auto">
+    <div class="card-body">
+        <table id="tableData" class="table table-hover align-items-center mb-0 text-dark">
+            <thead>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder w-1 desktop">Status</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder all">Nama Peserta</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder desktop">Program</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder desktop">Hari</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder desktop">Waktu</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder desktop">Pengajar</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bolder all">Piutang</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
-    <!-- End of Content Wrapper -->
-
-  </div>
-  <!-- End of Page Wrapper -->
-
+</div>
+<?= footer()?>
 <script>
+    var dataTable = $('#tableData').DataTable({
+        initComplete: function () {
+            var api = this.api();
+            $("#mytable_filter input")
+                .off(".DT")
+                .on("input.DT", function () {
+                    api.search(this.value).draw();
+                });
+        },
+        oLanguage: {
+            sProcessing: "loading...",
+        },
+        language: {
+            paginate: {
+                first: '<<',
+                previous: '<',
+                next: '>',
+                last: '>>'
+            }
+        },
+        processing: true,
+        serverSide: true,
+        ajax: { url: `<?= base_url()?>piutang/getListPiutangReguler`, type: "POST" },
+        columns: [
+            { data: "status", orderable: true, searchable: true, className: "text-sm w-1 text-center" },
+            { data: "nama_peserta", orderable: true, searchable: true, className: "text-sm" },
+            { data: "program", orderable: false, searchable: false, className: "text-sm w-1 text-center" },
+            { data: "hari", orderable: true, searchable: false, className: "text-sm" },
+            { data: "jam", orderable: false, searchable: false, className: "text-sm" },
+            { data: "nama_kpq", orderable: true, searchable: true, className: "text-sm" },
+            { 
+                data: 'piutang', 
+                orderable: true, 
+                searchable: false, 
+                className: "text-sm w-1 text-center",
+                render: function(data, type, row) {
+                  let piutang = row['piutang'];
+
+                  let piutangRupiah = parseInt(piutang).toLocaleString("id-ID");
+
+                  if(piutang > 0){
+                    return `
+                      <a href="<?=base_url()?>kartupiutang/peserta/${row['id_peserta']} " target="_blank"><span class="text-success">Rp ${piutangRupiah}</span></a>
+                    `
+                  } else if(piutang < 0){
+                    return `
+                      <a href="<?=base_url()?>kartupiutang/peserta/${row['id_peserta']} " target="_blank"><span class="text-danger">Rp ${piutangRupiah}</span></a>
+                    `
+                  } else if(piutang == 0){
+                    return `
+                      <a href="<?=base_url()?>kartupiutang/peserta/${row['id_peserta']} " target="_blank"><span class="text-warning">Rp ${piutangRupiah}</span></a>
+                    `
+                  }
+                }
+            },
+        ],
+        order: [[1, "asc"]],
+        rowReorder: {
+            selector: "td:nth-child(0)",
+        },
+        responsive: true,
+        pageLength: 5,
+        lengthMenu: [
+        [5, 10, 20],
+        [5, 10, 20]
+        ]
+    });
+
     $("#piutang").addClass("active");
     $(".modalInvoice").click(function(){
         const id = $(this).data('id');
