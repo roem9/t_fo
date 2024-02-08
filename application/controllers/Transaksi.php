@@ -159,7 +159,7 @@ class Transaksi extends CI_CONTROLLER{
         $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-P']);
         
         // $kwitansi['kwitansi'] = $this->Fo_model->get_data_pembayaran($id);
-        $kwitansi['kwitansi'] = $this->Fo_model->get_one("pembayaran", ["md5(id_pembayaran) = " => $id]);
+        $kwitansi['kwitansi'] = $this->Fo_model->get_one("pembayaran", ["id_pembayaran = " => $id]);
         $bulan = date("m", strtotime($kwitansi['kwitansi']['tgl_pembayaran']));
         $tahun = date("y", strtotime($kwitansi['kwitansi']['tgl_pembayaran']));
         $id = $kwitansi['kwitansi']['id_pembayaran'];

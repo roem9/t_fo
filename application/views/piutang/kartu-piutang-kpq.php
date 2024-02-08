@@ -329,7 +329,7 @@
                                             </svg>
                                         </span>
                                     </a>
-                                    <a href="<?=base_url()?>transaksi/kuitansi/<?= MD5($detail['id_pembayaran'])?>" target="_blank">
+                                    <a href="<?=base_url()?>transaksi/kuitansi/<?= $detail['id_pembayaran']?>" target="_blank">
                                         <span class="badge bg-gradient-success">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
                                                 <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>

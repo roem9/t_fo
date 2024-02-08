@@ -92,9 +92,17 @@
         <table style="width: 100%; margin-top: 10px">
             <tr>
                 <!-- <td><img src="<?=base_url()?>/assets/img/tarq.png" width=80px></td> -->
-                <td style="font-size: 8px"><b><center><i>Pusat : TarQ Center Jl. Sidomukti no 34 Sukaluyu Bandung - 022 250641 / Cab Batam Kep Riau - 081270828618 / Cab Jatinangor
-            Jawa Barat - 0813132265419 / Cab Padang Jl Kamang no 12 Padang - Sumatera Barat - 075131342 / Cab Parakan Muncang Jawa Barat - 08568970008 / Cab. Sumedang Jawa Barat - 085314026605</i></center></b></td>
+                <!-- <td style="font-size: 8px"><b><center><i>Pusat : TarQ Center Jl. Sidomukti no 34 Sukaluyu Bandung - 022 250641 / Cab Batam Kep Riau - 081270828618 / Cab Jatinangor
+            Jawa Barat - 0813132265419 / Cab Padang Jl Kamang no 12 Padang - Sumatera Barat - 075131342 / Cab Parakan Muncang Jawa Barat - 08568970008 / Cab. Sumedang Jawa Barat - 085314026605</i></center></b></td> -->
                 <!-- <td><img src="<?=base_url()?>/assets/img/tarq.png" width=80px></td> -->
+
+                <td style="font-size: 8px">
+                    <b>
+                        <center>
+                            TAR-Q PUSAT : Jl. Cingised No. 3 RT 7 / RW 7 Kel. Cisaranten Kulon Kec. Arcamanik Bandung | Rumah Quran Tar-Q Al Husna : Jl. Kol. Ahmad Syam No. 44 Jatinangor Sumedang 0812-1432-7087 | Rumah Quran Tar-Q Al Huda : Jl. Parakan Muncang No. 238 Sindangpakuan, Sumedang 0852-2213-3450
+                        </center>
+                    </b>
+                </td>
             </tr>
         </table>
     </div>
